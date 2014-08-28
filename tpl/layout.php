@@ -5,8 +5,6 @@
     <meta charset="utf-8">
   </head>
   <body>
-
-   <?php echo $contenu; ?>
-
+    <?php echo $contenu; ?>
   </body>
 </html>

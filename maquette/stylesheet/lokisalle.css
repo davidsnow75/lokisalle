@@ -1,0 +1,242 @@
+.dbg {
+  background-color: pink;
+}
+.dbg .dbg {
+  background-color: yellow;
+}
+.dbg .dbg .dbg {
+  background-color: cyan;
+}
+.dbg .dbg:nth-of-type(even) {
+  background-color: silver;
+}
+.cf:before,
+.cf:after {
+  content: " ";
+  display: table;
+}
+.cf:after {
+  clear: both;
+}
+.blc {
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+}
+@media (min-width: 960px) {
+  .blc {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+.lgn {
+  width: 100%;
+}
+.lgn:before,
+.lgn:after {
+  content: " ";
+  display: table;
+}
+.lgn:after {
+  clear: both;
+}
+@media (min-width: 960px) {
+  .lgn {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-width: 960px) {
+  .col {
+    float: left;
+  }
+  .col.rght {
+    float: right;
+  }
+}
+@media (min-width: 960px) {
+  .lg1 {
+    width: 8.33333333%;
+  }
+  .lg2 {
+    width: 16.66666667%;
+  }
+  .lg3 {
+    width: 25%;
+  }
+  .lg4 {
+    width: 33.33333333%;
+  }
+  .lg5 {
+    width: 41.66666667%;
+  }
+  .lg6 {
+    width: 50%;
+  }
+  .lg7 {
+    width: 58.33333333%;
+  }
+  .lg8 {
+    width: 66.66666667%;
+  }
+  .lg9 {
+    width: 75%;
+  }
+  .lg10 {
+    width: 83.33333333%;
+  }
+  .lg11 {
+    width: 91.66666667%;
+  }
+  .lg12 {
+    width: 100%;
+  }
+}
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+/* mixins perso */
+/* CLASSES UTILITAIRES */
+.block {
+  display: block;
+}
+.inline-block {
+  display: inline-block;
+}
+.sep-standard {
+  border: 0;
+  padding: 0;
+  margin: 10px 0;
+  width: 100%;
+  height: 1px;
+  background-color: #222222;
+}
+.valign {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
+/* typographie */
+.regular {
+  font-family: 'Open Sans', sans-serif;
+}
+.condensed {
+  font-family: 'Open Sans Condensed', sans-serif;
+}
+.light {
+  font-weight: 300;
+}
+.bold {
+  font-weight: 700;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.tleft {
+  text-align: left;
+}
+.tright {
+  text-align: right;
+}
+.tcenter {
+  text-align: center;
+}
+.tjustify {
+  text-align: justify;
+}
+/* couleurs */
+/* bleu */
+/* gris */
+/*============================================================================*/
+/* INITIALISATION */
+/*============================================================================*/
+html {
+  font-size: 16px;
+}
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+a {
+  color: #222222;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+/* pour caler le footer en bas de la page */
+html,
+body {
+  height: 100%;
+}
+.poucheur {
+  min-height: 100%;
+  margin-bottom: -200px;
+}
+.main-footer {
+  height: 200px;
+}
+/*============================================================================*/
+/* HEADER PRINCIPAL */
+/*============================================================================*/
+.main-header {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background-color: #1d365d;
+}
+.main-header,
+.main-header a {
+  color: #ffffff;
+}
+.quick-access {
+  margin-bottom: 15px;
+}
+.logo .majeur {
+  font-size: 60px;
+  font-weight: 700;
+  text-shadow: 1px 0 #000000, -1px 0 #000000, 0 1px #000000, 0 -1px #000000;
+}
+/*============================================================================*/
+/* MENU PRINCIPAL */
+/*============================================================================*/
+.main-menu {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #e7e7e7;
+  color: #222222;
+}
+.main-menu ul,
+.main-menu li {
+  margin: 0;
+  padding: 0;
+}
+.main-menu .menu-item {
+  list-style-type: none;
+  display: inline-block;
+  margin-right: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.main-menu .current-menu-item i {
+  color: #1d365d;
+}
+.main-menu a {
+  text-transform: uppercase;
+}
+/*============================================================================*/
+/* FOOTER PRINCIPAL */
+/*============================================================================*/
+.main-footer {
+  background-color: #f8f8f8;
+  border-top: 1px solid #e7e7e7;
+}
+.main-footer .lgn {
+  line-height: 200px;
+}

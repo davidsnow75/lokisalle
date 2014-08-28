@@ -1,10 +1,10 @@
 <?php
 
 function accueillir() {
-    require RACINE_SERVEUR.RACINE_SITE.'/tpl/accueil.php';
+    require RACINE_SERVEUR.'/tpl/accueil.php';
 }
 
 function renvoyer404() {
     header('Status: 404 Not Found');
-    echo 'Page inexistante';
+    require RACINE_SERVEUR.'/tpl/404.php';
 }
