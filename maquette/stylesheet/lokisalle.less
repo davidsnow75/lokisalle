@@ -1,6 +1,6 @@
 @import 'colomanie.less';
 
-/* mixins perso */
+// mixins perso
 .tbordure(@distance) {
     text-shadow:
          @distance 0 #000,
@@ -9,7 +9,7 @@
         0 -@distance #000;
 }
 
-/* CLASSES UTILITAIRES */
+// CLASSES UTILITAIRES
 .block { display: block; }
 .inline-block { display: inline-block; }
 
@@ -28,7 +28,7 @@
   line-height: normal;
 }
 
-/* typographie */
+// typographie
 .regular   { font-family: 'Open Sans', sans-serif; }
 .condensed { font-family: 'Open Sans Condensed', sans-serif; }
 .light { font-weight: 300; }
@@ -41,20 +41,20 @@
 .tcenter { text-align: center; }
 .tjustify { text-align: justify; }
 
-/* couleurs */
+// couleurs
 @blanc: #fff;
 @noir: #222;
 
-    /* bleu */
+    // bleu
     @clr01-dark: #1d365d;
 
-    /* gris */
+    // gris
     @clr02-light: #f8f8f8;
     @clr02-medium: #e7e7e7;
 
-/*============================================================================*/
-/* INITIALISATION */
-/*============================================================================*/
+//==============================================================================
+// INITIALISATION
+//==============================================================================
 
 html { font-size: 16px; }
 body { font-family: 'Open Sans', sans-serif; }
@@ -65,15 +65,15 @@ a {
     &:hover { text-decoration: underline; }
 }
 
-/* pour caler le footer en bas de la page */
+// pour caler le footer en bas de la page
 @hauteur-footer: 200px;
 html, body { height: 100%; }
 .poucheur { min-height: 100%; margin-bottom: -@hauteur-footer; }
 .main-footer { height: @hauteur-footer; }
 
-/*============================================================================*/
-/* HEADER PRINCIPAL */
-/*============================================================================*/
+//==============================================================================
+// HEADER PRINCIPAL
+//==============================================================================
 
 .main-header {
     .pdY(30px);
@@ -91,9 +91,9 @@ html, body { height: 100%; }
     .tbordure(1px)
 }
 
-/*============================================================================*/
-/* MENU PRINCIPAL */
-/*============================================================================*/
+//==============================================================================
+// MENU PRINCIPAL
+//==============================================================================
 
 .main-menu {
     background-color: @clr02-light;
@@ -115,9 +115,9 @@ html, body { height: 100%; }
 }
 
 
-/*============================================================================*/
-/* FOOTER PRINCIPAL */
-/*============================================================================*/
+//==============================================================================
+// FOOTER PRINCIPAL
+//==============================================================================
 
 .main-footer {
     background-color: @clr02-light;
