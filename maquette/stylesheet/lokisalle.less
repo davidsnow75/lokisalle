@@ -57,19 +57,16 @@
 //==============================================================================
 
 html { font-size: 16px; }
-body { font-family: 'Open Sans', sans-serif; }
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: @clr02-light;
+}
 
 a {
     color: @noir;
     text-decoration: none;
     &:hover { text-decoration: underline; }
 }
-
-// pour caler le footer en bas de la page
-@hauteur-footer: 200px;
-html, body { height: 100%; }
-.poucheur { min-height: 100%; margin-bottom: -@hauteur-footer; }
-.main-footer { height: @hauteur-footer; }
 
 //==============================================================================
 // HEADER PRINCIPAL
@@ -114,14 +111,19 @@ html, body { height: 100%; }
     a { text-transform: uppercase; }
 }
 
+//==============================================================================
+// FOOTER PRINCIPAL
+//==============================================================================
+
+.main-content {
+  min-height: 400px;
+  background-color: #fff;
+}
 
 //==============================================================================
 // FOOTER PRINCIPAL
 //==============================================================================
 
 .main-footer {
-    background-color: @clr02-light;
     border-top: 1px solid @clr02-medium;
-
-    .lgn { line-height: @hauteur-footer; }
 }

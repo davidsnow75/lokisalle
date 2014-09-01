@@ -155,6 +155,7 @@ html {
 }
 body {
   font-family: 'Open Sans', sans-serif;
+  background-color: #f8f8f8;
 }
 a {
   color: #222222;
@@ -162,17 +163,6 @@ a {
 }
 a:hover {
   text-decoration: underline;
-}
-html,
-body {
-  height: 100%;
-}
-.poucheur {
-  min-height: 100%;
-  margin-bottom: -200px;
-}
-.main-footer {
-  height: 200px;
 }
 .main-header {
   padding-top: 30px;
@@ -214,10 +204,10 @@ body {
 .main-menu a {
   text-transform: uppercase;
 }
-.main-footer {
-  background-color: #f8f8f8;
-  border-top: 1px solid #e7e7e7;
+.main-content {
+  min-height: 400px;
+  background-color: #fff;
 }
-.main-footer .lgn {
-  line-height: 200px;
+.main-footer {
+  border-top: 1px solid #e7e7e7;
 }
