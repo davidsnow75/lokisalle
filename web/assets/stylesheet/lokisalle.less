@@ -1,0 +1,129 @@
+@import 'colomanie.less';
+
+// mixins perso
+.tbordure(@distance) {
+    text-shadow:
+         @distance 0 #000,
+        -@distance 0 #000,
+        0  @distance #000,
+        0 -@distance #000;
+}
+
+// CLASSES UTILITAIRES
+.block { display: block; }
+.inline-block { display: inline-block; }
+
+.sep-standard {
+  border: 0;
+  padding: 0;
+  margin: 10px 0;
+  width: 100%;
+  height: 1px;
+  background-color: @noir;
+}
+
+.valign {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
+
+// typographie
+.regular   { font-family: 'Open Sans', sans-serif; }
+.condensed { font-family: 'Open Sans Condensed', sans-serif; }
+.light { font-weight: 300; }
+.bold  { font-weight: 700; }
+
+.uppercase { text-transform: uppercase; }
+
+.tleft { text-align: left; }
+.tright { text-align: right; }
+.tcenter { text-align: center; }
+.tjustify { text-align: justify; }
+
+// couleurs
+@blanc: #fff;
+@noir: #222;
+
+    // bleu
+    @clr01-dark: #1d365d;
+
+    // gris
+    @clr02-light: #f8f8f8;
+    @clr02-medium: #e7e7e7;
+
+//==============================================================================
+// INITIALISATION
+//==============================================================================
+
+html { font-size: 16px; }
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: @clr02-light;
+}
+
+a {
+    color: @noir;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+}
+
+//==============================================================================
+// HEADER PRINCIPAL
+//==============================================================================
+
+.main-header {
+    .pdY(30px);
+    background-color: @clr01-dark;
+    &, a { color: @blanc; }
+}
+
+.quick-access {
+    margin-bottom: 15px;
+}
+
+.logo .majeur {
+    font-size: 60px;
+    font-weight: 700;
+    .tbordure(1px)
+}
+
+//==============================================================================
+// MENU PRINCIPAL
+//==============================================================================
+
+.main-menu {
+    background-color: @clr02-light;
+    border-bottom: 1px solid @clr02-medium;
+    color: @noir;
+
+    ul, li { margin: 0; padding: 0; }
+    
+    .menu-item {
+        list-style-type: none;
+        display: inline-block;
+        margin-right: 30px;
+        .pdY(15px);
+    }
+
+    .current-menu-item i { color: @clr01-dark; }
+
+    a { text-transform: uppercase; }
+}
+
+//==============================================================================
+// FOOTER PRINCIPAL
+//==============================================================================
+
+.main-content {
+  min-height: 400px;
+  background-color: #fff;
+}
+
+//==============================================================================
+// FOOTER PRINCIPAL
+//==============================================================================
+
+.main-footer {
+    border-top: 1px solid @clr02-medium;
+}
