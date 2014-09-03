@@ -4,6 +4,7 @@
 require 'core/config.php';
 
 // appel du contrôleur frontal
-require "core/application.php";
+require 'core/controller.php';
+require 'core/application.php';
 
 $controller = new Application;

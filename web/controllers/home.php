@@ -1,11 +1,11 @@
 <?php
 
-class Home
+class Home extends Controller
 {
-    public function index()
+    public function index($url = null)
     {
-        require "./views/header.php";
-        require "./views/index.php";
-        require "./views/footer.php";
+        require "./views/_templates/header.php";
+        require "./views/home/index.php";
+        require "./views/_templates/footer.php";
     }
 }
