@@ -35,7 +35,7 @@ class Login extends Controller
         $login_return = $login_model->login();
 
         if ( $login_return === true ) {
-            header('location: /index');
+            header('location: /');
         } else {
             header('location: /login/index/' . $login_return);
         }

@@ -57,6 +57,8 @@ class LoginModel
                 Session::set($key, $value);
             }
 
+            return true;
+
         } else {
             return 'wrong_password';
         }

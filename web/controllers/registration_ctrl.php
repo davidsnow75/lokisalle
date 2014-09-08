@@ -14,7 +14,7 @@ class Registration extends Controller
             case 'pseudo_doesnt_fit':  $data = 'Le pseudo ne respecte pas le bon motif.'; break;
             case 'mandatory_email':    $data = 'L\'adresse e-mail est obligatoire.'; break;
             case 'email_length':       $data = 'L\'adresse e-mail ne doit pas dépasser 64 caractères.'; break;
-            case 'email_doesnt_fit':   $data = 'L\'adresse e-mail ne respecter pas le motif légal.'; break;
+            case 'email_doesnt_fit':   $data = 'L\'adresse e-mail ne respecte pas le motif légal.'; break;
             default: $data = '';
         }
 
