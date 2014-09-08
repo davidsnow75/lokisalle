@@ -30,10 +30,10 @@ class Application
         if ( !is_null($this->controller) ) {
 
             // ÉTAPE 1: le contrôleur demandé existe-t-il ?
-            if ( file_exists('./controllers/' . $this->controller . '.php') ) {
+            if ( file_exists('./controllers/' . $this->controller . '_ctrl.php') ) {
 
                 // oui, alors on le crée en instanciant sa classe
-                require './controllers/' . $this->controller . '.php';
+                require_once './controllers/' . $this->controller . '_ctrl.php';
                 $this->controller = new $this->controller();
 
                 // ÉTAPE 2: la méthode demandée est-elle disponible dans ce contrôleur ?
@@ -45,12 +45,15 @@ class Application
                     if ( isset($this->parameter3) ) {
                         // on obtient qqchose du genre: $this->home->method($param_1, $param_2, $param_3);
                         $this->controller->{$this->action}($this->parameter1, $this->parameter2, $this->parameter3);
+
                     } elseif ( isset($this->parameter2) ) {
                         // semblable à au-dessus
                         $this->controller->{$this->action}($this->parameter1, $this->parameter2);
+
                     } elseif ( isset($this->parameter1) ) {
                         // idem
                         $this->controller->{$this->action}($this->parameter1);
+
                     } else {
                         // pas de paramètres, la méthode est appelée seule, comme cela par ex.: $this->home->method();
                         $this->controller->{$this->action}();
@@ -62,16 +65,16 @@ class Application
                 }
             } else {
                 // l'url est tout à fait invalide, on envoie la page 404
-                require './controllers/erreur404.php';
-                $erreur404 = new erreur404();
-                $erreur404->index($this->url);
+                require_once './controllers/error_ctrl.php';
+                $erreur = new Error;
+                $erreur->notFound($this->url);
             }
         } else {
             // pas d'url fournie, donc on appelle le contrôleur "d'accueil"
             // NOTE: les trois instructions suivantes sont du type de celles éventuellement exécutées
             // par les instructions ci-dessus
-            require './controllers/home.php';
-            $home = new Home();
+            require_once './controllers/home_ctrl.php';
+            $home = new Home;
             $home->index();
         }
     }

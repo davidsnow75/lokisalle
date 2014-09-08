@@ -3,8 +3,9 @@
 // appel du fichier de configuration de l'application
 require 'core/config.php';
 
-// appel du contrôleur frontal
-require 'core/controller.php';
-require 'core/application.php';
+// appel et mise en place de l'autoloader de classes
+require 'core/autoloader.php';
 
-$controller = new Application;
+Session::init();
+
+$FrontController = new Application;

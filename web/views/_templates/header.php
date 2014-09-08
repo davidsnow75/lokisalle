@@ -14,12 +14,12 @@
   <div class="blc">
     <div class="lgn">
       <div class="quick-access tright">
-        <a href="#">Connexion</a> |
-        <a href="#">Inscription</a> |
+        <a href="/login">Connexion</a> |
+        <a href="/registration">Inscription</a> |
         <a href="#">Contact</a>
       </div>
       <div class="logo">
-        <div class="majeur"><a href="#">Lokisalle</a></div>
+        <div class="majeur"><a href="/">Lokisalle</a></div>
         <div class="mineur">La solution flexible à vos besoins de location de salles</div>
       </div>
     </div>
@@ -30,7 +30,7 @@
   <div class="blc">
     <div class="lgn">
       <ul>
-        <li class="menu-item current-menu-item"><i class="fa fa-home"></i>&nbsp; <a href="#">Accueil</a></li>
+        <li class="menu-item current-menu-item"><i class="fa fa-home"></i>&nbsp; <a href="/">Accueil</a></li>
         <li class="menu-item"><i class="fa fa-book"></i>&nbsp; <a href="#">Réservation</a></li>
         <li class="menu-item"><i class="fa fa-search"></i>&nbsp; <a href="#">Recherche</a></li>
         <li class="menu-item"><i class="fa fa-user"></i>&nbsp; <a href="#">Inscription</a></li>
