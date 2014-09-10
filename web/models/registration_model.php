@@ -97,7 +97,7 @@ class RegistrationModel
                                         statut)
                     VALUES ';
 
-            return 'registration_success';
+            return true;
         endif;
 
         return 'Ceci ne devrait pas arriver !';

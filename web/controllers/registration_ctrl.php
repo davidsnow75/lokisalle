@@ -23,7 +23,7 @@ class Registration extends Controller
             case 'zipcode_length':     $data['erreur'] = 'Le code postal ne doit pas dépasser 5 caractères'; break;
             case 'adresse_missing':    $data['erreur'] = 'L\'adresse postale doit être renseignée'; break;
             case 'adresse_length':     $data['erreur'] = 'L\'adresse postale ne doit pas dépasser 30 caractères'; break;
-            default:                   $data['erreur'] = '';
+            default:                   $data['erreur'] = null;
         }
 
         // on récupère l'éventuel formulaire précédemment rempli pour en faire un sticky form
@@ -38,6 +38,10 @@ class Registration extends Controller
 
         $register_return = $registration_model->register();
 
-        header('location: /registration/index/' . $register_return);
+        if ( $register_return === true) {
+            header('location: /login/index');
+        } else {
+            header('location: /registration/index/' . $register_return);
+        }
     }
 }
