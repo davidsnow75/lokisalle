@@ -50,8 +50,6 @@ abstract class Controller
      */
     public function loadModel($modele_a_charger)
     {
-        require_once './models/' . strtolower($modele_a_charger) . '_model.php';
-        $modele_a_charger = $modele_a_charger . 'Model';
         return new $modele_a_charger($this->db);
     }
 

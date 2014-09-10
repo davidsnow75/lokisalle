@@ -1,6 +1,6 @@
 <?php
 
-class Error extends Controller
+class ErrorController extends Controller
 {
     public function index()
     {
@@ -11,7 +11,7 @@ class Error extends Controller
     {
         // si Error::notFound est appelée via /error/notfound
         if ( is_null($url) ) {
-            $this->renderView('error/index');
+            header('location: /');
             exit(0);
         }
 

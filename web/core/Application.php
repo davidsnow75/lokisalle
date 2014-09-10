@@ -19,33 +19,27 @@ class Application {
         // On peuple d'abord les attributs de l'application de façon adéquate
         $this->url = $this->analyser_url();
 
-
-        ## TEST 0 ## Sans url requise, on envoie la page d'accueil
+        // TEST 0: Sans url demandée, on envoie la page d'accueil
         if ( is_null($this->url) ) {
-            require './controllers/HomeController.php';
             $home_ctrl = new HomeController;
             $home_ctrl->index();
 
             return; // rien d'autre à faire ici, on quitte le constructeur
         }
 
-
-        ## TEST 1 ## Si le contrôleur demandé existe, alors on en crée une instance
+        // TEST 1: Si le contrôleur demandé existe, alors on en crée une instance
         if ( file_exists('./controllers/' . $this->controller . 'Controller.php') ) {
-            require './controllers/' . $this->controller . 'Controller.php';
             $thisController = $this->controller . 'Controller';
             $this->controller = new $thisController;
 
         } else { // l'url demandée n'a aucun sens, on envoie la page 404
-            require_once './controllers/ErrorController.php';
             $error_ctrl = new ErrorController;
             $error_ctrl->notFound($this->url);
 
             return; // rien d'autre à faire ici, on quitte le constructeur
         }
 
-
-        ## TEST 2 ## Si l'action demandée existe dans ce contrôleur
+        // TEST 2: Si l'action demandée existe dans ce contrôleur
         if ( method_exists($this->controller, $this->action) ) {
 
             // si aucun paramètre n'a été fourni, on se contente de lancer l'action seule
@@ -66,7 +60,7 @@ class Application {
 
 
     /**
-     * Récupérer et décomposer l'url pour peupler les propriétés vitales de l'application
+     * Récupére et décompose l'url pour peupler les propriétés vitales de l'application
      *
      * @param void
      * @return mixed (string ou null)

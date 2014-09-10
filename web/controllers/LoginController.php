@@ -5,12 +5,12 @@
  *
  */
 
-class Login extends Controller
+class LoginController extends Controller
 {
     /* renvoie le formulaire de connexion */
     public function index($error_msg = null)
     {
-        switch ($error_msg) {
+        switch ($error_msg[0]) {
             case 'empty_fields':
                 $data = 'Tous les champs doivent être renseignés.';
                 break;
@@ -34,7 +34,7 @@ class Login extends Controller
     /* déclenche l'action de connexion */
     public function doLogin()
     {
-        $login_model = $this->loadModel('Login');
+        $login_model = $this->loadModel('LoginModel');
 
         $login_return = $login_model->login();
 
@@ -48,7 +48,7 @@ class Login extends Controller
     /* déclenche l'action de déconnexion */
     public function doLogout()
     {
-        $login_model = $this->loadModel('Login');
+        $login_model = $this->loadModel('LoginModel');
 
         $data = $login_model->logout();
 

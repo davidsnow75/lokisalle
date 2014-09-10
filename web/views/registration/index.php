@@ -10,7 +10,7 @@
 
 <?php if ( Session::get('registration_post') ): ?>
       <form action="/registration/register" method="post" class="display-table">
-        <div class="ligne"><label>Nom d'utilisateur: </label><input type="text" name="pseudo" value="<?php echo Session::get('registration_post/pseudo'); ?>"></div>
+        <div class="ligne"><label>Nom d'utilisateur : </label><input type="text" name="pseudo" value="<?php echo Session::get('registration_post/pseudo'); ?>"></div>
         <div class="ligne"><label>Mot de passe :</label><input type="password" name="mdp"></div>
         <div class="ligne"><label>Confirmez votre mot de passe :</label><input type="password" name="mdp_bis"></div>
         <div class="ligne"><label>Prénom &amp; Nom :</label><input type="text" name="nom" value="<?php echo Session::get('registration_post/nom'); ?>"></div>
