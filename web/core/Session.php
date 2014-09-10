@@ -4,16 +4,47 @@
 
 class Session
 {
-    public static function get($session_key)
+    private static function parse_key($submitted_key)
     {
-        if ( isset($_SESSION[$session_key]) ) {
-            return $_SESSION[$session_key];
+
+    }
+
+    /**
+     * Récupère des informations de la session courante
+     * via un argument du type niveau0/niveau1 (soit
+     * $_SESSION['niveau1']['niveau2'] )
+     */
+    public static function get($key)
+    {
+        $key = trim($key, '/');
+        $key = explode('/', $key);
+        $key_depth = count($key);
+
+        if ( isset($_SESSION[$key[0]] ) ) {
+            $session_key = $_SESSION[$key[0]];
+
+            for ($i = 1; $i < $key_depth; $i++) {
+                if ( isset( $session_key[$key[$i]] ) ) {
+                    $session_key = $session_key[$key[$i]];
+                } else {
+                    break;
+                }
+            }
+
+            return $session_key;
         }
+
+        return false;
     }
 
     public static function set($session_key, $value)
     {
         $_SESSION[$session_key] = $value;
+    }
+
+    public static function delete($session_key)
+    {
+        unset($_SESSION[$session_key]);
     }
 
     public static function init()

@@ -98,7 +98,7 @@ a {
     color: @noir;
 
     ul, li { margin: 0; padding: 0; }
-    
+
     .menu-item {
         list-style-type: none;
         display: inline-block;
@@ -112,12 +112,26 @@ a {
 }
 
 //==============================================================================
-// FOOTER PRINCIPAL
+// CONTENU PRINCIPAL
 //==============================================================================
 
 .main-content {
-  min-height: 400px;
-  background-color: #fff;
+    min-height: 400px;
+    background-color: #fff;
+
+    a { color: @clr01-dark; }
+}
+
+form.display-table {
+    display: table;
+
+    .ligne {
+        display: table-row;
+
+        label, input { display: table-cell; }
+        label { padding: 5px 10px 5px 0px; text-align: right; }
+    }
+
 }
 
 //==============================================================================

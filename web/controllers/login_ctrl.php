@@ -21,10 +21,14 @@ class Login extends Controller
                 $data = 'Mot de passe incorrect';
                 break;
             default:
-                $data = '';
+                $data = null;
         }
 
-        $this->renderView('login/index', $data);
+        if ( Session::userIsLoggedIn() ) {
+            $this->renderView('login/espaceperso');
+        } else {
+            $this->renderView('login/index', $data);
+        }
     }
 
     /* déclenche l'action de connexion */
@@ -35,9 +39,19 @@ class Login extends Controller
         $login_return = $login_model->login();
 
         if ( $login_return === true ) {
-            header('location: /');
+            header('location: /login/espaceperso');
         } else {
             header('location: /login/index/' . $login_return);
         }
+    }
+
+    /* déclenche l'action de déconnexion */
+    public function doLogout()
+    {
+        $login_model = $this->loadModel('Login');
+
+        $data = $login_model->logout();
+
+        $this->renderView('login/index', $data);
     }
 }

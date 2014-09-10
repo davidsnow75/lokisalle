@@ -208,6 +208,23 @@ a:hover {
   min-height: 400px;
   background-color: #fff;
 }
+.main-content a {
+  color: #1d365d;
+}
+form.display-table {
+  display: table;
+}
+form.display-table .ligne {
+  display: table-row;
+}
+form.display-table .ligne label,
+form.display-table .ligne input {
+  display: table-cell;
+}
+form.display-table .ligne label {
+  padding: 5px 10px 5px 0px;
+  text-align: right;
+}
 .main-footer {
   border-top: 1px solid #e7e7e7;
 }

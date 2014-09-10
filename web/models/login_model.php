@@ -11,8 +11,18 @@ class LoginModel
         $this->db = $db;
     }
 
+    /**
+     * Méthode de connexion d'un utilisateur
+     * -------------------------------------
+     * Teste la validité d'un couple username/password envoyé via POST
+     * - Si invalide, renvoie d'une chaîne de caractères indiquant
+     * brièvement le message d'erreur.
+     * - Si valide, alors renvoie le booléen true et ajoute à la session
+     * courante l'id de l'utilisateur
+     */
     public function login()
     {
+        // Test 0: les données sont-elles présentes ?
         if ( !isset($_POST['username']) ||
               empty($_POST['username']) ||
              !isset($_POST['password']) ||
@@ -21,9 +31,7 @@ class LoginModel
             return 'empty_fields';
         }
 
-        // Les données sont présentes:
         // Test 1: l'utilisateur existe-t-il ?
-
         $clean_username = $this->db->real_escape_string($_POST['username']);
 
         $result = $this->db->query('SELECT id_membre,
@@ -39,31 +47,44 @@ class LoginModel
                                 FROM membres
                                 WHERE pseudo="' . $clean_username . '"');
 
-        // si la requête n'a rien renvoyé, c'est que l'utilisateur n'existe pas
         if ( $result->num_rows === 0 ) {
             return 'unknown_user';
         }
 
-        // l'utilisateur existe, on le récupère
-        // NOTE: on ne récupère que le premier (normalement il n'y a qu'une seule
-        // ligne de retournée, un pseudo devant être unique !)
-        $user = $result->fetch_assoc();
+        // TEST 2: le mot de passe correspond-il à l'username demandé ?
+        $user = $result->fetch_assoc(); // NOTE: fetch_assoc() ne devrait renvoyer qu'une ligne!
 
-        // Vérification du mot de passe
         if ( password_verify($_POST['password'], $user['mdp']) ) {
             // le mot de passe est bon, alors on ajoute l'utilisateur à la session
             Session::set('user_logged_in', true);
-            foreach ($user as $key => $value) {
-                Session::set($key, $value);
-            }
+            Session::set('user_id', $user['id_membre']);
 
-            return true;
-
+            return true; // pour indiquer au contrôleur le succès de la connexion
         } else {
             return 'wrong_password';
         }
 
-        // par défaut, l'utilisateur n'est pas connecté
+        // par défaut, la connexion doit échouer
         return false;
+    }
+
+    /**
+     * Méthode de déconnexion d'un utilisateur
+     * ---------------------------------------
+     * Une connexion entraînant l'inscription dans
+     * la session courante de la valeur de 2 choses,
+     * la déconnexion entraîne la destruction de cez
+     * deux valeurs de la session.
+     */
+    public function logout()
+    {
+        if ( Session::get('user_logged_in') && Session::get('user_id') ) {
+            Session::delete('user_logged_in');
+            Session::delete('user_id');
+
+            return 'Déconnexion effectuée';
+        }
+
+        return 'Pas de connexion active';
     }
 }
