@@ -14,7 +14,6 @@ class Application {
     private $controller       = DEFAULT_CONTROLLER; // ce contrôleur par défaut est défini dans config.php
     private $action           = 'index'; // tous les contrôleurs doivent implémenter index() (cf Controller.php)
     private $parameters       = [];
-    private $valid_controller = false;
 
     /*
      *  Définit le triplet (contrôleur, action, paramètres) le plus adéquat en réponse à une requête
@@ -33,24 +32,15 @@ class Application {
             // on corrige le nom (par convention, tous les contrôleurs sont du type NomController,
             // mais les URL de type nom/action/[parametres])
             $this->controller .= 'Controller';
-            // on garde trace de ce succès
-            $this->valid_controller = true;
-        } else {
-            // un contrôleur inexistant a été demandé, on se rabat alors sur le contrôleur d'erreur en vue d'une 404
-            $this->controller = 'ErrorController';
-            $this->action = 'notFound';
-            $this->parameters = [$this->url];
+            // puis on instancie ce contrôleur
+            $this->controller = new $this->controller;
         }
 
-        /* Trois cas de figure possibles ici:
-            - l'URL demandait un contrôleur, et celui-ci existe, alors on crée une instance de ce contrôleur
-            - l'URL était vide, alors on crée une instance du contrôleur par défaut
-            - l'URL demandait un contrôleur invalide, alors on crée une instance du contrôleur d'erreur
-        */
-        $this->controller = new $this->controller;
-
-        // on s'assure que l'action demandée au contrôleur (valide) lui appartient, sinon 404
-        if ( $this->valid_controller && !method_exists($this->controller, $this->action) ) {
+        /* Si $this->controller n'est pas maintenant une instance de Controller, alors c'est que le
+         * contrôleur demandé n'existait pas, donc 404
+         * Si c'en est une, alors s'il ne possède pas la méthode demandée, alors 404
+         */
+        if ( !($this->controller instanceof Controller) || !method_exists($this->controller, $this->action) ) {
             $this->controller = new ErrorController;
             $this->action = 'notFound';
             $this->parameters = [$this->url];
