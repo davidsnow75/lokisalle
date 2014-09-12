@@ -39,7 +39,7 @@ class LoginController extends Controller
         $login_return = $login_model->login();
 
         if ( $login_return === true ) {
-            header('location: /login/espaceperso');
+            header('location: /login/index');
         } else {
             header('location: /login/index/' . $login_return);
         }
