@@ -11,3 +11,6 @@ define('DB_HOST', 'localhost');
 define('DB_NAME', 'lokisalle');
 define('DB_USER', 'lokiser');
 define('DB_PASS', 'lokipass');
+
+// On définit ici le contrôleur par défaut (celui de la page d'accueil)
+define('DEFAULT_CONTROLLER', 'Home');

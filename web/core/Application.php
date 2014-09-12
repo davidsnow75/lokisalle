@@ -1,76 +1,72 @@
 <?php
 
-/**
- * application.php
- * ---------------
- * Gère les entrées et les sorties de l'appli en déléguant le travail aux
- * modules adéquats (c'est le contrôleur frontal)
+/*
+ * Application
+ * -----------
+ * Gère les entrées de l'appli en déléguant le travail aux
+ * contrôleurs adéquats (c'est le contrôleur frontal)
+ *
  */
 
 class Application {
 
-    private $url         = null;
-    private $controller  = null;
-    private $action      = null;
-    private $parameters  = null;
+    private $url              = '';
+    private $controller       = DEFAULT_CONTROLLER; // ce contrôleur par défaut est défini dans config.php
+    private $action           = 'index'; // tous les contrôleurs doivent implémenter index() (cf Controller.php)
+    private $parameters       = [];
+    private $valid_controller = false;
 
+    /*
+     *  Définit le triplet (contrôleur, action, paramètres) le plus adéquat en réponse à une requête
+     *  et délégue à ce triplet le travail de fournir une réponse à cette requête
+     */
     public function __construct()
     {
-        // On peuple d'abord les attributs de l'application de façon adéquate
-        $this->url = $this->analyser_url();
+        // On peuple d'abord les attributs de l'application en fonction d'une éventuelle URL requise
+        $this->analyser_url();
 
-        // TEST 0: Sans url demandée, on envoie la page d'accueil
-        if ( is_null($this->url) ) {
-            $home_ctrl = new HomeController;
-            $home_ctrl->index();
-
-            return; // rien d'autre à faire ici, on quitte le constructeur
-        }
-
-        // TEST 1: Si le contrôleur demandé existe, alors on en crée une instance
+        /* Maintenant,
+            - ou bien un contrôleur a été explicitement demandé et on doit vérifier qu'il existe
+            - ou bien l'URL était vide, et $this->controller est au contrôleur par défaut (DEFAULT_CONTROLLER)
+        */
         if ( file_exists('./controllers/' . $this->controller . 'Controller.php') ) {
-            $thisController = $this->controller . 'Controller';
-            $this->controller = new $thisController;
-
-        } else { // l'url demandée n'a aucun sens, on envoie la page 404
-            $error_ctrl = new ErrorController;
-            $error_ctrl->notFound($this->url);
-
-            return; // rien d'autre à faire ici, on quitte le constructeur
+            // on corrige le nom (par convention, tous les contrôleurs sont du type NomController,
+            // mais les URL de type nom/action/[parametres])
+            $this->controller .= 'Controller';
+            // on garde trace de ce succès
+            $this->valid_controller = true;
+        } else {
+            // un contrôleur inexistant a été demandé, on se rabat alors sur le contrôleur d'erreur en vue d'une 404
+            $this->controller = 'ErrorController';
+            $this->action = 'notFound';
+            $this->parameters = [$this->url];
         }
 
-        // TEST 2: Si l'action demandée existe dans ce contrôleur
-        if ( method_exists($this->controller, $this->action) ) {
+        /* Trois cas de figure possibles ici:
+            - l'URL demandait un contrôleur, et celui-ci existe, alors on crée une instance de ce contrôleur
+            - l'URL était vide, alors on crée une instance du contrôleur par défaut
+            - l'URL demandait un contrôleur invalide, alors on crée une instance du contrôleur d'erreur
+        */
+        $this->controller = new $this->controller;
 
-            // si aucun paramètre n'a été fourni, on se contente de lancer l'action seule
-            if ( empty($this->parameters) ):
-                $this->controller->{$this->action}();
-
-            else: // sinon on fournit les paramètres à l'action
-                $this->controller->{$this->action}( $this->parameters );
-
-            endif;
-
-        } else { // l'action demandée n'existe pas, on actionne celle par défaut (index)
-            $this->controller->index();
-
-            return; // rien d'autre à faire ici, on quitte le constructeur
+        // on s'assure que l'action demandée au contrôleur (valide) lui appartient, sinon 404
+        if ( $this->valid_controller && !method_exists($this->controller, $this->action) ) {
+            $this->controller = new ErrorController;
+            $this->action = 'notFound';
+            $this->parameters = [$this->url];
         }
+
+        // on possède maintenant toutes les informations adéquates, on lance donc l'application
+        // TODO: fixer une limite au nombre de paramètres que peut recevoir une action ?
+        call_user_func_array( [$this->controller, $this->action], $this->parameters );
     }
 
 
-    /**
-     * Récupére et décompose l'url pour peupler les propriétés vitales de l'application
-     *
-     * @param void
-     * @return mixed (string ou null)
+    /*
+     *  Récupére une éventuelle URL et la décompose pour peupler les propriétés vitales de l'application
      */
     private function analyser_url() {
 
-        // $_GET['url'] est une pseudo-url, dont l'intérêt par rapport à un système
-        // avec plusieurs $_GET est notamment d'obliger à une hiérarchisation des
-        // paramètres de routage (le premier étant forcément le contrôleur, le
-        // second l'action, etc.)
         if (isset( $_GET['url'] )) {
 
             // décomposer l'url demandée en autant de partie que de slash
@@ -78,21 +74,19 @@ class Application {
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url_array = explode('/', $url);
 
-            // assigne aux propriétés adéquates les différentes parties (éventuelles) de l'url
-            $url_depth = count($url_array);
-            for ($i = 0; $i < $url_depth; $i++) {
-                switch ($i) {
-                    case 0:  $this->controller    = ucfirst( $url_array[0] );  break;
-                    case 1:  $this->action        = $url_array[1];  break;
-                    default: $this->parameters[]  = $url_array[$i]; break;
-                }
-            }
+            // peuple l'objet des infos tirées de l'URL
+            $this->url        = $url;
+            $this->controller = isset($url_array[0]) ? ucfirst($url_array[0]) : $this->controller;
+            $this->action     = isset($url_array[1]) ? $url_array[1]          : $this->action;
 
-            // renvoie $url pour rendre possible sa transmission éventuelle au contrôleur (ex. page 404)
-            return $url;
+            // nous voulons récupérer les éventuels paramètres dans un tableau.
+            // un moyen efficace pour cela est le suivant:
+
+            // on supprime contrôleur et action (peu importe à unset() qu'ils existent ou non)
+            unset( $url_array[0], $url_array[1] );
+
+            // il ne reste plus dans $url_array que les paramètres, alors on réindexe le tableau
+            $this->parameters = array_values($url_array);
         }
-
-        // on renvoie null car aucune url n'a été fournie via $_GET['url']
-        return null;
     }
 }
