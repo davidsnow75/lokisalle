@@ -10,7 +10,7 @@ class LoginController extends Controller
     /* renvoie le formulaire de connexion */
     public function index($error_msg = null)
     {
-        switch ($error_msg[0]) {
+        switch ($error_msg) {
             case 'empty_fields':
                 $data = 'Tous les champs doivent être renseignés.';
                 break;

@@ -4,7 +4,7 @@ class RegistrationController extends Controller
 {
     public function index($error_msg = null)
     {
-        switch ($error_msg[0]) {
+        switch ($error_msg) {
             case 'pseudo_missing':     $data['erreur'] = 'Le pseudo doit être renseigné.'; break;
             case 'pseudo_length':      $data['erreur'] = 'Le pseudo doit comprendre entre 2 et 15 caractères.'; break;
             case 'pseudo_doesnt_fit':  $data['erreur'] = 'Le pseudo ne respecte pas le bon motif.'; break;
