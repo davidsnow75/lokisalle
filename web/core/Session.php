@@ -1,23 +1,34 @@
 <?php
 
-/* Prend en charge la session de l'utilisateur à chaque instanciation d'un contrôleur */
+/* Prend en charge la session de l'utilisateur */
 
 class Session
 {
-    private static function parse_key($submitted_key)
+    /* Démarre une session ou en récupère une déjà existante
+     */
+    public static function init()
     {
-
+        // si session_id() renvoie qqch, alors c'est qu'une session est déjà en cours
+        if ( session_id() === '') {
+           session_start();
+        }
     }
 
-    /**
-     * Récupère des informations de la session courante
-     * via un argument du type niveau0/niveau1 (soit
-     * $_SESSION['niveau1']['niveau2'] )
+    /* Réinitialisation de la session
+     * TODO: revoir http://php.net/manual/fr/function.session-destroy.php
+     */
+    public static function wipe_all()
+    {
+        // Détruit toutes les variables de session
+        $_SESSION = array();
+    }
+
+    /* Retourne une valeur de la session si elle s'y trouve, sinon NULL
+     * Usage: echo $_SESSION['user']['data']['id'] <=> echo Session::get('user.data.id')
      */
     public static function get($key)
     {
-        $key = trim($key, '/');
-        $key = explode('/', $key);
+        $key = explode('.', $key);
         $key_depth = count($key);
 
         if ( isset($_SESSION[$key[0]] ) ) {
@@ -27,39 +38,33 @@ class Session
                 if ( isset( $session_key[$key[$i]] ) ) {
                     $session_key = $session_key[$key[$i]];
                 } else {
-                    break;
+                    break; // on arrive en bout de chaine
                 }
             }
 
             return $session_key;
         }
 
-        return false;
+        return null;
     }
 
-    public static function set($session_key, $value)
+    /* Assigne une valeur à une clé de la session
+     * TODO: gérer la profondeur comme pour self::get()
+     */
+    public static function set($key, $value)
     {
-        $_SESSION[$session_key] = $value;
+        $_SESSION[$key] = $value;
     }
 
-    public static function delete($session_key)
+    /* Supprime une entrée de la session
+     */
+    public static function delete($key)
     {
-        unset($_SESSION[$session_key]);
+        unset($_SESSION[$key]);
     }
 
-    public static function init()
-    {
-        // si session_id() renvoie qqch, alors c'est qu'une session est déjà en cours
-        if ( session_id() === '') {
-           session_start();
-        }
-    }
-
-    public static function destroy()
-    {
-        session_destroy();
-    }
-
+    /* TODO: déplacer cette fonction dans une classe indépendante
+     */
     public static function userIsLoggedIn()
     {
         if ( self::get('user_logged_in') === true ) {
