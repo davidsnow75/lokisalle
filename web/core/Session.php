@@ -55,6 +55,11 @@ class Session
         }
     }
 
+    public static function destroy()
+    {
+        session_destroy();
+    }
+
     public static function userIsLoggedIn()
     {
         if ( self::get('user_logged_in') === true ) {
