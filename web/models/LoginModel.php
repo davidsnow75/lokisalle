@@ -56,10 +56,19 @@ class LoginModel
 
         if ( password_verify($_POST['password'], $user['mdp']) ) {
             // le mot de passe est bon, alors on ajoute l'utilisateur à la session
-            Session::set('user_logged_in', true);
-            Session::set('user_id', $user['id_membre']);
+            foreach ($user as $key => $value) {
+                if ( $key != 'mdp' ) {
+                    $user_data[$key] = $value;
+                }
+            }
+            // on ajoute une méta-donnée pas nécessaire, mais pratique
+            $user_data['logged_in'] = true;
+
+            // Enregistrement dans la session PHP de l'utilisateur
+            Session::set('user', $user_data);
 
             return true; // pour indiquer au contrôleur le succès de la connexion
+
         } else {
             return 'wrong_password';
         }
@@ -78,10 +87,9 @@ class LoginModel
      */
     public function logout()
     {
-        if ( Session::get('user_logged_in') && Session::get('user_id') ) {
-            Session::delete('user_logged_in');
-            Session::delete('user_id');
+        if ( Session::userIsLoggedIn() ) ) {
 
+            Session::wipe_all();
             return 'Déconnexion effectuée';
         }
 

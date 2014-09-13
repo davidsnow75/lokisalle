@@ -67,7 +67,7 @@ class Session
      */
     public static function userIsLoggedIn()
     {
-        if ( self::get('user_logged_in') === true ) {
+        if ( self::get('user.logged_in') === true ) {
             return true;
         }
 
