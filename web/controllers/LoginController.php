@@ -10,6 +10,11 @@ class LoginController extends Controller
     /* renvoie le formulaire de connexion */
     public function index($error_msg = null)
     {
+        if ( Session::userIsLoggedIn() ) {
+            $this->renderView('login/espaceperso');
+            return;
+        }
+
         switch ($error_msg) {
             case 'empty_fields':
                 $data = 'Tous les champs doivent être renseignés.';
@@ -24,11 +29,7 @@ class LoginController extends Controller
                 $data = null;
         }
 
-        if ( Session::userIsLoggedIn() ) {
-            $this->renderView('login/espaceperso');
-        } else {
-            $this->renderView('login/index', $data);
-        }
+        $this->renderView('login/index', $data);
     }
 
     /* déclenche l'action de connexion */

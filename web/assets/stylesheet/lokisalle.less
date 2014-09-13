@@ -76,10 +76,18 @@ a {
     .pdY(30px);
     background-color: @clr01-dark;
     &, a { color: @blanc; }
+
+    @media (max-width: @xs-max) {
+      text-align: center;
+    }
 }
 
 .quick-access {
     margin-bottom: 15px;
+
+    @media (min-width: @sm-min) {
+      text-align: right;
+    }
 }
 
 .logo .majeur {
@@ -104,8 +112,19 @@ a {
         display: inline-block;
         margin-right: 30px;
         .pdY(15px);
+
+        @media (min-width: @sm-min) {
+          margin-right: 15px;
+        }
+
+        @media (max-width: @xs-max) {
+          display: list-item;
+          margin-left: 30px;
+          .pdY(10px);
+        }
     }
 
+    .menu-item:hover i,
     .current-menu-item i { color: @clr01-dark; }
 
     a { text-transform: uppercase; }
@@ -117,27 +136,43 @@ a {
 
 .main-content {
     min-height: 400px;
+    .pdY(30px);
     background-color: #fff;
 
     a { color: @clr01-dark; }
 }
 
-form.display-table {
-    display: table;
+form {
+  input[type="submit"] {
+    display: inline-block;
+    padding: 5px;
+    margin: 10px 0;
+    cursor: pointer;
+  }
 
-    .ligne {
-        display: table-row;
+  @media (min-width: @sm-min) {
+    display: inline-block;
+    text-align: right;
 
-        label, input { display: table-cell; }
-        label { padding: 5px 10px 5px 0px; text-align: right; }
-    }
+    .form-group { .cf; margin-bottom: 10px; }
+    label { float: left; min-width: 250px; padding-right: 10px; }
+    input[type="radio"] { float: left; }
+  }
+
+  @media (max-width: @xs-max) {
+    label, input { display: block; width: 100%; }
+    label, input[type="submit"] { margin-top: 8px; }
+  }
 
 }
+
+
 
 //==============================================================================
 // FOOTER PRINCIPAL
 //==============================================================================
 
 .main-footer {
+    .pdY(15px);
     border-top: 1px solid @clr02-medium;
 }

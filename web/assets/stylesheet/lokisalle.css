@@ -22,14 +22,39 @@
   padding-left: 7.5px;
   padding-right: 7.5px;
 }
-@media (min-width: 960px) {
+@media (min-width: 783px) and (max-width: 991px), (min-width: 1007px) and (max-width: 1199px), (min-width: 1215px) {
   .blc {
     padding-left: 0;
     padding-right: 0;
   }
 }
-.lgn {
+.ctn {
   width: 100%;
+}
+.ctn:before,
+.ctn:after {
+  content: " ";
+  display: table;
+}
+.ctn:after {
+  clear: both;
+}
+@media (min-width: 768px) {
+  .ctn {
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-width: 992px) {
+  .ctn {
+    max-width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .ctn {
+    max-width: 1170px;
+  }
 }
 .lgn:before,
 .lgn:after {
@@ -39,22 +64,126 @@
 .lgn:after {
   clear: both;
 }
-@media (min-width: 960px) {
-  .lgn {
-    max-width: 960px;
-    margin-left: auto;
-    margin-right: auto;
+.col {
+  float: left;
+  width: 100%;
+}
+.col.rght {
+  float: right;
+}
+.xs1 {
+  width: 8.33333333%;
+}
+.xs2 {
+  width: 16.66666667%;
+}
+.xs3 {
+  width: 25%;
+}
+.xs4 {
+  width: 33.33333333%;
+}
+.xs5 {
+  width: 41.66666667%;
+}
+.xs6 {
+  width: 50%;
+}
+.xs7 {
+  width: 58.33333333%;
+}
+.xs8 {
+  width: 66.66666667%;
+}
+.xs9 {
+  width: 75%;
+}
+.xs10 {
+  width: 83.33333333%;
+}
+.xs11 {
+  width: 91.66666667%;
+}
+.xs12 {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .sm1 {
+    width: 8.33333333%;
+  }
+  .sm2 {
+    width: 16.66666667%;
+  }
+  .sm3 {
+    width: 25%;
+  }
+  .sm4 {
+    width: 33.33333333%;
+  }
+  .sm5 {
+    width: 41.66666667%;
+  }
+  .sm6 {
+    width: 50%;
+  }
+  .sm7 {
+    width: 58.33333333%;
+  }
+  .sm8 {
+    width: 66.66666667%;
+  }
+  .sm9 {
+    width: 75%;
+  }
+  .sm10 {
+    width: 83.33333333%;
+  }
+  .sm11 {
+    width: 91.66666667%;
+  }
+  .sm12 {
+    width: 100%;
   }
 }
-@media (min-width: 960px) {
-  .col {
-    float: left;
+@media (min-width: 992px) {
+  .md1 {
+    width: 8.33333333%;
   }
-  .col.rght {
-    float: right;
+  .md2 {
+    width: 16.66666667%;
+  }
+  .md3 {
+    width: 25%;
+  }
+  .md4 {
+    width: 33.33333333%;
+  }
+  .md5 {
+    width: 41.66666667%;
+  }
+  .md6 {
+    width: 50%;
+  }
+  .md7 {
+    width: 58.33333333%;
+  }
+  .md8 {
+    width: 66.66666667%;
+  }
+  .md9 {
+    width: 75%;
+  }
+  .md10 {
+    width: 83.33333333%;
+  }
+  .md11 {
+    width: 91.66666667%;
+  }
+  .md12 {
+    width: 100%;
   }
 }
-@media (min-width: 960px) {
+@media (min-width: 1200px) {
   .lg1 {
     width: 8.33333333%;
   }
@@ -173,8 +302,18 @@ a:hover {
 .main-header a {
   color: #ffffff;
 }
+@media (max-width: 767px) {
+  .main-header {
+    text-align: center;
+  }
+}
 .quick-access {
   margin-bottom: 15px;
+}
+@media (min-width: 768px) {
+  .quick-access {
+    text-align: right;
+  }
 }
 .logo .majeur {
   font-size: 60px;
@@ -198,6 +337,20 @@ a:hover {
   padding-top: 15px;
   padding-bottom: 15px;
 }
+@media (min-width: 768px) {
+  .main-menu .menu-item {
+    margin-right: 15px;
+  }
+}
+@media (max-width: 767px) {
+  .main-menu .menu-item {
+    display: list-item;
+    margin-left: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+.main-menu .menu-item:hover i,
 .main-menu .current-menu-item i {
   color: #1d365d;
 }
@@ -206,25 +359,57 @@ a:hover {
 }
 .main-content {
   min-height: 400px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   background-color: #fff;
 }
 .main-content a {
   color: #1d365d;
 }
-form.display-table {
-  display: table;
+form input[type="submit"] {
+  display: inline-block;
+  padding: 5px;
+  margin: 10px 0;
+  cursor: pointer;
 }
-form.display-table .ligne {
-  display: table-row;
+@media (min-width: 768px) {
+  form {
+    display: inline-block;
+    text-align: right;
+  }
+  form .form-group {
+    margin-bottom: 10px;
+  }
+  form .form-group:before,
+  form .form-group:after {
+    content: " ";
+    display: table;
+  }
+  form .form-group:after {
+    clear: both;
+  }
+  form label {
+    float: left;
+    min-width: 250px;
+    padding-right: 10px;
+  }
+  form input[type="radio"] {
+    float: left;
+  }
 }
-form.display-table .ligne label,
-form.display-table .ligne input {
-  display: table-cell;
-}
-form.display-table .ligne label {
-  padding: 5px 10px 5px 0px;
-  text-align: right;
+@media (max-width: 767px) {
+  form label,
+  form input {
+    display: block;
+    width: 100%;
+  }
+  form label,
+  form input[type="submit"] {
+    margin-top: 8px;
+  }
 }
 .main-footer {
+  padding-top: 15px;
+  padding-bottom: 15px;
   border-top: 1px solid #e7e7e7;
 }

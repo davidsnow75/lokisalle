@@ -4,6 +4,11 @@ class RegistrationController extends Controller
 {
     public function index($error_msg = null)
     {
+        if (Session::userIsLoggedIn()) {
+            header('location: /login/index');
+            return;
+        }
+
         switch ($error_msg) {
             case 'pseudo_missing':     $data['erreur'] = 'Le pseudo doit être renseigné.'; break;
             case 'pseudo_length':      $data['erreur'] = 'Le pseudo doit comprendre entre 2 et 15 caractères.'; break;

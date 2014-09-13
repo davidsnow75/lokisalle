@@ -16,16 +16,17 @@
 
 abstract class Controller
 {
-    // tous les contrôleurs enfants doivent implémenter une méthode index(),
-    // afin de fournir une méthode par défaut lors de leur appel
-    abstract public function index();
-
     // le lien à la BDD est ici, car on veut qu'il ne soit créé qu'une fois par
     // page, et un contrôleur <=> une page
     protected $db = null;
 
+    // tous les contrôleurs enfants doivent implémenter une méthode index(),
+    // afin de fournir une méthode par défaut commune
+    abstract public function index();
+
     public function __construct()
     {
+        // initialisation ou récupération de la session
         Session::init();
 
         // le lien à la bdd est créé à chaque instanciation d'un contrôleur
