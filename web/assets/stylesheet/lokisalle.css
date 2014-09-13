@@ -413,3 +413,20 @@ form input[type="submit"] {
   padding-bottom: 15px;
   border-top: 1px solid #e7e7e7;
 }
+@media (min-width: 768px) {
+  .main-footer {
+    text-align: center;
+  }
+  .main-footer ul,
+  .main-footer li {
+    margin: 0;
+    padding: 0;
+  }
+  .main-footer li {
+    display: inline;
+    list-style-type: none;
+  }
+  .main-footer li:not(:last-child):after {
+    content: " | ";
+  }
+}

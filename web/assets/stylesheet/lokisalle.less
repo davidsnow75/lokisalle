@@ -175,4 +175,12 @@ form {
 .main-footer {
     .pdY(15px);
     border-top: 1px solid @clr02-medium;
+
+    @media (min-width: @sm-min) {
+      text-align: center;
+
+      ul, li { margin: 0; padding: 0; }
+      li { display: inline; list-style-type: none; }
+      li:not(:last-child):after { content: " | "; }
+    }
 }
