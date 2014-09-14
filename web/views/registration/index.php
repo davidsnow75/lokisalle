@@ -14,8 +14,8 @@
       <div class="form-group"> <label>Confirmez votre mot de passe :</label><input type="password" name="mdp_bis"> </div>
       <div class="form-group"> <label>Prénom &amp; Nom :</label><input type="text" name="nom" value="<?php echo Session::get('registration_post.nom'); ?>"> </div>
       <div class="form-group"> <label>E-mail :</label><input type="text" name="email" value="<?php echo Session::get('registration_post.email'); ?>"> </div>
-      <div class="form-group"> <label>Homme :</label><input type="radio" name="sexe" value="m"> </div>
-      <div class="form-group"> <label>Femme :</label><input type="radio" name="sexe" value="f"> </div>
+      <div class="form-group"> <label>Homme :</label><input type="radio" name="sexe" value="m" <?php if (Session::get('registration_post.sexe') == 'm') { echo 'checked'; } ?>> </div>
+      <div class="form-group"> <label>Femme :</label><input type="radio" name="sexe" value="f" <?php if (Session::get('registration_post.sexe') == 'f') { echo 'checked'; } ?>> </div>
       <div class="form-group"> <label>Ville :</label><input type="text" name="ville" value="<?php echo Session::get('registration_post.ville'); ?>"> </div>
       <div class="form-group"> <label>Code postal :</label><input type="text" name="cp" value="<?php echo Session::get('registration_post.cp'); ?>"> </div>
       <div class="form-group"> <label>Adresse :</label><input type="text" name="adresse" value="<?php echo Session::get('registration_post.adresse'); ?>"> </div>

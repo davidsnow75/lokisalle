@@ -26,7 +26,7 @@ class ErrorController extends Controller
 
     public function db_error($error_context = null) {
 
-        if ( $error_context = 'registration' ) {
+        if ( $error_context == 'registration' ) {
             $data['error'] = Session::get('db_error');
             Session::delete('db_error');
             $this->renderView('error/db_error', $data);

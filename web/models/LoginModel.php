@@ -18,7 +18,7 @@ class LoginModel
      * - Si invalide, renvoie d'une chaîne de caractères indiquant
      * brièvement le message d'erreur.
      * - Si valide, alors renvoie le booléen true et ajoute à la session
-     * courante l'id de l'utilisateur
+     * courante les infos de l'utilisateur
      */
     public function login()
     {
@@ -80,10 +80,9 @@ class LoginModel
     /**
      * Méthode de déconnexion d'un utilisateur
      * ---------------------------------------
-     * Une connexion entraînant l'inscription dans
-     * la session courante de la valeur de 2 choses,
-     * la déconnexion entraîne la destruction de cez
-     * deux valeurs de la session.
+     * Une connexion entraînant l'inscription dans la session d'un tableau 'user',
+     * la déconnexion doit donc entraîner au minimum la destruction de ce tableau.
+     * Ici on est plus radicale et on détruit toutes les données de la session.
      */
     public function logout()
     {
