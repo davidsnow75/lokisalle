@@ -76,6 +76,24 @@ class RegistrationModel
             return 'adresse_length';
 
         else:
+            // tout semble correct, mais on doit vérifier que le pseudo ou l'email ne sont pas déjà
+            // utilisés par un autre utilisateur
+            $sql = "SELECT id_membre
+                    FROM membres
+                    WHERE pseudo='" . $this->db->real_escape_string($_POST['pseudo']) . "';";
+            if ( $this->db->query($sql)->num_rows != 0) {
+                return 'pseudo_unavailable';
+            }
+
+            $sql = "SELECT id_membre
+                    FROM membres
+                    WHERE email='" . $this->db->real_escape_string($_POST['email'])  . "';";
+            if ( $this->db->query($sql)->num_rows != 0) {
+                return 'email_unavailable';
+            }
+
+            // Tout va bien, on continue
+
             // on hashe le mdp avant tout autre traitement pour ne pas l'altérer
             $_POST['mdp'] = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
 
@@ -85,19 +103,39 @@ class RegistrationModel
             }
 
             // insertion (et donc création) de l'utilisateur dans la base de données
-            $sql = 'INSERT INTO membre (id_membre,
-                                        pseudo,
-                                        mdp,
-                                        nom,
-                                        email,
-                                        sexe,
-                                        ville,
-                                        cp,
-                                        adresse,
-                                        statut)
-                    VALUES ';
+            $sql = "INSERT INTO membres (id_membre,
+                                         pseudo,
+                                         mdp,
+                                         nom,
+                                         email,
+                                         sexe,
+                                         ville,
+                                         cp,
+                                         adresse,
+                                         statut)
+                    VALUES ('',
+                            '" . $clean['pseudo']  . "',
+                            '" . $clean['mdp']     . "',
+                            '" . $clean['nom']     . "',
+                            '" . $clean['email']   . "',
+                            '" . $clean['sexe']    . "',
+                            '" . $clean['ville']   . "',
+                            '" . $clean['cp']      . "',
+                            '" . $clean['adresse'] . "',
+                            '0');";
+
+            $result = $this->db->query($sql);
+
+            if (!$result) {
+                Session::set('db_error', $this->db->error);
+                return 'db_error';
+            }
+
+            // Tout s'est bien passé, on n'a plus besoin du sticky form
+            Session::delete('registration_post');
 
             return true;
+
         endif;
 
         return 'Ceci ne devrait pas arriver !';

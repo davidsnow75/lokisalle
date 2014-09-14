@@ -25,9 +25,11 @@ class RegistrationController extends Controller
             case 'city_missing':       $data['erreur'] = 'La ville doit être renseignée.'; break;
             case 'city_length':        $data['erreur'] = 'La ville ne doit pas dépasser 20 caractères.'; break;
             case 'zipcode_missing':    $data['erreur'] = 'Le code postal doit être renseigné.'; break;
-            case 'zipcode_length':     $data['erreur'] = 'Le code postal ne doit pas dépasser 5 caractères'; break;
-            case 'adresse_missing':    $data['erreur'] = 'L\'adresse postale doit être renseignée'; break;
-            case 'adresse_length':     $data['erreur'] = 'L\'adresse postale ne doit pas dépasser 30 caractères'; break;
+            case 'zipcode_length':     $data['erreur'] = 'Le code postal ne doit pas dépasser 5 caractères.'; break;
+            case 'adresse_missing':    $data['erreur'] = 'L\'adresse postale doit être renseignée.'; break;
+            case 'adresse_length':     $data['erreur'] = 'L\'adresse postale ne doit pas dépasser 30 caractères.'; break;
+            case 'pseudo_unavailable': $data['erreur'] = 'Le pseudo demandé appartient déjà à un autre utilisateur.'; break;
+            case 'email_unavailable':  $data['erreur'] = 'L\'email demandé appartient déjà à un autre utilisateur.'; break;
             default:                   $data['erreur'] = null;
         }
 
@@ -44,7 +46,9 @@ class RegistrationController extends Controller
         $register_return = $registration_model->register();
 
         if ( $register_return === true) {
-            header('location: /login/index');
+            header('location: /login/index/valid_registration');
+        } elseif ( $register_return === 'db_error' ) {
+            header('location: /error/db_error/registration');
         } else {
             header('location: /registration/index/' . $register_return);
         }

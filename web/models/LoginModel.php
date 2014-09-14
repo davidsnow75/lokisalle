@@ -87,7 +87,7 @@ class LoginModel
      */
     public function logout()
     {
-        if ( Session::userIsLoggedIn() ) ) {
+        if ( Session::userIsLoggedIn() ) {
 
             Session::wipe_all();
             return 'Déconnexion effectuée';

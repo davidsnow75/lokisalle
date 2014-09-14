@@ -25,6 +25,9 @@ class LoginController extends Controller
             case 'wrong_password':
                 $data = 'Mot de passe incorrect';
                 break;
+            case 'valid_registration':
+                $data = 'Inscription réussie. Vous pouvez maintenant vous connecter.';
+                break;
             default:
                 $data = null;
         }

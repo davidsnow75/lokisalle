@@ -1,5 +1,6 @@
 <div class="main-content blc">
   <div class="ctn">
-    <p><strong>Erreur de connexion à la base de données</strong> : <?php echo $data['error']; ?></p>
+    <h1>Erreur de connexion à la base de données</h1>
+    <p><?php echo $data['error']; ?></p>
   </div>
 </div>
