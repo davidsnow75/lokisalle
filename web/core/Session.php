@@ -1,6 +1,8 @@
 <?php
 
-/* Prend en charge la session de l'utilisateur */
+/* Prend en charge la session de l'utilisateur
+ * TODO: flash data
+ */
 
 class Session
 {
@@ -23,44 +25,118 @@ class Session
         $_SESSION = array();
     }
 
-    /* Retourne une valeur de la session si elle s'y trouve, sinon NULL
-     * Usage: echo $_SESSION['user']['data']['id'] <=> echo Session::get('user.data.id')
+    /**
+     * retourne la valeur d'une clé dans la session
+     *
+     * Usage:
+     *    echo $_SESSION['user']['infos']['name']; est équivalent à
+     *    echo get('user.infos.name');
+     *
+     * @param string la chaîne décrivant le chemin de la valeur
+     * @param array  le tableau où chercher la valeur (NE PAS SPÉCIFIER)
+     * @param integer l'index de départ où chercher la clé (NE PAS SPÉCIFIER)
+     *
+     * @return mixed si une valeur est trouvée à la clé donnée, false sinon
      */
-    public static function get($key)
-    {
-        $key = explode('.', $key);
-        $key_depth = count($key);
+    public static function get($string, &$array = [], $index = 0) {
 
-        if ( isset($_SESSION[$key[0]] ) ) {
-            $session_key = $_SESSION[$key[0]];
+        static $keys;
+        static $keys_last_index;
 
-            for ($i = 1; $i < $key_depth; $i++) {
-                if ( isset( $session_key[$key[$i]] ) ) {
-                    $session_key = $session_key[$key[$i]];
-                } else {
-                    break; // on arrive en bout de chaine
-                }
-            }
-
-            return $session_key;
+        if ( !is_null($string) ) {
+            $array =& $_SESSION;
+            $keys = explode('.', $string);
+            $keys_last_index = count($keys) - 1;
         }
 
-        return null;
+        if ( isset($array[$keys[$index]]) ) {
+            if ( $index === $keys_last_index ) {
+                return $array[$keys[$index]];
+            }
+            if ( is_array($array[$keys[$index]]) ) {
+                return self::get(null, $array[$keys[$index]], $index + 1);
+            }
+        }
+
+        return false; // valeur de retour par défaut
     }
 
-    /* Assigne une valeur à une clé de la session
-     * TODO: gérer la profondeur comme pour self::get()
+    /**
+     * écrit une valeur dans une clé de la session
+     *
+     * Usage:
+     *    $_SESSION['user']['infos']['name'] = $valeur; est équivalent à
+     *    Session::set('user.infos.name', $valeur);
+     *
+     * @param string la chaîne décrivant le chemin de la valeur
+     * @param mixed la valeur à inscrire à la clé spécifiée
+     * @param array  le tableau où chercher la valeur (NE PAS SPÉCIFIER)
+     * @param integer l'index de départ où chercher la clé (NE PAS SPÉCIFIER)
+     *
+     * @return bool true la valeur a pu être inscrite, false sinon
      */
-    public static function set($key, $value)
-    {
-        $_SESSION[$key] = $value;
+    public static function set($string, $valeur, &$array = [], $index = 0) {
+
+        static $keys;
+        static $keys_last_index;
+
+        if ( !is_null($string) ) {
+            $array =& $_SESSION;
+            $keys = explode('.', $string);
+            $keys_last_index = count($keys) - 1;
+        }
+
+        if ($index === $keys_last_index) {
+            $array[$keys[$index]] = $valeur;
+            return true; // en cas de succès
+
+        } else {
+            if ( isset($array[$keys[$index]]) && is_array($array[$keys[$index]]) ) {
+                self::set(null, $valeur, $array[$keys[$index]], $index + 1);
+            } else {
+                $array[$keys[$index]] = [];
+                self::set(null, $valeur, $array[$keys[$index]], $index + 1);
+            }
+        }
+
+        return false; // en cas d'échéc
     }
 
-    /* Supprime une entrée de la session
+    /**
+     * détruit une clé (et donc la valeur qu'elle référençait) dans la session
+     *
+     * Usage:
+     *    unset($_SESSION['user']['infos']['name']); est équivalent à
+     *    Session::delete('user.infos.name');
+     *
+     * @param string la chaîne décrivant le chemin de la valeur
+     * @param array  le tableau où chercher la valeur (NE PAS SPÉCIFIER)
+     * @param integer l'index de départ où chercher la clé (NE PAS SPÉCIFIER)
+     *
+     * @return true si unset() réussit, false sinon
      */
-    public static function delete($key)
-    {
-        unset($_SESSION[$key]);
+    public static function delete($string, &$array = [], $index = 0) {
+
+        static $keys;
+        static $keys_last_index;
+
+        if ( !is_null($string) ) {
+            $array =& $_SESSION;
+            $keys = explode('.', $string);
+            $keys_last_index = count($keys) - 1;
+        }
+
+        if ( isset($array[$keys[$index]]) ) {
+            if ( $index === $keys_last_index ) {
+                unset($array[$keys[$index]]);
+                return true;
+            }
+            if ( is_array($array[$keys[$index]]) ) {
+                return self::get(null, $array[$keys[$index]], $index + 1);
+            }
+        }
+
+        return false; // valeur de retour par défaut
     }
 
     /* TODO: déplacer cette fonction dans une classe indépendante
