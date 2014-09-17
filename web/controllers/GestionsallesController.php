@@ -5,6 +5,19 @@
 
 class GestionsallesController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        if ( !Session::userIsLoggedIn() ) {
+            header('location: /login');
+            exit(1);
+        } elseif ( Session::userIsLoggedIn() && !Session::userIsAdmin() ) {
+            header('location: /');
+            exit(1);
+        }
+    }
+
     // affichage des salles
     public function index($id_salles = [])
     {
