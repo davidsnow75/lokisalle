@@ -1,24 +1,19 @@
 <?php
 
-class RegistrationModel
+class RegistrationModel extends Model
 {
-    protected $db;
-
-    // tous les modèles reçoivent lors de leur instanciation la connexion
-    // à la BDD établie par le contrôleur (cf. /core/Controller.php)
-    public function __construct($db)
-    {
-        $this->db = $db;
-    }
-
     public function register()
     {
+        // préalable indispensable
+        if ( empty($_POST) ) { return 'pseudo_missing'; }
+
         // pour obtenir un 'sticky form'
         foreach($_POST as $key => $value) {
             $html_clean[$key] = htmlentities($value, ENT_QUOTES, "utf-8");
         }
 
-        Session::set('registration_post', $html_clean);
+        // on enregistre les données avant les tests pour s'assurer qu'elles ne seront pas perdues
+        Session::set('post_data.register', $html_clean);
 
         // tous les tests préalables au traitement des données sont faits ici
         if ( empty($_POST['pseudo']) ):

@@ -12,6 +12,11 @@
 
 <header class="main-header blc">
   <div class="ctn">
+<?php if ( Session::userIsLoggedIn() ): ?>
+    <div class="quick-access">
+      Bonjour <em><?php echo Session::get('user.nom'); ?></em> !
+    </div>
+<?php endif; ?>
     <div class="quick-access">
 <?php if ( Session::userIsLoggedIn() ): ?>
       <a href="/login/dologout">Déconnexion</a> |
@@ -30,12 +35,27 @@
 
 <nav class="main-menu blc">
   <div class="ctn">
-    <ul class="menu">
+    <ul>
       <li class="menu-item current-menu-item"><i class="fa fa-home"></i>&nbsp; <a href="/">Accueil</a></li>
       <li class="menu-item"><i class="fa fa-book"></i>&nbsp; <a href="#">Réservation</a></li>
       <li class="menu-item"><i class="fa fa-search"></i>&nbsp; <a href="">Recherche</a></li>
       <li class="menu-item"><i class="fa fa-user"></i>&nbsp; <a href="/login/index">Espace personnel</a></li>
       <li class="menu-item"><i class="fa fa-lightbulb-o"></i>&nbsp; <a href="#">À propos</a></li>
     </ul>
+<?php if ( Session::userIsLoggedIn() && Session::userIsAdmin() ): ?>
+    <div class="sub-menu">
+      <button type="button" class="toggle-collapse">Administration</button>
+      <ul class="menu-collapse">
+        <li class="menu-item"><a href="/gestionsalles">Gestion des salles</a></li>
+        <li class="menu-item"><a href="#">Gestion des produits</a></li>
+        <li class="menu-item"><a href="#">Gestion des membres</a></li>
+        <li class="menu-item"><a href="#">Gestion des commandes</a></li>
+        <li class="menu-item"><a href="#">Gestion des avis</a></li>
+        <li class="menu-item"><a href="#">Gestion des codes promo</a></li>
+        <li class="menu-item"><a href="#">Statistiques</a></li>
+        <li class="menu-item"><a href="#">Newsletters</a></li>
+      </ul>
+    </div>
+<?php endif; ?>
   </div>
 </nav>

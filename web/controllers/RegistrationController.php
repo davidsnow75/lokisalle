@@ -33,9 +33,6 @@ class RegistrationController extends Controller
             default:                   $data['erreur'] = null;
         }
 
-        // on récupère l'éventuel formulaire précédemment rempli pour en faire un sticky form
-        $data['registration_post'] = Session::get('registration_post');
-
         $this->renderView('registration/index', $data);
     }
 

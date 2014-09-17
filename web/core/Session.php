@@ -36,7 +36,7 @@ class Session
      * @param array  le tableau où chercher la valeur (NE PAS SPÉCIFIER)
      * @param integer l'index de départ où chercher la clé (NE PAS SPÉCIFIER)
      *
-     * @return mixed si une valeur est trouvée à la clé donnée, false sinon
+     * @return mixed si une valeur est trouvée à la clé donnée, null sinon
      */
     public static function get($string, &$array = [], $index = 0) {
 
@@ -58,7 +58,46 @@ class Session
             }
         }
 
-        return false; // valeur de retour par défaut
+        return null; // valeur de retour par défaut
+    }
+
+    /**
+     * retourne la valeur d'une clé dans la session en la supprimant
+     *
+     * Usage:
+     *   - echo $_SESSION['user']['infos']['name']; unset($_SESSION['user']['infos']['name']);
+     * est équivalent à
+     *   - echo flashget('user.infos.name');
+     *
+     * @param string la chaîne décrivant le chemin de la valeur
+     * @param array  le tableau où chercher la valeur (NE PAS SPÉCIFIER)
+     * @param integer l'index de départ où chercher la clé (NE PAS SPÉCIFIER)
+     *
+     * @return mixed si une valeur est trouvée à la clé donnée, null sinon
+     */
+    public static function flashget($string, &$array = [], $index = 0) {
+
+        static $keys;
+        static $keys_last_index;
+
+        if ( !is_null($string) ) {
+            $array =& $_SESSION;
+            $keys = explode('.', $string);
+            $keys_last_index = count($keys) - 1;
+        }
+
+        if ( isset($array[$keys[$index]]) ) {
+            if ( $index === $keys_last_index ) {
+                $retour = $array[$keys[$index]];
+                unset($array[$keys[$index]]);
+                return $retour;
+            }
+            if ( is_array($array[$keys[$index]]) ) {
+                return self::flashget(null, $array[$keys[$index]], $index + 1);
+            }
+        }
+
+        return null; // valeur de retour par défaut
     }
 
     /**
@@ -148,6 +187,18 @@ class Session
         }
 
         // par défaut, on considère l'utilisateur déconnecté
+        return false;
+    }
+
+    /* TODO: déplacer cette fonction dans une classe indépendante
+     */
+    public static function userIsAdmin()
+    {
+        if ( self::get('user.statut') === '1' ) {
+            return true;
+        }
+
+        // par défaut, on considère l'utilisateur n'est pas admin
         return false;
     }
 }

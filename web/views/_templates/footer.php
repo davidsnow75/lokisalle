@@ -11,5 +11,6 @@
   </div>
 </footer>
 
+  <script src="/assets/js/lokisalle.js"></script>
   </body>
 </html>
