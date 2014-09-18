@@ -83,6 +83,6 @@ class LoginModel extends Model
             return 'Déconnexion effectuée';
         }
 
-        return 'Pas de connexion active';
+        return 'Pas de connexion active. Voulez-vous vous connecter ?';
     }
 }

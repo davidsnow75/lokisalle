@@ -9,7 +9,9 @@ class RegistrationModel extends Model
 
         // pour obtenir un 'sticky form'
         foreach($_POST as $key => $value) {
-            $html_clean[$key] = htmlentities($value, ENT_QUOTES, "utf-8");
+            if ( $key != 'mdp' ) {
+                $html_clean[$key] = htmlentities($value, ENT_QUOTES, "utf-8");
+            }
         }
 
         // on enregistre les données avant les tests pour s'assurer qu'elles ne seront pas perdues
@@ -127,7 +129,7 @@ class RegistrationModel extends Model
             }
 
             // Tout s'est bien passé, on n'a plus besoin du sticky form
-            Session::delete('registration_post');
+            Session::delete('post_data.register');
 
             return true;
 

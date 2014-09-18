@@ -8,6 +8,7 @@
 class LoginController extends Controller
 {
     /* renvoie le formulaire de connexion */
+
     public function index($error_msg = null)
     {
         if ( Session::userIsLoggedIn() ) {
