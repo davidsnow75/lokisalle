@@ -34,7 +34,7 @@ abstract class Controller
     }
 
     // TODO : sécuriser d'avantage la connection ?
-    private function openDatabaseConnection()
+    protected function openDatabaseConnection()
     {
         $this->db = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
