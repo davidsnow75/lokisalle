@@ -40,6 +40,9 @@ class GestionsallesModel extends Model
         // on enregistre les données avant les tests pour s'assurer qu'elles ne seront pas perdues
         Session::set('post_data.ajoutersalles', $html_clean);
 
+        // les nombres sont passés en chaînes de caractère, on convertit donc pour se simplifier le travail
+        if ( !empty($_POST['capacite']) ) { $_POST['capacite'] = intval($_POST['capacite']); }
+
         // tous les tests préalables au traitement des données sont faits ici
         if ( empty($_POST['pays']) ):
             return 'pays_missing';
@@ -83,7 +86,7 @@ class GestionsallesModel extends Model
         elseif ( !is_int($_POST['capacite']) ):
             return 'capacite_doesnt_fit';
 
-        elseif ( strlen($_POST['capacite']) < 4 ):
+        elseif ( strlen( (string) $_POST['capacite']) > 4 ):
             return 'capacite_length';
 
         elseif ( empty($_POST['categorie']) ):
@@ -120,8 +123,7 @@ class GestionsallesModel extends Model
                             '" . $clean['cp']   . "',
                             '" . $clean['titre']    . "',
                             '" . $clean['description']   . "',
-                            '" . '/uploads/img/default_salle.jpg' . "',
-                            '" . $clean['photo'] . "',
+                            '" . '/assets/uploads/img/default_salle.jpg' . "',
                             '" . $clean['capacite'] . "',
                             '" . $clean['categorie'] . "');";
 

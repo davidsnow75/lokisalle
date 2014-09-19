@@ -5,7 +5,7 @@ class RegistrationController extends Controller
     public function index()
     {
         if (Session::userIsLoggedIn()) {
-            header('location: /login/index');
+            header('location: /login');
             return;
         }
 
@@ -55,14 +55,14 @@ class RegistrationController extends Controller
         // on envoie le visiteur vers la page adéquate
         if ( $register_return === true) {
             Session::set('events.login.msg', 'valid_registration');
-            header('location: /login/index');
+            header('location: /login');
 
         } elseif ( $register_return === 'db_error' ) {
             header('location: /error/db_error');
 
         } else {
             Session::set('events.registration.msg', $register_return);
-            header('location: /registration/index');
+            header('location: /registration');
         }
     }
 }
