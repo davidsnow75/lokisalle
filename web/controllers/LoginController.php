@@ -16,21 +16,19 @@ class LoginController extends Controller
             return;
         }
 
-        switch ($error_msg) {
-            case 'empty_fields':
-                $data = 'Tous les champs doivent être renseignés.';
-                break;
-            case 'unknown_user':
-                $data = 'Utilisateur inconnu';
-                break;
-            case 'wrong_password':
-                $data = 'Mot de passe incorrect';
-                break;
-            case 'valid_registration':
-                $data = 'Inscription réussie. Vous pouvez maintenant vous connecter.';
-                break;
-            default:
-                $data = null;
+        // si un message a été enregistré à l'attention de ce contrôleur
+        if ( Session::get('events.login.msg') ) {
+
+            switch ( Session::flashget('events.login.msg') ) {
+                case 'empty_fields'       : $data = 'Tous les champs doivent être renseignés.'; break;
+                case 'unknown_user'       : $data = 'Utilisateur inconnu'; break;
+                case 'wrong_password'     : $data = 'Mot de passe incorrect'; break;
+                case 'valid_registration' : $data = 'Inscription réussie. Vous pouvez maintenant vous connecter.'; break;
+                default                   : $data = 'Une erreur inconnue s\'est produite.';
+            }
+
+        } else {
+            $data = null;
         }
 
         $this->renderView('login/index', $data);
@@ -43,11 +41,11 @@ class LoginController extends Controller
 
         $login_return = $login_model->login();
 
-        if ( $login_return === true ) {
-            header('location: /login/index');
-        } else {
-            header('location: /login/index/' . $login_return);
+        if ( $login_return !== true ) {
+            Session::set('events.login.msg', $login_return);
         }
+
+        header('location: /login/index');
     }
 
     /* déclenche l'action de déconnexion */

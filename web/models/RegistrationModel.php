@@ -9,7 +9,7 @@ class RegistrationModel extends Model
 
         // pour obtenir un 'sticky form'
         foreach($_POST as $key => $value) {
-            if ( $key != 'mdp' ) {
+            if ( !in_array($key, ['mdp', 'mdp_bis'])  ) {
                 $html_clean[$key] = htmlentities($value, ENT_QUOTES, "utf-8");
             }
         }
@@ -51,6 +51,9 @@ class RegistrationModel extends Model
         elseif ( !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ):
             return 'email_doesnt_fit';
 
+        elseif ( empty($_POST['sexe']) ):
+            return 'sexe_missing';
+
         elseif ( !in_array($_POST['sexe'], ['m','f']) ):
             return 'sexe_doesnt_fit';
 
@@ -91,7 +94,7 @@ class RegistrationModel extends Model
 
             // Tout va bien, on continue
 
-            // on hashe le mdp avant tout autre traitement pour ne pas l'altérer
+            // on chiffre le mdp avant tout autre traitement pour ne pas l'altérer
             $_POST['mdp'] = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
 
             // préparation (échappement des caractères spéciaux) à l'utilisation dans mysql
@@ -124,7 +127,7 @@ class RegistrationModel extends Model
             $result = $this->db->query($sql);
 
             if (!$result) {
-                Session::set('db_error', $this->db->error);
+                Session::set('events.error.db_error', $this->db->error);
                 return 'db_error';
             }
 

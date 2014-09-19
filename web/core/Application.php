@@ -43,7 +43,7 @@ class Application {
         if ( !($this->controller instanceof Controller) || !method_exists($this->controller, $this->action) ) {
             $this->controller = new ErrorController;
             $this->action = 'notFound';
-            $this->parameters = [$this->url];
+            Session::set('events.error.notfound_url', $this->url); // on passe par la session pour assurer une cohérence dans la suite des opérations
         }
 
         // on possède maintenant toutes les informations adéquates, on lance donc l'application
