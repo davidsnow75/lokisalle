@@ -28,7 +28,7 @@ class Application {
             - ou bien un contrôleur a été explicitement demandé et on doit vérifier qu'il existe
             - ou bien l'URL était vide, et $this->controller est au contrôleur par défaut (DEFAULT_CONTROLLER)
         */
-        if ( file_exists('./controllers/' . $this->controller . 'Controller.php') ) {
+        if ( file_exists('../controllers/' . $this->controller . 'Controller.php') ) {
             // on corrige le nom (par convention, tous les contrôleurs sont du type NomController,
             // mais les URL de type nom/action/[parametres])
             $this->controller .= 'Controller';

@@ -7,9 +7,9 @@
     <p style="color: red;"><?= $data['msg'] ?></p>
 <?php endif; ?>
 
-    <button type="button" data-toggle="modal" data-target="ajout-salle-form">Ajouter une salle</button>
+    <button type="button" class="displayer" data-toggle="display" data-target="ajout-salle-form">Ajouter une salle</button>
 <?php if ( Session::get('post_data.ajoutersalles') ): ?>
-    <div id="ajout-salle-form" class="modal active">
+    <div id="ajout-salle-form" class="ajout-salle-form display">
       <form action="/gestionsalles/ajouter" method="post">
         <div class="form-group"> <label>Pays&nbsp;: </label>         <input type="text" name="pays" value="<?php echo Session::flashget('post_data.ajoutersalles.pays'); ?>"> </div>
         <div class="form-group"> <label>Ville&nbsp;: </label>        <input type="text" name="ville" value="<?php echo Session::flashget('post_data.ajoutersalles.ville'); ?>"> </div>
@@ -28,7 +28,7 @@
       </form>
     </div>
 <?php else: ?>
-    <div id="ajout-salle-form" class="modal">
+    <div id="ajout-salle-form" class="ajout-salle-form">
       <form action="/gestionsalles/ajouter" method="post">
         <div class="form-group"> <label>Pays&nbsp;: </label>         <input type="text" name="pays"> </div>
         <div class="form-group"> <label>Ville&nbsp;: </label>        <input type="text" name="ville"> </div>

@@ -60,14 +60,14 @@ abstract class Controller
      */
     public function renderView($view, $data = null)
     {
-        require './views/_templates/header.php';
+        require '../views/_templates/header.php';
 
-        if ( file_exists('./views/' . $view . '.php') ) {
-            require './views/' . $view . '.php';
+        if ( file_exists('../views/' . $view . '.php') ) {
+            require '../views/' . $view . '.php';
         } else {
-            require './views/error/default_error.php';
+            require '../views/error/default_error.php';
         }
 
-        require './views/_templates/footer.php';
+        require '../views/_templates/footer.php';
     }
 }

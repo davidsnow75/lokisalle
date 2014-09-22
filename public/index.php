@@ -1,9 +1,9 @@
 <?php
 
 // appel du fichier de configuration de l'application
-require 'core/config.php';
+require '../core/config.php';
 
 // appel et mise en place de l'autoloader de classes
-require 'core/autoloader.php';
+require '../core/autoloader.php';
 
 $FrontController = new Application;
