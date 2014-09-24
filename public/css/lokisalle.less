@@ -177,13 +177,13 @@ a {
 
   .admin-menu {
     display: none;
+    &.display { display: block; }
+
+    position: relative;
+    z-index: 10;
     margin-top: 10px;
     background-color: @clr02-light;
     border: 1px solid @clr02-medium;
-
-    &.display {
-      display: block;
-    }
   }
 
   .menu-item {

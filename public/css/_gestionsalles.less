@@ -37,17 +37,19 @@
 
   .metadata {
     position: relative;
-
-    @media (min-width: @sm-min) {
-      form { position: absolute; right: 0; }
-    }
-    input[type="submit"] { margin: 0; padding: 0; }
   }
 }
+
 .salle-id {
   font-style: italic;
   &:before { content: "(Référence: "; }
   &:after { content: ")"; }
+
+  @media (max-width: @xs-max) { display: block; }
+}
+
+.salle-action {
+  @media (min-width: @sm-min) { position: absolute; right: 0; }
 }
 
 .salle-description { text-align: justify; }

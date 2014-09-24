@@ -57,13 +57,19 @@ class GestionsallesController extends AdminController
         }
     }
 
-    public function modifier()
+    // modification d'une salle (formulaire)
+    public function modifier($id_salle)
     {
-        // modification d'une salle (formulaire)
+        if ( empty($id_salle) ) {
+            header('location: /gestionsalles');
+        }
     }
 
-    public function supprimer()
+    // suppression d'une salle
+    public function supprimer($id_salle)
     {
-        // suppression d'une salle
+        if ( empty($id_salle) ) {
+            header('location: /gestionsalles');
+        }
     }
 }

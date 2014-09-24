@@ -39,15 +39,10 @@
     <article class="salles-item">
       <div class="metadata">
         <span class="salle-id"><?= $salle['id_salle'] ?></span>
-        <form action="" method="post">
-          <label>Pour cette salle&nbsp;:</label>
-          <select name="action">
-            <option value="modification">Modification</option>
-            <option vlaue="suppression">Suppression</option>
-          </select>
-          <input type="hidden" name="id_salle" value="<?= $salle['id_salle'] ?>">
-          <input type="submit">
-        </form>
+        <span class="salle-action">
+          <a href="/gestionsalles/modifier/<?= $salle['id_salle'] ?>">modification</a> |
+          <a href="/gestionsalles/supprimer/<?= $salle['id_salle'] ?>">suppression</a>
+        </span>
       </div><!-- /.metadata -->
       <div class="data">
         <h3 class="salle-titre"><?= $salle['titre'] ?></h3>

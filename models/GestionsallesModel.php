@@ -144,4 +144,12 @@ class GestionsallesModel extends Model
         // ne devrait pas arriver, mais par défaut...
         return false;
     }
+
+    public function modifier($id_salle)
+    {
+    }
+
+    public function supprimer($id_salle)
+    {
+    }
 }
