@@ -24,6 +24,7 @@
             <option value="réunion" <?php if (Session::get('post_data.ajoutersalles.categorie') == 'réunion') { echo 'selected'; } ?>>Réunion</option>
             <option value="conférence" <?php if (Session::flashget('post_data.ajoutersalles.categorie') == 'conférence') { echo 'selected'; } ?>>Conférence</option>
           </select>
+        </div>
         <input type="submit">
       </form>
     </div>
