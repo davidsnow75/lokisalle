@@ -4,13 +4,13 @@
     <h1>Gestion des salles</h1>
 
 <?php if ( $data['msg'] ): ?>
-    <p style="color: red;"><?= $data['msg'] ?></p>
+    <p class="msg-retour"><?= $data['msg'] ?></p>
 <?php endif; ?>
 
-    <button type="button" class="displayer" data-toggle="display" data-target="ajout-salle-form">Ajouter une salle</button>
-<?php if ( Session::get('post_data.ajoutersalles') ): ?>
-    <div id="ajout-salle-form" class="ajout-salle-form display">
+    <p class="tcenter"><button type="button" class="displayer" data-toggle="display" data-target="ajout-salle-form">Ajouter une salle</button></p>
+    <div id="ajout-salle-form" class="ajout-salle-form <?php echo Session::get('post_data.ajoutersalles') ? 'display' : '' ?>">
       <form action="/gestionsalles/ajouter" method="post">
+        <h2 class="tcenter">Ajout d'une salle</h2>
         <div class="form-group"> <label>Pays&nbsp;: </label>         <input type="text" name="pays" value="<?php echo Session::flashget('post_data.ajoutersalles.pays'); ?>"> </div>
         <div class="form-group"> <label>Ville&nbsp;: </label>        <input type="text" name="ville" value="<?php echo Session::flashget('post_data.ajoutersalles.ville'); ?>"> </div>
         <div class="form-group"> <label>Adresse&nbsp;: </label>      <input type="text" name="adresse" value="<?php echo Session::flashget('post_data.ajoutersalles.adresse'); ?>"> </div>
@@ -21,34 +21,13 @@
         <div class="form-group">
           <label>Catégorie&nbsp;: </label>
           <select name="categorie">
-            <option value="réunion" <?php if (Session::get('post_data.ajoutersalles.categorie') == 'réunion') { echo 'selected'; } ?>>Réunion</option>
-            <option value="conférence" <?php if (Session::flashget('post_data.ajoutersalles.categorie') == 'conférence') { echo 'selected'; } ?>>Conférence</option>
+            <option value="réunion" <?php echo (Session::get('post_data.ajoutersalles.categorie') == 'réunion') ? 'selected' : '' ?>>Réunion</option>
+            <option value="conférence" <?php echo (Session::flashget('post_data.ajoutersalles.categorie') == 'conférence') ? 'selected' : '' ?>>Conférence</option>
           </select>
         </div>
         <input type="submit">
       </form>
     </div>
-<?php else: ?>
-    <div id="ajout-salle-form" class="ajout-salle-form">
-      <form action="/gestionsalles/ajouter" method="post">
-        <div class="form-group"> <label>Pays&nbsp;: </label>         <input type="text" name="pays"> </div>
-        <div class="form-group"> <label>Ville&nbsp;: </label>        <input type="text" name="ville"> </div>
-        <div class="form-group"> <label>Adresse&nbsp;: </label>      <input type="text" name="adresse"> </div>
-        <div class="form-group"> <label>Code postal&nbsp;: </label>  <input type="text" name="cp"> </div>
-        <div class="form-group"> <label>Titre&nbsp;: </label>        <input type="text" name="titre"> </div>
-        <div class="form-group"> <label>Description&nbsp;: </label>  <textarea name="description"></textarea> </div>
-        <div class="form-group"> <label>Capacité&nbsp;: </label>     <input type="number" name="capacite"> </div>
-        <div class="form-group">
-          <label>Catégorie&nbsp;: </label>
-          <select name="categorie">
-            <option value="réunion">Réunion</option>
-            <option value="conférence">Conférence</option>
-          </select>
-        </div>
-        <input type="submit">
-      </form>
-    </div>
-<?php endif; ?>
 
 <?php if ( $data['salles'] === [] ): ?>
 
@@ -56,19 +35,45 @@
 
 <?php else: ?>
 
-    <p>Voici la liste des salles existantes&nbsp;:</p>
-
-    <table>
     <?php foreach ($data['salles'] as $salle): ?>
-      <tr>
-        <td><?= $salle['titre'] ?></td><td>Modification</td><td>Suppression</td>
-      </tr>
-    <?php endforeach; ?>
-    </table>
+    <article class="salles-item">
+      <div class="metadata">
+        <span class="salle-id"><?= $salle['id_salle'] ?></span>
+        <form action="" method="post">
+          <label>Pour cette salle&nbsp;:</label>
+          <select name="action">
+            <option value="modification">Modification</option>
+            <option vlaue="suppression">Suppression</option>
+          </select>
+          <input type="hidden" name="id_salle" value="<?= $salle['id_salle'] ?>">
+          <input type="submit">
+        </form>
+      </div><!-- /.metadata -->
+      <div class="data">
+        <h3 class="salle-titre"><?= $salle['titre'] ?></h3>
+        <div class="lgn">
+          <div class="col sm8">
+            <p class="salle-utile">
+              <span class="salle-categorie"><?= $salle['categorie'] ?></span><br>
+              <span class="salle-capacite"><?= $salle['capacite'] ?></span>
+            </p>
+            <p class="salle-description"><?= $salle['description'] ?></p>
+            <p class="salle-localisation">
+              <span class="salle-adresse"><?= $salle['adresse'] ?></span>
+              <span class="salle-cp"><?= $salle['cp'] ?></span>
+              <span class="salle-ville"><?= $salle['ville'] ?></span>
+              <span class="salle-pays"><?= $salle['pays'] ?></span>
+            </p>
+          </div>
+          <div class="col sm4">
+            <p class="salle-photo"><img src="<?= $salle['photo'] ?>" alt="Photo de <?= $salle['titre'] ?>"></p>
+          </div>
+        </div><!-- /.lgn -->
 
-    <?= '<pre>' ?>
-    <?php var_dump($data['salles']) ?>
-    <?= '</pre>' ?>
+
+      </div><!-- /.data -->
+    </article>
+    <?php endforeach; ?>
 
 <?php endif; ?>
 

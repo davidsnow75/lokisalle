@@ -43,6 +43,8 @@ abstract class Controller
             $this->renderView('error/db_error', $data);
             exit(1);
         }
+
+        $this->db->set_charset("utf8");
     }
 
     /**

@@ -28,6 +28,28 @@
   line-height: normal;
 }
 
+.bouton {
+  display: inline-block;
+  margin: 8px 0;
+  padding: 5px 10px;
+  border: 1px solid @clr01-dark;
+  border-radius: 4px;
+  background-color: #fff;
+  text-transform: uppercase;
+  line-height: 1.55;
+  cursor: pointer;
+
+  &:active {
+    position: relative;
+    top: 2px;
+    left: 1px;
+  }
+}
+
+.msg-retour {
+  color: red;
+}
+
 // typographie
 .regular   { font-family: 'Open Sans', sans-serif; }
 .condensed { font-family: 'Open Sans Condensed', sans-serif; }
@@ -133,6 +155,8 @@ a {
 
 .main-menu .ctn { position: relative; }
 
+
+// menu d'aministration pour l'utilisateur admin
 .sub-menu {
   text-align: center;
 
@@ -148,21 +172,7 @@ a {
   }
 
   .displayer {
-    display: inline-block;
-    margin: 8px 0;
-    padding: 5px 10px;
-    border: 1px solid @clr01-dark;
-    border-radius: 4px;
-    background-color: #fff;
-    text-transform: uppercase;
-    line-height: 1.55;
-    cursor: pointer;
-  }
-
-  .displayer:active {
-    position: relative;
-    top: 2px;
-    left: 1px;
+    .bouton();
   }
 
   .admin-menu {
@@ -219,29 +229,13 @@ form {
   }
 
   @media (max-width: @xs-max) {
-    label, input { display: block; width: 100%; }
+    label, input, select { display: block; width: 100%; }
     label, input[type="submit"] { margin-top: 8px; }
   }
 
 }
 
-#ajout-salle-form {
-  display: none;
-
-  &.display {
-    display: block;
-  }
-
-  form {
-    text-align: left;
-  }
-
-  label, input:not([type="number"]), textarea {
-    width: 100%;
-  }
-}
-
-
+@import '_gestionsalles.less';
 
 //==============================================================================
 // FOOTER PRINCIPAL

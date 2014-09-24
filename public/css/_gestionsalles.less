@@ -1,0 +1,60 @@
+// bouton d'affichage de #ajout-salle-form
+.displayer[data-target="ajout-salle-form"] {
+  .bouton();
+}
+
+.ajout-salle-form {
+  display: none;
+  &.display { display: block; }
+
+  margin-bottom: 30px;
+  text-align: center;
+
+  form {
+    border-radius: 10px;
+    padding: 15px 30px;
+    background-color: @clr02-light;
+    border: 1px solid @clr02-medium;
+    text-align: left;
+  }
+
+  label, input:not([type="number"]), textarea { width: 100%; }
+}
+
+// article 'salle'
+.salles-item {
+  padding: 15px;
+  border-left: 1px solid @clr02-medium;
+  border-right: 1px solid @clr02-medium;
+  border-bottom: 1px solid @clr01-dark;
+
+  &:first-of-type { border-top: 1px solid @clr01-dark; }
+  &:nth-of-type(odd) { background-color: @clr02-light; }
+
+  .col {
+    padding: 0 15px;
+  }
+
+  .metadata {
+    position: relative;
+
+    @media (min-width: @sm-min) {
+      form { position: absolute; right: 0; }
+    }
+    input[type="submit"] { margin: 0; padding: 0; }
+  }
+}
+.salle-id {
+  font-style: italic;
+  &:before { content: "(Référence: "; }
+  &:after { content: ")"; }
+}
+
+.salle-description { text-align: justify; }
+.salle-photo img { width: 100%; height: auto; }
+
+.salle-categorie:before     { content: "Catégorie : "; font-weight: 700; }
+.salle-capacite:before      { content: "Capacité : "; font-weight: 700; }
+.salle-description:before   { content: "Description : "; font-weight: 700; }
+.salle-localisation:before  { content: "Localisation : "; font-weight: 700; }
+.salle-ville:after          { content: ", "; }

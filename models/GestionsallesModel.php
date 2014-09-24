@@ -123,7 +123,7 @@ class GestionsallesModel extends Model
                             '" . $clean['cp']   . "',
                             '" . $clean['titre']    . "',
                             '" . $clean['description']   . "',
-                            '" . '/assets/uploads/img/default_salle.jpg' . "',
+                            '" . '/uploads/img/default_salle.jpg' . "',
                             '" . $clean['capacite'] . "',
                             '" . $clean['categorie'] . "');";
 
