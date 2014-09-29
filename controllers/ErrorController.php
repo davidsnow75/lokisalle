@@ -35,7 +35,6 @@ class ErrorController extends Controller
 
     public function db_error()
     {
-
         if ( Session::get('events.error.db_error') ) {
             $data['error'] = Session::flashget('events.error.db_error');
             $this->renderView('error/db_error', $data);

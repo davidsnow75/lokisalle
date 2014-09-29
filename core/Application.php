@@ -64,6 +64,12 @@ class Application {
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url_array = explode('/', $url);
 
+            // si on demande un url commençant par /admin, il ne faut pas la traiter telle quelle
+            // (désactivé dans notre cas)
+            if ( ADMIN_CONTROLLERS_ARE_PREFIXED ) {
+                $url_array = $this->clean_admin_from_url_array($url_array);
+            }
+
             // peuple l'objet des infos tirées de l'URL
             $this->url        = $url;
             $this->controller = isset($url_array[0]) ? ucfirst($url_array[0]) : $this->controller;
@@ -78,5 +84,25 @@ class Application {
             // il ne reste plus dans $url_array que les paramètres, alors on réindexe le tableau
             $this->parameters = array_values($url_array);
         }
+    }
+
+    /*
+     * modifie $url_array s'il commence par 'admin' en un tableau compréhensible par l'application
+     */
+    private function clean_admin_from_url_array( $url_array )
+    {
+        if ( isset($url_array[0]) && $url_array[0] === 'admin' ) {
+
+            if ( isset($url_array[1]) ) {
+                $url_array[1] = ADMIN_CONTROLLER_PREFIX . $url_array[1];
+            } else {
+                $url_array[1] = 'login'; // on veut que /admin soit traité par LoginController
+            }
+
+            unset( $url_array[0] );
+            $url_array = array_values( $url_array );
+        }
+
+        return $url_array;
     }
 }
