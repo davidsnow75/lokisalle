@@ -6,6 +6,7 @@
 class GestionsallesController extends AdminController
 {
     // affichage des salles
+    // NOTE: GestionsallesController::index() prend un nombre indéfini d'arguments
     public function index()
     {
         $requested_ids = func_get_args();
@@ -14,31 +15,7 @@ class GestionsallesController extends AdminController
 
         $data['salles'] = $gestionsalles_model->get_salles($requested_ids);
 
-        if ( Session::get('events.gestionsalles.msg') ) {
-            switch ( Session::flashget('events.gestionsalles.msg') ) {
-                case 'ajout_valid'          : $data['msg'] = 'La salle a été créée avec succès.'; break;
-                case 'pays_missing'         : $data['msg'] = 'Le pays doit être renseigné.'; break;
-                case 'pays_length'          : $data['msg'] = 'Le pays doit faire entre 2 et 20 caractères.'; break;
-                case 'ville_missing'        : $data['msg'] = 'La ville doit être renseignée.'; break;
-                case 'ville_length'         : $data['msg'] = 'La ville doit faire entre 2 et 20 caractères.'; break;
-                case 'adresse_missing'      : $data['msg'] = 'L\'adresse doit être renseignée.'; break;
-                case 'adresse_length'       : $data['msg'] = 'L\'adresse doit faire entre 2 et 20 caractères.'; break;
-                case 'zipcode_missing'      : $data['msg'] = 'Le code postal doit être renseigné.'; break;
-                case 'zipcode_length'       : $data['msg'] = 'Le code postal doit faire entre 2 et 5 caractères.'; break;
-                case 'titre_missing'        : $data['msg'] = 'Le titre doit être renseigné.'; break;
-                case 'titre_length'         : $data['msg'] = 'Le titre doit faire entre 2 et 200 caractères.'; break;
-                case 'description_missing'  : $data['msg'] = 'La description doit être renseignée.'; break;
-                case 'description_length'   : $data['msg'] = 'La description doit faire au minimum 3 caractères.'; break;
-                case 'capacite_missing'     : $data['msg'] = 'La capacité doit être renseignée.'; break;
-                case 'capacite_doesnt_fit'  : $data['msg'] = 'La capacité doit être un nombre entier.'; break;
-                case 'capacite_length'      : $data['msg'] = 'La capacité ne peut excéder un nombre à trois chiffres.'; break;
-                case 'categorie_missing'    : $data['msg'] = 'La catégorie doit être renseignée.'; break;
-                case 'categorie_doesnt_fit' : $data['msg'] = 'La catégorie entrée n\'est pas disponible.'; break;
-                default                     : $data['msg'] = 'Une erreur inconnue s\'est produite.';
-            }
-        } else {
-            $data['msg'] = null;
-        }
+        $data['msg'] = $this->test_events_msg();
 
         $this->renderView('gestionsalles/index', $data);
     }
@@ -64,6 +41,37 @@ class GestionsallesController extends AdminController
     {
         if ( empty($id_salle) ) {
             header('location: /gestionsalles');
+            return;
+        }
+
+        $gestionsalles_model = $this->loadModel('GestionsallesModel');
+
+        // si on accède à cette méthode depuis un formulaire, alors on a du travail
+        if ( !empty($_POST['id_salle'] ) ) {
+
+            $modif_return = $gestionsalles_model->modifier( intval($_POST['id_salle']) );
+
+            if ( $modif_return === 'db_error' ) {
+                header('location: /error/db_error');
+
+            } else {
+                Session::set('events.gestionsalles.msg', $modif_return);
+                header('location: /gestionsalles/modifier/' . intval($_POST['id_salle']) );
+            }
+
+        } else { // sinon, on se contente d'afficher le formulaire de modification d'une salle
+
+            $data['salle'] = $gestionsalles_model->get_salles( array($id_salle) );
+
+            if ( empty($data['salle']) ) {
+                header('location: /gestionsalles/index/' . intval($id_salle));
+                return;
+            }
+
+            $data['msg'] = $this->test_events_msg();
+
+            // une salle a bien été trouvée, on affiche le formulaire pour la modifier
+            $this->renderView('gestionsalles/modifier', $data);
         }
     }
 
@@ -72,6 +80,39 @@ class GestionsallesController extends AdminController
     {
         if ( empty($id_salle) ) {
             header('location: /gestionsalles');
+            return;
         }
+    }
+
+    protected function test_events_msg()
+    {
+        if ( Session::get('events.gestionsalles.msg') ) {
+            switch ( Session::flashget('events.gestionsalles.msg') ) {
+                case 'ajout_valid'          : $msg = 'La salle a été créée avec succès.'; break;
+                case 'modif_valid'          : $msg = 'La salle a été modifiée avec succès.'; break;
+                case 'pays_missing'         : $msg = 'Le pays doit être renseigné.'; break;
+                case 'pays_length'          : $msg = 'Le pays doit faire entre 2 et 20 caractères.'; break;
+                case 'ville_missing'        : $msg = 'La ville doit être renseignée.'; break;
+                case 'ville_length'         : $msg = 'La ville doit faire entre 2 et 20 caractères.'; break;
+                case 'adresse_missing'      : $msg = 'L\'adresse doit être renseignée.'; break;
+                case 'adresse_length'       : $msg = 'L\'adresse doit faire entre 2 et 20 caractères.'; break;
+                case 'zipcode_missing'      : $msg = 'Le code postal doit être renseigné.'; break;
+                case 'zipcode_length'       : $msg = 'Le code postal doit faire entre 2 et 5 caractères.'; break;
+                case 'titre_missing'        : $msg = 'Le titre doit être renseigné.'; break;
+                case 'titre_length'         : $msg = 'Le titre doit faire entre 2 et 200 caractères.'; break;
+                case 'description_missing'  : $msg = 'La description doit être renseignée.'; break;
+                case 'description_length'   : $msg = 'La description doit faire au minimum 3 caractères.'; break;
+                case 'capacite_missing'     : $msg = 'La capacité doit être renseignée.'; break;
+                case 'capacite_doesnt_fit'  : $msg = 'La capacité doit être un nombre entier.'; break;
+                case 'capacite_length'      : $msg = 'La capacité ne peut excéder un nombre à trois chiffres.'; break;
+                case 'categorie_missing'    : $msg = 'La catégorie doit être renseignée.'; break;
+                case 'categorie_doesnt_fit' : $msg = 'La catégorie entrée n\'est pas disponible.'; break;
+                default                     : $msg = 'Une erreur inconnue s\'est produite.';
+            }
+        } else {
+            $msg = null;
+        }
+
+        return $msg;
     }
 }
