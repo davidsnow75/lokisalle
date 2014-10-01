@@ -82,6 +82,28 @@ class GestionsallesController extends AdminController
             header('location: /gestionsalles');
             return;
         }
+
+        $gestionsalles_model = $this->loadModel('GestionsallesModel');
+
+        // si le test échoue, c'est que la validation n'a pas été envoyée
+        if ( !empty($_POST['id_salle']) ) {
+
+            $delete_return = $gestionsalles_model->supprimer( intval($_POST['id_salle']) );
+
+            if ( $delete_return === 'db_error' ) {
+                header('location: /error/db_error');
+
+            } else {
+                Session::set('events.gestionsalles.msg', $delete_return);
+                header('location: /gestionsalles');
+            }
+
+        } else {
+            // la validation n'a donc pas été envoyée, on affiche un message d'alerte
+            $data = (int) $id_salle;
+
+            $this->renderView('gestionsalles/supprimer', $data);
+        }
     }
 
     protected function test_events_msg()
@@ -90,6 +112,7 @@ class GestionsallesController extends AdminController
             switch ( Session::flashget('events.gestionsalles.msg') ) {
                 case 'ajout_valid'          : $msg = 'La salle a été créée avec succès.'; break;
                 case 'modif_valid'          : $msg = 'La salle a été modifiée avec succès.'; break;
+                case 'delete_valid'         : $msg = 'La salle a été supprimée avec succès.'; break;
                 case 'pays_missing'         : $msg = 'Le pays doit être renseigné.'; break;
                 case 'pays_length'          : $msg = 'Le pays doit faire entre 2 et 20 caractères.'; break;
                 case 'ville_missing'        : $msg = 'La ville doit être renseignée.'; break;
@@ -107,6 +130,7 @@ class GestionsallesController extends AdminController
                 case 'capacite_length'      : $msg = 'La capacité ne peut excéder un nombre à trois chiffres.'; break;
                 case 'categorie_missing'    : $msg = 'La catégorie doit être renseignée.'; break;
                 case 'categorie_doesnt_fit' : $msg = 'La catégorie entrée n\'est pas disponible.'; break;
+                case 'unknown_id_salle'     : $msg = 'Aucune salle n\'a été supprimée.'; break;
                 default                     : $msg = 'Une erreur inconnue s\'est produite.';
             }
         } else {

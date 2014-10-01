@@ -179,11 +179,25 @@ class GestionsallesModel extends Model
         return false;
     }
 
+    // TODO: suppression multiple ?
     public function supprimer($id_salle)
     {
         if ( empty($id_salle) ) {
             return;
         }
+
+        $result = $this->db->query( "DELETE FROM salles WHERE id_salle='" . $id_salle . "';" );
+
+        if (!$result) {
+            Session::set('events.error.db_error', $this->db->error);
+            return 'db_error';
+        }
+
+        if ( $this->db->affected_rows === 0 ) {
+            return 'unknown_id_salle';
+        }
+
+        return 'delete_valid';
     }
 
 

@@ -67,8 +67,6 @@
             <p class="salle-photo"><img src="<?= $salle['photo'] ?>" alt="Photo de <?= $salle['titre'] ?>"></p>
           </div>
         </div><!-- /.lgn -->
-
-
       </div><!-- /.data -->
     </article>
     <?php endforeach; ?>
