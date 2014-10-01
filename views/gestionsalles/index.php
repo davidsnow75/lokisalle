@@ -7,7 +7,10 @@
     <p class="msg-retour"><?= $data['msg'] ?></p>
 <?php endif; ?>
 
-    <p class="tcenter"><button type="button" class="displayer" data-toggle="display" data-target="ajout-salle-form">Ajouter une salle</button></p>
+    <p class="tcenter">
+      <a href="/gestionsalles" class="displayer">Afficher toutes les salles</a>
+      <button type="button" class="displayer" data-toggle="display" data-target="ajout-salle-form">Ajouter une salle</button>
+    </p>
     <div id="ajout-salle-form" class="ajout-salle-form <?php echo Session::get('post_data.ajoutersalles') ? 'display' : '' ?>">
       <form action="/gestionsalles/ajouter" method="post">
         <h2 class="tcenter">Ajout d'une salle</h2>
@@ -31,7 +34,7 @@
 
 <?php if ( $data['salles'] === [] ): ?>
 
-    <p>Aucune salle n'a été créée pour l'instant.</p>
+    <p>Aucune salle n'a été trouvée.</p>
 
 <?php else: ?>
 

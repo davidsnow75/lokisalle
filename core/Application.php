@@ -47,6 +47,7 @@ class Application {
         }
 
         // on possède maintenant toutes les informations adéquates, on lance donc l'application
+        // NOTE: call_user_func_array() ne passe pas au contrôleur un tableau des paramètres, mais les paramètres séparement !
         // TODO: fixer une limite au nombre de paramètres que peut recevoir une action ?
         call_user_func_array( [$this->controller, $this->action], $this->parameters );
     }
@@ -83,6 +84,12 @@ class Application {
 
             // il ne reste plus dans $url_array que les paramètres, alors on réindexe le tableau
             $this->parameters = array_values($url_array);
+
+            // à fins de débug
+            //var_dump($this->url); echo "<br>";
+            //var_dump($this->controller); echo "<br>";
+            //var_dump($this->action); echo "<br>";
+            //var_dump($this->parameters); echo "<br>";
         }
     }
 

@@ -5,13 +5,47 @@
 
 class GestionsallesModel extends Model
 {
-    public function afficher($id_salles = [])
+    public function get_salles($id_salles = [])
     {
         // demande-t-on un affichage spécifique ?
-        if ( !($id_salles === []) ) {
+        if ( is_array($id_salles) && $id_salles !== [] ) {
+
+            // quel est la clé dans $id_salle du dernier id demandé ?
+            $last_id_salle_key = (count($id_salles) - 1);
+
+            // la requête commence quoi qu'il en soit comme suit:
+            $sql = "SELECT * FROM salles WHERE id_salle='";
+
+            // et se termine comme suit:
+            $i = 0;
+            while( $i < $last_id_salle_key ) {
+                $sql .= intval($id_salles[$i]) . "' OR id_salle='";
+                $i++;
+            }
+            $sql .= intval($id_salles[$i]) . "';"; // on a atteint la dernière clé du tableau
+
+
+            $result = $this->db->query($sql);
+
+            if (!$result) {
+                Session::set('events.error.db_error', $this->db->error);
+                return 'db_error';
+            }
+
+            if ( $result->num_rows === 0 ) {
+                return [];
+
+            } else {
+                while ($salle = $result->fetch_assoc() ) {
+                    $salles[] = $salle;
+                }
+
+                return $salles;
+            }
 
         } else { // non, donc on liste toutes les salles
             $sql = "SELECT * FROM salles;";
+
             $result = $this->db->query($sql);
 
             if ( $result->num_rows === 0 ) {
@@ -147,9 +181,17 @@ class GestionsallesModel extends Model
 
     public function modifier($id_salle)
     {
+        if ( empty($id_salle) || empty($_POST) ) {
+            return;
+        }
+
+
     }
 
     public function supprimer($id_salle)
     {
+        if ( empty($id_salle) ) {
+            return;
+        }
     }
 }

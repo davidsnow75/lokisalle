@@ -6,11 +6,13 @@
 class GestionsallesController extends AdminController
 {
     // affichage des salles
-    public function index($id_salles = [])
+    public function index()
     {
+        $requested_ids = func_get_args();
+
         $gestionsalles_model = $this->loadModel('GestionsallesModel');
 
-        $data['salles'] = $gestionsalles_model->afficher($id_salles);
+        $data['salles'] = $gestionsalles_model->get_salles($requested_ids);
 
         if ( Session::get('events.gestionsalles.msg') ) {
             switch ( Session::flashget('events.gestionsalles.msg') ) {
