@@ -30,14 +30,23 @@
 
 .bouton {
   display: inline-block;
+  vertical-align: middle;
   margin: 8px 0;
   padding: 5px 10px;
   border: 1px solid @clr01-dark;
+  outline: none;
   border-radius: 4px;
   background-color: #fff;
+  color: @noir !important;
   text-transform: uppercase;
   line-height: 1.55;
+  font-family: @default-font, sans-serif;
+  font-size: 1em;
   cursor: pointer;
+
+  &:hover {
+    text-decoration: none!important;
+  }
 
   &:active {
     position: relative;
@@ -51,8 +60,8 @@
 }
 
 // typographie
-.regular   { font-family: 'Open Sans', sans-serif; }
-.condensed { font-family: 'Open Sans Condensed', sans-serif; }
+.regular   { font-family: @default-font, sans-serif; }
+.condensed { font-family: @default-font-condensed, sans-serif; }
 .light { font-weight: 300; }
 .bold  { font-weight: 700; }
 
@@ -62,6 +71,10 @@
 .tright { text-align: right; }
 .tcenter { text-align: center; }
 .tjustify { text-align: justify; }
+
+// police
+@default-font: 'Open Sans';
+@default-font-condensed: 'Open Sans Condensed';
 
 // couleurs
 @blanc: #fff;
@@ -80,7 +93,7 @@
 
 html { font-size: 16px; }
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: @default-font, sans-serif;
   background-color: @clr02-light;
 }
 
