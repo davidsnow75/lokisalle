@@ -14,7 +14,7 @@ class GestionsallesModel extends Model
             $last_id_salle_key = (count($id_salles) - 1);
 
             // la requête commence quoi qu'il en soit comme suit:
-            $sql = "SELECT * FROM salles WHERE id_salle='";
+            $sql = "SELECT * FROM salles WHERE id='";
 
             // et se termine comme suit:
             $i = 0;
@@ -25,12 +25,7 @@ class GestionsallesModel extends Model
             $sql .= intval($id_salles[$i]) . "';"; // on a atteint la dernière clé du tableau
 
 
-            $result = $this->db->query($sql);
-
-            if (!$result) {
-                Session::set('events.error.db_error', $this->db->error);
-                return 'db_error';
-            }
+            $result = $this->exequery($sql);
 
             if ( $result->num_rows === 0 ) {
                 return [];
@@ -43,21 +38,21 @@ class GestionsallesModel extends Model
                 return $salles;
             }
 
-        } else { // non, donc on liste toutes les salles
+        } else {
+
             $sql = "SELECT * FROM salles;";
-
-            $result = $this->db->query($sql);
+            $result = $this->exequery($sql);
 
             if ( $result->num_rows === 0 ) {
                 return [];
 
-            } else {
-                while ($salle = $result->fetch_assoc() ) {
-                    $salles[] = $salle;
-                }
-
-                return $salles;
             }
+
+            while ($salle = $result->fetch_assoc() ) {
+                $salles[] = $salle;
+            }
+
+            return $salles;
         }
     }
 
@@ -91,7 +86,7 @@ class GestionsallesModel extends Model
             }
 
             // insertion (et donc création) de la salle dans la base de données
-            $sql = "INSERT INTO salles (id_salle,
+            $sql = "INSERT INTO salles (id,
                                         pays,
                                         ville,
                                         adresse,
@@ -112,12 +107,7 @@ class GestionsallesModel extends Model
                             '" . $clean['capacite'] . "',
                             '" . $clean['categorie'] . "');";
 
-            $result = $this->db->query($sql);
-
-            if (!$result) {
-                Session::set('events.error.db_error', $this->db->error);
-                return 'db_error';
-            }
+            $result = $this->exequery($sql);
 
             // Tout s'est bien passé, on n'a plus besoin du sticky form
             Session::delete('post_data.ajoutersalles');
@@ -163,14 +153,11 @@ class GestionsallesModel extends Model
                         photo='" . '/uploads/img/default_salle.jpg' . "',
                         capacite='" . $clean['capacite'] . "',
                         categorie='" . $clean['categorie'] . "'
-                    WHERE id_salle='1';";
+                    WHERE id='" . $clean['id'] . "';";
 
-            $result = $this->db->query($sql);
+            echo $sql;
 
-            if (!$result) {
-                Session::set('events.error.db_error', $this->db->error);
-                return 'db_error';
-            }
+            $result = $this->exequery($sql);
 
             return 'modif_valid';
         }
@@ -186,12 +173,7 @@ class GestionsallesModel extends Model
             return;
         }
 
-        $result = $this->db->query( "DELETE FROM salles WHERE id_salle='" . $id_salle . "';" );
-
-        if (!$result) {
-            Session::set('events.error.db_error', $this->db->error);
-            return 'db_error';
-        }
+        $result = $this->exequery( "DELETE FROM salles WHERE id='" . intval($id_salle) . "';" );
 
         if ( $this->db->affected_rows === 0 ) {
             return 'unknown_id_salle';

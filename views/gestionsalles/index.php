@@ -41,10 +41,10 @@
     <?php foreach ($data['salles'] as $salle): ?>
     <article class="salles-item">
       <div class="metadata">
-        <span class="salle-id"><?= $salle['id_salle'] ?></span>
+        <span class="salle-id"><?= $salle['id'] ?></span>
         <span class="salle-action">
-          <a href="/gestionsalles/modifier/<?= $salle['id_salle'] ?>">modification</a> |
-          <a href="/gestionsalles/supprimer/<?= $salle['id_salle'] ?>">suppression</a>
+          <a href="/gestionsalles/modifier/<?= $salle['id'] ?>">modification</a> |
+          <a href="/gestionsalles/supprimer/<?= $salle['id'] ?>">suppression</a>
         </span>
       </div><!-- /.metadata -->
       <div class="data">

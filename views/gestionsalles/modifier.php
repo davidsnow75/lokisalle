@@ -12,8 +12,8 @@
     <?php $salle = $data['salle'][0]; ?>
 
     <div class="ajout-salle-form display">
-      <form action="/gestionsalles/modifier/<?= $salle['id_salle'] ?>" method="post">
-        <h2 class="tcenter">Référence de la salle&nbsp;: <?= $salle['id_salle'] ?></h2>
+      <form action="/gestionsalles/modifier/<?= $salle['id'] ?>" method="post">
+        <h2 class="tcenter">Référence de la salle&nbsp;: <?= $salle['id'] ?></h2>
         <div class="form-group"> <label>Pays&nbsp;: </label>         <input type="text" name="pays" value="<?= $salle['pays'] ?>"> </div>
         <div class="form-group"> <label>Ville&nbsp;: </label>        <input type="text" name="ville" value="<?= $salle['ville'] ?>"> </div>
         <div class="form-group"> <label>Adresse&nbsp;: </label>      <input type="text" name="adresse" value="<?= $salle['adresse'] ?>"> </div>
@@ -28,7 +28,7 @@
             <option value="conférence" <?php echo ($salle['categorie']  == 'conférence') ? 'selected' : '' ?>>Conférence</option>
           </select>
         </div>
-        <input type="hidden" name="id_salle" value="<?= $salle['id_salle'] ?>">
+        <input type="hidden" name="id" value="<?= $salle['id'] ?>">
         <input type="submit">
       </form>
     </div>

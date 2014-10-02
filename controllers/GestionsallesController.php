@@ -27,13 +27,8 @@ class GestionsallesController extends AdminController
 
         $ajout_return = $gestionsalles_model->ajouter();
 
-        if ( $ajout_return === 'db_error' ) {
-            header('location: /error/db_error');
-
-        } else {
-            Session::set('events.gestionsalles.msg', $ajout_return);
-            header('location: /gestionsalles');
-        }
+        Session::set('events.gestionsalles.msg', $ajout_return);
+        header('location: /gestionsalles');
     }
 
     // modification d'une salle (formulaire)
@@ -47,17 +42,12 @@ class GestionsallesController extends AdminController
         $gestionsalles_model = $this->loadModel('GestionsallesModel');
 
         // si on accède à cette méthode depuis un formulaire, alors on a du travail
-        if ( !empty($_POST['id_salle'] ) ) {
+        if ( !empty($_POST['id'] ) ) {
 
-            $modif_return = $gestionsalles_model->modifier( intval($_POST['id_salle']) );
+            $modif_return = $gestionsalles_model->modifier( intval($_POST['id']) );
 
-            if ( $modif_return === 'db_error' ) {
-                header('location: /error/db_error');
-
-            } else {
-                Session::set('events.gestionsalles.msg', $modif_return);
-                header('location: /gestionsalles/modifier/' . intval($_POST['id_salle']) );
-            }
+            Session::set('events.gestionsalles.msg', $modif_return);
+            header('location: /gestionsalles/modifier/' . intval($_POST['id']) );
 
         } else { // sinon, on se contente d'afficher le formulaire de modification d'une salle
 
@@ -90,13 +80,8 @@ class GestionsallesController extends AdminController
 
             $delete_return = $gestionsalles_model->supprimer( intval($_POST['id_salle']) );
 
-            if ( $delete_return === 'db_error' ) {
-                header('location: /error/db_error');
-
-            } else {
-                Session::set('events.gestionsalles.msg', $delete_return);
-                header('location: /gestionsalles');
-            }
+            Session::set('events.gestionsalles.msg', $delete_return);
+            header('location: /gestionsalles');
 
         } else {
             // la validation n'a donc pas été envoyée, on affiche un message d'alerte

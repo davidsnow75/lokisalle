@@ -10,4 +10,18 @@ class Model
     {
         $this->db = $db;
     }
+
+    // simple utilitaire pour automatiser la gestion d'erreur
+    public function exequery( $sql )
+    {
+        $result = $this->db->query($sql);
+
+        if ( !$result ) { // la requête a renvoyé une erreur
+            Session::set('events.error.db_error', $this->db->error);
+            header('location: /error/db_error');
+            exit(1);
+        }
+
+        return $result;
+    }
 }

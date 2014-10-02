@@ -57,9 +57,6 @@ class RegistrationController extends Controller
             Session::set('events.login.msg', 'valid_registration');
             header('location: /login');
 
-        } elseif ( $register_return === 'db_error' ) {
-            header('location: /error/db_error');
-
         } else {
             Session::set('events.registration.msg', $register_return);
             header('location: /registration');

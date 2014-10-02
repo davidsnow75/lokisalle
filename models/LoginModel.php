@@ -25,7 +25,7 @@ class LoginModel extends Model
         // Test 1: l'utilisateur existe-t-il ?
         $clean_username = $this->db->real_escape_string($_POST['username']);
 
-        $result = $this->db->query('SELECT id_membre,
+        $result = $this->exequery( 'SELECT id,
                                      pseudo,
                                      mdp,
                                      nom,
@@ -35,8 +35,8 @@ class LoginModel extends Model
                                      cp,
                                      adresse,
                                      statut
-                                FROM membres
-                                WHERE pseudo="' . $clean_username . '"');
+                                    FROM membres
+                                    WHERE pseudo="' . $clean_username . '"');
 
         if ( $result->num_rows === 0 ) {
             return 'unknown_user';

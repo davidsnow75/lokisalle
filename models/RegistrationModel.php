@@ -78,17 +78,17 @@ class RegistrationModel extends Model
         else:
             // tout semble correct, mais on doit vérifier que le pseudo ou l'email ne sont pas déjà
             // utilisés par un autre utilisateur
-            $sql = "SELECT id_membre
+            $sql = "SELECT id
                     FROM membres
                     WHERE pseudo='" . $this->db->real_escape_string($_POST['pseudo']) . "';";
-            if ( $this->db->query($sql)->num_rows != 0) {
+            if ( $this->exequery($sql)->num_rows != 0) {
                 return 'pseudo_unavailable';
             }
 
-            $sql = "SELECT id_membre
+            $sql = "SELECT id
                     FROM membres
                     WHERE email='" . $this->db->real_escape_string($_POST['email'])  . "';";
-            if ( $this->db->query($sql)->num_rows != 0) {
+            if ( $this->exequery($sql)->num_rows != 0) {
                 return 'email_unavailable';
             }
 
@@ -103,7 +103,7 @@ class RegistrationModel extends Model
             }
 
             // insertion (et donc création) de l'utilisateur dans la base de données
-            $sql = "INSERT INTO membres (id_membre,
+            $sql = "INSERT INTO membres (id,
                                          pseudo,
                                          mdp,
                                          nom,
@@ -124,12 +124,7 @@ class RegistrationModel extends Model
                             '" . $clean['adresse'] . "',
                             '0');";
 
-            $result = $this->db->query($sql);
-
-            if (!$result) {
-                Session::set('events.error.db_error', $this->db->error);
-                return 'db_error';
-            }
+            $result = $this->exequery($sql);
 
             // Tout s'est bien passé, on n'a plus besoin du sticky form
             Session::delete('post_data.register');

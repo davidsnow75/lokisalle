@@ -38,12 +38,7 @@ class ItemManager extends Model
             $sql .= intval( $id_items[$i] ) . "';";
 
             // exécution de la requête
-            $result = $this->db->query($sql);
-
-            if ( !$result ) { // la requête a renvoyé une erreur
-                Session::set('events.error.db_error', $this->db->error);
-                return 'db_error';
-            }
+            $result = $this->exequery($sql);
 
             if ( $result->num_rows === 0 ) {
                 return []; // pas d'élément trouvé
@@ -59,12 +54,7 @@ class ItemManager extends Model
         // pas d'id spécifiquement demandé, donc on récupère tous les items
         $sql = "SELECT * FROM " . $table . ";";
 
-        $result = $this->db->query($sql);
-
-        if ( !$result ) { // la requête a renvoyé une erreur
-            Session::set('events.error.db_error', $this->db->error);
-            return 'db_error';
-        }
+        $result = $this->exequery($sql);
 
         if ( $result->num_rows === 0 ) {
             return []; // pas d'élément trouvé
