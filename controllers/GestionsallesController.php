@@ -13,7 +13,7 @@ class GestionsallesController extends AdminController
 
         $gestionsalles_model = $this->loadModel('GestionsallesModel');
 
-        $data['salles'] = $gestionsalles_model->get_salles($requested_ids);
+        $data['salles'] = $gestionsalles_model->get_items('salles', $requested_ids);
 
         $data['msg'] = $this->test_events_msg();
 
@@ -25,7 +25,7 @@ class GestionsallesController extends AdminController
     {
         $gestionsalles_model = $this->loadModel('GestionsallesModel');
 
-        $ajout_return = $gestionsalles_model->ajouter();
+        $ajout_return = $gestionsalles_model->add_item( 'salles' );
 
         Session::set('events.gestionsalles.msg', $ajout_return);
         header('location: /gestionsalles');
@@ -44,14 +44,14 @@ class GestionsallesController extends AdminController
         // si on accède à cette méthode depuis un formulaire, alors on a du travail
         if ( !empty($_POST['id'] ) ) {
 
-            $modif_return = $gestionsalles_model->modifier( intval($_POST['id']) );
+            $modif_return = $gestionsalles_model->modify_item();
 
             Session::set('events.gestionsalles.msg', $modif_return);
             header('location: /gestionsalles/modifier/' . intval($_POST['id']) );
 
         } else { // sinon, on se contente d'afficher le formulaire de modification d'une salle
 
-            $data['salle'] = $gestionsalles_model->get_salles( array($id_salle) );
+            $data['salle'] = $gestionsalles_model->get_items( 'salles', array($id_salle) );
 
             if ( empty($data['salle']) ) {
                 header('location: /gestionsalles/index/' . intval($id_salle));
@@ -76,9 +76,9 @@ class GestionsallesController extends AdminController
         $gestionsalles_model = $this->loadModel('GestionsallesModel');
 
         // si le test échoue, c'est que la validation n'a pas été envoyée
-        if ( !empty($_POST['id_salle']) ) {
+        if ( !empty($_POST['id']) ) {
 
-            $delete_return = $gestionsalles_model->supprimer( intval($_POST['id_salle']) );
+            $delete_return = $gestionsalles_model->delete_item( 'salles', intval($_POST['id']) );
 
             Session::set('events.gestionsalles.msg', $delete_return);
             header('location: /gestionsalles');
@@ -95,9 +95,9 @@ class GestionsallesController extends AdminController
     {
         if ( Session::get('events.gestionsalles.msg') ) {
             switch ( Session::flashget('events.gestionsalles.msg') ) {
-                case 'ajout_valid'          : $msg = 'La salle a été créée avec succès.'; break;
-                case 'modif_valid'          : $msg = 'La salle a été modifiée avec succès.'; break;
-                case 'delete_valid'         : $msg = 'La salle a été supprimée avec succès.'; break;
+                case 'valid_add_item'       : $msg = 'La salle a été créée avec succès.'; break;
+                case 'valid_modify_item'    : $msg = 'La salle a été modifiée avec succès.'; break;
+                case 'valid_delete_item'    : $msg = 'La salle a été supprimée avec succès.'; break;
                 case 'pays_missing'         : $msg = 'Le pays doit être renseigné.'; break;
                 case 'pays_length'          : $msg = 'Le pays doit faire entre 2 et 20 caractères.'; break;
                 case 'ville_missing'        : $msg = 'La ville doit être renseignée.'; break;
@@ -115,7 +115,7 @@ class GestionsallesController extends AdminController
                 case 'capacite_length'      : $msg = 'La capacité ne peut excéder un nombre à trois chiffres.'; break;
                 case 'categorie_missing'    : $msg = 'La catégorie doit être renseignée.'; break;
                 case 'categorie_doesnt_fit' : $msg = 'La catégorie entrée n\'est pas disponible.'; break;
-                case 'unknown_id_salle'     : $msg = 'Aucune salle n\'a été supprimée.'; break;
+                case 'unknown_item_id'      : $msg = 'Aucune salle n\'a été supprimée.'; break;
                 default                     : $msg = 'Une erreur inconnue s\'est produite.';
             }
         } else {
