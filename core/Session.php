@@ -171,7 +171,7 @@ class Session
                 return true;
             }
             if ( is_array($array[$keys[$index]]) ) {
-                return self::get(null, $array[$keys[$index]], $index + 1);
+                return self::delete(null, $array[$keys[$index]], $index + 1);
             }
         }
 
