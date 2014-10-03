@@ -33,9 +33,10 @@ abstract class ItemManagerModel extends Model
      *
      * @param string la table où aller chercher les éléments
      * @param array un tableau (facultatif) des ids d'éléments de la table
+     * @param string une chaîne (facultative) listant les champs à récupérer dans la table
      * @return array un tableau des éléments en BDD
      */
-    public function get_items( $table, $id_items = [] )
+    public function get_items( $table, $id_items = [], $fields = '*' )
     {
         // Si la table est absente ou incorrecte, alors on s'arrête là
         if ( empty($table) || !is_string( $table ) ) {
@@ -51,29 +52,17 @@ abstract class ItemManagerModel extends Model
             $last_item_key = count($id_items) - 1;
 
             // construction de la requête
-            $sql = "SELECT * FROM " . $table . " WHERE id='";
+            $sql = "SELECT " . $fields . " FROM " . $table . " WHERE id='";
             $i = -1;
             while ( ++$i < $last_item_key ) {
                 $sql .= intval( $id_items[$i] ) . "' OR id='";
             }
             $sql .= intval( $id_items[$i] ) . "';";
 
-            // exécution de la requête
-            $result = $this->exequery($sql);
+        } else { // pas d'id spécifiquement demandé, donc on récupère tous les items
 
-            if ( $result->num_rows === 0 ) {
-                return []; // pas d'élément trouvé
-            }
-
-            while ($item = $result->fetch_assoc() ) {
-                $items[] = $item;
-            }
-
-            return $items;
+            $sql = "SELECT " . $fields . " FROM " . $table . ";";
         }
-
-        // pas d'id spécifiquement demandé, donc on récupère tous les items
-        $sql = "SELECT * FROM " . $table . ";";
 
         $result = $this->exequery($sql);
 

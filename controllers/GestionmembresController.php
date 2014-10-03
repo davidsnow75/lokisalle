@@ -11,7 +11,9 @@ class GestionmembresController extends AdminController
 
         $membres_manager = $this->loadModel('MembresManagerModel');
 
-        $data['membres'] = $membres_manager->get_items( 'membres', $requested_ids );
+        $fields = 'id, pseudo, nom, email, sexe, ville, cp, adresse, statut';
+
+        $data['membres'] = $membres_manager->get_items( 'membres', $requested_ids, $fields );
 
         $data['msg'] = $this->test_events_msg();
 
