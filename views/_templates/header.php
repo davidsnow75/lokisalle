@@ -19,10 +19,10 @@
 <?php endif; ?>
     <div class="quick-access">
 <?php if ( Session::userIsLoggedIn() ): ?>
-      <a href="/login/dologout">Déconnexion</a> |
+      <a href="/connexion/deconnecter">Déconnexion</a> |
 <?php else: ?>
-      <a href="/login">Connexion</a> |
-      <a href="/registration">Inscription</a> |
+      <a href="/connexion">Connexion</a> |
+      <a href="/inscription">Inscription</a> |
 <?php endif; ?>
       <a href="#">Contact</a>
     </div>
@@ -39,7 +39,7 @@
       <li class="menu-item current-menu-item"><i class="fa fa-home"></i>&nbsp; <a href="/">Accueil</a></li>
       <li class="menu-item"><i class="fa fa-book"></i>&nbsp; <a href="#">Réservation</a></li>
       <li class="menu-item"><i class="fa fa-search"></i>&nbsp; <a href="">Recherche</a></li>
-      <li class="menu-item"><i class="fa fa-user"></i>&nbsp; <a href="/login">Espace personnel</a></li>
+      <li class="menu-item"><i class="fa fa-user"></i>&nbsp; <a href="/connexion">Espace personnel</a></li>
       <li class="menu-item"><i class="fa fa-lightbulb-o"></i>&nbsp; <a href="#">À propos</a></li>
     </ul>
 <?php if ( Session::userIsLoggedIn() && Session::userIsAdmin() ): ?>

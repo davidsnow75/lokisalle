@@ -13,7 +13,7 @@ define('DB_USER', 'lokiser');
 define('DB_PASS', 'lokipass');
 
 // le contrôleur par défaut (celui de la page d'accueil)
-define('DEFAULT_CONTROLLER', 'Home');
+define('DEFAULT_CONTROLLER', 'Accueil');
 
 // souhaite-t-on préfixer les urls d'administration avec 'admin' ?
 define('ADMIN_CONTROLLERS_ARE_PREFIXED', false);

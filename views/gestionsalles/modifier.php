@@ -24,8 +24,8 @@
         <div class="form-group">
           <label>Catégorie&nbsp;: </label>
           <select name="categorie">
-            <option value="réunion" <?php echo ($salle['categorie'] == 'réunion') ? 'selected' : '' ?>>Réunion</option>
-            <option value="conférence" <?php echo ($salle['categorie']  == 'conférence') ? 'selected' : '' ?>>Conférence</option>
+            <option value="réunion" <?= $salle['categorie'] == 'réunion' ? 'selected' : '' ?>>Réunion</option>
+            <option value="conférence" <?= $salle['categorie']  == 'conférence' ? 'selected' : '' ?>>Conférence</option>
           </select>
         </div>
         <input type="hidden" name="id" value="<?= $salle['id'] ?>">

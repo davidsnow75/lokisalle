@@ -1,29 +1,22 @@
 <?php
 
-/* Gère le processus de connexion/déconnexion
- * En dehors des
- *
- */
-
-class LoginController extends Controller
+class ConnexionController extends Controller
 {
-    /* renvoie le formulaire de connexion */
-
-    public function index($error_msg = null)
+    public function index()
     {
         if ( Session::userIsLoggedIn() ) {
-            $this->renderView('login/espaceperso');
+            $this->renderView('connexion/espaceperso');
             return;
         }
 
         // si un message a été enregistré à l'attention de ce contrôleur
-        if ( Session::get('events.login.msg') ) {
+        if ( Session::get('events.connexion.msg') ) {
 
-            switch ( Session::flashget('events.login.msg') ) {
+            switch ( Session::flashget('events.connexion.msg') ) {
                 case 'empty_fields'       : $data = 'Tous les champs doivent être renseignés.'; break;
                 case 'unknown_user'       : $data = 'Utilisateur inconnu'; break;
                 case 'wrong_password'     : $data = 'Mot de passe incorrect'; break;
-                case 'valid_registration' : $data = 'Inscription réussie. Vous pouvez maintenant vous connecter.'; break;
+                case 'valid_inscription'  : $data = 'Inscription réussie. Vous pouvez maintenant vous connecter.'; break;
                 default                   : $data = 'Une erreur inconnue s\'est produite.';
             }
 
@@ -31,30 +24,30 @@ class LoginController extends Controller
             $data = null;
         }
 
-        $this->renderView('login/index', $data);
+        $this->renderView('connexion/index', $data);
     }
 
     /* déclenche l'action de connexion */
-    public function doLogin()
+    public function connecter()
     {
         $login_model = $this->loadModel('LoginModel');
 
         $login_return = $login_model->login();
 
         if ( $login_return !== true ) {
-            Session::set('events.login.msg', $login_return);
+            Session::set('events.connexion.msg', $login_return);
         }
 
-        header('location: /login/index');
+        header('location: /connexion');
     }
 
     /* déclenche l'action de déconnexion */
-    public function doLogout()
+    public function deconnecter()
     {
         $login_model = $this->loadModel('LoginModel');
 
         $data = $login_model->logout();
 
-        $this->renderView('login/index', $data);
+        $this->renderView('connexion/index', $data);
     }
 }

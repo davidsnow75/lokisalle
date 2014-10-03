@@ -103,7 +103,7 @@ class Application {
             if ( isset($url_array[1]) ) {
                 $url_array[1] = ADMIN_CONTROLLER_PREFIX . $url_array[1];
             } else {
-                $url_array[1] = 'login'; // on veut que /admin soit traité par LoginController
+                $url_array[1] = 'connexion'; // on veut que /admin soit traité par ConnexionController
             }
 
             unset( $url_array[0] );

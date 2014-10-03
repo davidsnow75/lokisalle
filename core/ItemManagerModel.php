@@ -7,7 +7,25 @@
 
 abstract class ItemManagerModel extends Model
 {
+    /**
+     * vérification avant traitement de la validité des données envoyées par POST
+     *
+     * Les données variant avec les Managers, cette fonction doit être
+     * implémentée spécifiquement pour chacun d'entre eux.
+     * NOTE: il peut advenir que le type des données testées soit modifié par cette
+     * méthode, d'où l'importance de passer l'argument par référence.
+     *
+     * @param array la superglobale $_POST, passée par référence
+     * @return true en cas de données valides, string en cas d'échec (le msg d'erreur)
+     */
     abstract protected function test_post_data( &$post_data );
+
+    /**
+     * construction d'une requête SQL adaptée à l'instance particulière de ItemManagerModel
+     *
+     * @param string le type de requête à construire
+     * @return string la requête SQL en cas de succès, une chaîne vide en cas d'erreur
+     */
     abstract protected function get_sql_request( $action );
 
     /**

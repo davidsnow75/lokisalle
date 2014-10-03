@@ -12,7 +12,7 @@ abstract class AdminController extends Controller
 
         // contrôle des permissions d'accès
         if ( !Session::userIsLoggedIn() ) {
-            header('location: /login');
+            header('location: /connexion');
             exit(0);
         } elseif ( Session::userIsLoggedIn() && !Session::userIsAdmin() ) {
             header('location: /');
