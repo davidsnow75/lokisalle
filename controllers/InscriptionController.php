@@ -20,9 +20,6 @@ class InscriptionController extends Controller
 
         $register_return = $membres_manager->add_item( 'membres' );
 
-        // Pour gérer le retour de add_item(), on définit un paramètre flash
-        // dans la session pour garder une trace de ce qui vient de se passer et
-        // on envoie le visiteur vers la page adéquate
         if ( $register_return === 'valid_add_item' ) {
             Session::set('events.connexion.msg', 'valid_inscription');
             header('location: /connexion');

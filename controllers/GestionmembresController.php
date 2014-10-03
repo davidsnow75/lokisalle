@@ -9,12 +9,25 @@ class GestionmembresController extends AdminController
     {
         $requested_ids = func_get_args();
 
-        $gestionsalles_model = $this->loadModel('GestionsallesModel');
+        $membres_manager = $this->loadModel('MembresManagerModel');
 
-        $data['salles'] = $gestionsalles_model->get_salles($requested_ids);
+        $data['salles'] = $membres_manager->get_items($requested_ids);
 
         $data['msg'] = $this->test_events_msg();
 
         $this->renderView('gestionsalles/index', $data);
+    }
+
+    protected function test_events_msg()
+    {
+        if ( Session::get('events.gestionmembres.msg') ) {
+            switch ( Session::flashget('events.gestionmembres.msg') ) {
+                default : $msg = 'Une erreur inconnue s\'est produite.';
+            }
+        } else {
+            $msg = null;
+        }
+
+        return $msg;
     }
 }

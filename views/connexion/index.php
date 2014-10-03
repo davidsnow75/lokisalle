@@ -3,8 +3,8 @@
 
     <h1>Connexion</h1>
 
-<?php if ( !is_null($data) ): ?>
-    <p class="msg-retour"><?= $data; ?></p>
+<?php if ( !is_null($data['msg']) ): ?>
+    <p class="msg-retour"><?= $data['msg'] ?></p>
 <?php endif; ?>
 
     <form action="/connexion/connecter" method="post">

@@ -9,20 +9,7 @@ class ConnexionController extends Controller
             return;
         }
 
-        // si un message a été enregistré à l'attention de ce contrôleur
-        if ( Session::get('events.connexion.msg') ) {
-
-            switch ( Session::flashget('events.connexion.msg') ) {
-                case 'empty_fields'       : $data = 'Tous les champs doivent être renseignés.'; break;
-                case 'unknown_user'       : $data = 'Utilisateur inconnu'; break;
-                case 'wrong_password'     : $data = 'Mot de passe incorrect'; break;
-                case 'valid_inscription'  : $data = 'Inscription réussie. Vous pouvez maintenant vous connecter.'; break;
-                default                   : $data = 'Une erreur inconnue s\'est produite.';
-            }
-
-        } else {
-            $data = null;
-        }
+        $data['msg'] = $this->test_events_msg();
 
         $this->renderView('connexion/index', $data);
     }
@@ -46,8 +33,25 @@ class ConnexionController extends Controller
     {
         $login_model = $this->loadModel('LoginModel');
 
-        $data = $login_model->logout();
+        $data['msg'] = $login_model->logout();
 
         $this->renderView('connexion/index', $data);
+    }
+
+    protected function test_events_msg()
+    {
+        if ( Session::get('events.connexion.msg') ) {
+            switch ( Session::flashget('events.connexion.msg') ) {
+                case 'empty_fields'       : $msg = 'Tous les champs doivent être renseignés.'; break;
+                case 'unknown_user'       : $msg = 'Utilisateur inconnu'; break;
+                case 'wrong_password'     : $msg = 'Mot de passe incorrect'; break;
+                case 'valid_inscription'  : $msg = 'Inscription réussie. Vous pouvez maintenant vous connecter.'; break;
+                default                   : $msg = 'Une erreur inconnue s\'est produite.';
+            }
+        } else {
+            $msg = null;
+        }
+
+        return $msg;
     }
 }

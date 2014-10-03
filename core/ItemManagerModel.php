@@ -104,7 +104,9 @@ abstract class ItemManagerModel extends Model
         // on enregistre les données avant les tests pour s'assurer
         // qu'elles ne seront pas perdues en cas de tests invalides
         foreach($_POST as $key => $value) {
-            $html_clean[$key] = htmlentities($value, ENT_QUOTES, "utf-8");
+            if ( $key !== 'mdp' && $key !== 'mdp_bis' ) {
+                $html_clean[$key] = htmlentities($value, ENT_QUOTES, "utf-8");
+            }
         }
         Session::set('post_data.add_item_' . $table, $html_clean);
 
@@ -117,12 +119,13 @@ abstract class ItemManagerModel extends Model
         // tout est bon, mais y a-t-il eu une photo postée ?
         // TODO: implémenter un upload d'images sécurisé
 
+        // Les données sont validées, on n'a plus besoin du sticky form
+        Session::delete('post_data.add_item_' . $table);
+
         // insertion (et donc création) de l'item dans la base de données
         $sql = $this->get_sql_request( 'add_item' );
         $result = $this->exequery($sql);
 
-        // Tout s'est bien passé, on n'a plus besoin du sticky form
-        Session::delete('post_data.add_item_' . $table);
 
         return 'valid_add_item';
     }
