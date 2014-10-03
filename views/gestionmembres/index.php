@@ -7,17 +7,16 @@
     <p class="msg-retour"><?= $data['msg'] ?></p>
 <?php endif; ?>
 
-    <table>
+    <table class="table table--membres">
       <thead>
         <tr>
           <th>ID</th>
           <th>Pseudo</th>
-          <th>MDP</th>
           <th>Nom</th>
           <th>E-mail</th>
           <th>Sexe</th>
           <th>Ville</th>
-          <th>Code Postal</th>
+          <th>Code postal</th>
           <th>Adresse</th>
           <th>Statut</th>
         </tr>
@@ -30,14 +29,13 @@
             <tr>
               <td><?= $membre['id'] ?></td>
               <td><?= $membre['pseudo'] ?></td>
-              <td><?= $membre['mdp'] ?></td>
               <td><?= $membre['nom'] ?></td>
               <td><?= $membre['email'] ?></td>
-              <td><?= $membre['sexe'] ?></td>
+              <td><?= $membre['sexe'] === 'm' ? 'homme' : 'femme' ?></td>
               <td><?= $membre['ville'] ?></td>
               <td><?= $membre['cp'] ?></td>
               <td><?= $membre['adresse'] ?></td>
-              <td><?= $membre['statut'] ?></td>
+              <td><?= $membre['statut'] == '1' ? 'admin' : 'membre' ?></td>
             </tr>
           <?php endif; ?>
 

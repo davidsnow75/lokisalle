@@ -48,7 +48,7 @@
       <ul id="menu-administration" class="admin-menu">
         <li class="menu-item"><a href="/gestionsalles">Gestion des salles</a></li>
         <li class="menu-item"><a href="#">Gestion des produits</a></li>
-        <li class="menu-item"><a href="#">Gestion des membres</a></li>
+        <li class="menu-item"><a href="/gestionmembres">Gestion des membres</a></li>
         <li class="menu-item"><a href="#">Gestion des commandes</a></li>
         <li class="menu-item"><a href="#">Gestion des avis</a></li>
         <li class="menu-item"><a href="#">Gestion des codes promo</a></li>
