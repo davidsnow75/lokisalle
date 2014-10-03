@@ -11,11 +11,11 @@ class GestionmembresController extends AdminController
 
         $membres_manager = $this->loadModel('MembresManagerModel');
 
-        $data['salles'] = $membres_manager->get_items($requested_ids);
+        $data['membres'] = $membres_manager->get_items( 'membres', $requested_ids );
 
         $data['msg'] = $this->test_events_msg();
 
-        $this->renderView('gestionsalles/index', $data);
+        $this->renderView('gestionmembres/index', $data);
     }
 
     protected function test_events_msg()
