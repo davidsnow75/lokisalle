@@ -124,23 +124,24 @@ abstract class ItemManagerModel extends Model
      *
      * @return string une chaîne résumant le résultat de l'opération, false en cas d'erreur fatale
      */
-    public function modify_item()
+    public function modify_item( $test_post_data = true )
     {
         // S'il manque qqchose, on s'arrête
         if ( empty($_POST) ) {
             return false;
         }
 
-        // test de la validité des données envoyées
-        $post_data_ok = $this->test_post_data($_POST);
-        if ( $post_data_ok !== true ) {
-            return $post_data_ok;
+        if ( $test_post_data ) {
+            // test de la validité des données envoyées
+            $post_data_ok = $this->test_post_data($_POST);
+            if ( $post_data_ok !== true ) {
+                return $post_data_ok;
+            }
         }
 
         // tout est bon, mais y a-t-il eu une photo postée ?
         // TODO: implémenter un upload d'images sécurisé
 
-        // insertion (et donc création) de l'item dans la base de données
         $sql = $this->get_sql_request( 'modify_item' );
         $result = $this->exequery($sql);
 

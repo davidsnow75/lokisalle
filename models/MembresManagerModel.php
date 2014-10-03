@@ -123,12 +123,23 @@ class MembresManagerModel extends ItemManagerModel
 
             // modification de la salle dans la base de données
             case 'modify_item':
-                $sql = '';
+                $sql = "UPDATE membres
+                        SET statut='1'
+                        WHERE id='" . $clean['id'] . "';";
             break;
 
             default: $sql = '';
         }
 
         return $sql;
+    }
+
+    public function user_is_godlike()
+    {
+        if ( Session::get('user.pseudo') === 'manitou' ) {
+            return true;
+        }
+
+         return false;
     }
 }
