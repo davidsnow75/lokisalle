@@ -11,9 +11,9 @@ class GestionsallesController extends AdminController
     {
         $requested_ids = func_get_args();
 
-        $gestionsalles_model = $this->loadModel('GestionsallesModel');
+        $salles_manager = $this->loadModel('SallesManagerModel');
 
-        $data['salles'] = $gestionsalles_model->get_items('salles', $requested_ids);
+        $data['salles'] = $salles_manager->get_items('salles', $requested_ids);
 
         $data['msg'] = $this->test_events_msg();
 
@@ -23,9 +23,9 @@ class GestionsallesController extends AdminController
     // ajout d'une salle (formulaire)
     public function ajouter()
     {
-        $gestionsalles_model = $this->loadModel('GestionsallesModel');
+        $salles_manager = $this->loadModel('SallesManagerModel');
 
-        $ajout_return = $gestionsalles_model->add_item( 'salles' );
+        $ajout_return = $salles_manager->add_item( 'salles' );
 
         Session::set('events.gestionsalles.msg', $ajout_return);
         header('location: /gestionsalles');
@@ -39,19 +39,19 @@ class GestionsallesController extends AdminController
             return;
         }
 
-        $gestionsalles_model = $this->loadModel('GestionsallesModel');
+        $salles_manager = $this->loadModel('SallesManagerModel');
 
         // si on accède à cette méthode depuis un formulaire, alors on a du travail
         if ( !empty($_POST['id'] ) ) {
 
-            $modif_return = $gestionsalles_model->modify_item();
+            $modif_return = $salles_manager->modify_item();
 
             Session::set('events.gestionsalles.msg', $modif_return);
             header('location: /gestionsalles/modifier/' . intval($_POST['id']) );
 
         } else { // sinon, on se contente d'afficher le formulaire de modification d'une salle
 
-            $data['salle'] = $gestionsalles_model->get_items( 'salles', array($id_salle) );
+            $data['salle'] = $salles_manager->get_items( 'salles', array($id_salle) );
 
             if ( empty($data['salle']) ) {
                 header('location: /gestionsalles/index/' . intval($id_salle));
@@ -73,12 +73,12 @@ class GestionsallesController extends AdminController
             return;
         }
 
-        $gestionsalles_model = $this->loadModel('GestionsallesModel');
+        $salles_manager = $this->loadModel('SallesManagerModel');
 
         // si le test échoue, c'est que la validation n'a pas été envoyée
         if ( !empty($_POST['id']) ) {
 
-            $delete_return = $gestionsalles_model->delete_item( 'salles', intval($_POST['id']) );
+            $delete_return = $salles_manager->delete_item( 'salles', intval($_POST['id']) );
 
             Session::set('events.gestionsalles.msg', $delete_return);
             header('location: /gestionsalles');

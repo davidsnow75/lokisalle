@@ -3,7 +3,7 @@
 /* Gestion des salles par l'administrateur
  */
 
-class GestionsallesModel extends ItemManagerModel
+class SallesManagerModel extends ItemManagerModel
 {
     // NOTE: attention, le paramètre est passé par référence
     protected function test_post_data( &$post_data )
