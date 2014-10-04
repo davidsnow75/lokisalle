@@ -10,6 +10,37 @@
   </head>
   <body>
 
+<?php if ( DEBUG ): ?>
+<div class="debug cf">
+  <div class="debug__displayer <?= DEBUG_AGGRESSIF ? 'active' : '' ?>" data-toggle="display" data-target="debug__content">Informations de débogage <i class="fa fa-cogs"></i></div>
+  <div class="debug__content <?= DEBUG_AGGRESSIF ? 'display' : '' ?>" id="debug__content">
+    <?php $log = Session::flashget('debug'); ?>
+
+    <?php foreach($log as $log_item_key => $log_item): ?>
+
+      <?php
+      switch ($log_item_key):
+        case 'url'        : $item = 'URL traitée'; break;
+        case 'controller' : $item = 'Contrôleur'; break;
+        case 'action'     : $item = 'Action'; break;
+        case 'parameters' : $item = 'Paramètres'; break;
+        case 'get'        : $item = '$_GET'; break;
+        case 'post'       : $item = '$_POST'; break;
+        default           : $item = $log_item_key;
+      endswitch;
+      ?>
+
+      <div class="debug__log-item">
+        <span class="debug__key"><?= $item ?></span>
+        <?= $log_item ?>
+      </div>
+
+    <?php endforeach; ?>
+
+  </div>
+</div>
+<?php endif; ?>
+
 <header class="main-header blc">
   <div class="ctn">
 <?php if ( Session::userIsLoggedIn() ): ?>

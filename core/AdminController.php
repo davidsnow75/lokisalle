@@ -7,9 +7,6 @@ abstract class AdminController extends Controller
 {
     public function __construct()
     {
-        // initialisation ou récupération de la session
-        Session::init();
-
         // contrôle des permissions d'accès
         if ( !Session::userIsLoggedIn() ) {
             header('location: /connexion');

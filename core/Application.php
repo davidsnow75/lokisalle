@@ -21,6 +21,12 @@ class Application {
      */
     public function __construct()
     {
+        // initialisation ou récupération de la session si tôt car on veut pouvoir en bénéficier pour le débug
+        Session::init();
+
+        // on sauvegarde l'état des superglobales au moment de l'entrée dans l'appli
+        Debug::logGlobals();
+
         // On peuple d'abord les attributs de l'application en fonction d'une éventuelle URL requise
         $this->analyser_url();
 
@@ -45,6 +51,12 @@ class Application {
             $this->action = 'notFound';
             Session::set('events.error.notfound_url', $this->url); // on passe par la session pour assurer une cohérence dans la suite des opérations
         }
+
+        // à fins de débug
+        Debug::logURL( $this->url );
+        Debug::logController( $this->controller );
+        Debug::logAction( $this->action );
+        Debug::logParameters( $this->parameters );
 
         // on possède maintenant toutes les informations adéquates, on lance donc l'application
         // NOTE: call_user_func_array() ne passe pas au contrôleur un tableau des paramètres, mais les paramètres séparement !
@@ -84,12 +96,6 @@ class Application {
 
             // il ne reste plus dans $url_array que les paramètres, alors on réindexe le tableau
             $this->parameters = array_values($url_array);
-
-            // à fins de débug
-            //var_dump($this->url); echo "<br>";
-            //var_dump($this->controller); echo "<br>";
-            //var_dump($this->action); echo "<br>";
-            //var_dump($this->parameters); echo "<br>";
         }
     }
 

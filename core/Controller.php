@@ -8,7 +8,6 @@
  *
  * Est défini ici le comportement commun à tous les contrôleurs, cad à toutes
  * les pages:
- *      - Initialisation de la session (nouvelle ou précédente)
  *      - Connexion à la BDD
  *      - Chargement des modèles adéquats
  *      - Chargement des vues adéquates
@@ -26,9 +25,6 @@ abstract class Controller
 
     public function __construct()
     {
-        // initialisation ou récupération de la session
-        Session::init();
-
         // le lien à la bdd est créé à chaque instanciation d'un contrôleur
         $this->openDatabaseConnection();
     }

@@ -79,7 +79,7 @@ class LoginModel extends Model
     {
         if ( Session::userIsLoggedIn() ) {
 
-            Session::wipe_all();
+            Session::delete('user');
             return 'Déconnexion effectuée';
         }
 

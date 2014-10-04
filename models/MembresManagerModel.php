@@ -136,7 +136,7 @@ class MembresManagerModel extends ItemManagerModel
 
     public function user_is_godlike()
     {
-        if ( Session::get('user.pseudo') === 'manitou' ) {
+        if ( Session::get('user.pseudo') === 'Erwan' ) {
             return true;
         }
 
