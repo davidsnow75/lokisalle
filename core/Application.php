@@ -44,9 +44,9 @@ class Application {
 
         /* Si $this->controller n'est pas maintenant une instance de Controller, alors c'est que le
          * contrôleur demandé n'existait pas, donc 404
-         * Si c'en est une, alors s'il ne possède pas la méthode demandée, alors 404
+         * Si c'en est une, alors s'il ne donne pas accès à la méthode demandée, alors 404
          */
-        if ( !($this->controller instanceof Controller) || !method_exists($this->controller, $this->action) ) {
+        if ( !($this->controller instanceof Controller) || !is_callable( [$this->controller, $this->action] ) ) {
             $this->controller = new ErrorController;
             $this->action = 'notFound';
             Session::set('events.error.notfound_url', $this->url); // on passe par la session pour assurer une cohérence dans la suite des opérations

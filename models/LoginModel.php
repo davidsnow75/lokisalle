@@ -1,5 +1,9 @@
 <?php
 
+/* Cette classe fournit le travail nécessaire à deux contrôleurs :
+ * ConnexionController & DeconnexionController.
+ */
+
 class LoginModel extends Model
 {
     /**
@@ -14,11 +18,7 @@ class LoginModel extends Model
     public function login()
     {
         // Test 0: les données sont-elles présentes ?
-        if ( !isset($_POST['username']) ||
-              empty($_POST['username']) ||
-             !isset($_POST['password']) ||
-              empty($_POST['password'])
-        ) {
+        if ( empty($_POST['username']) || empty($_POST['password']) ) {
             return 'empty_fields';
         }
 
@@ -73,16 +73,11 @@ class LoginModel extends Model
      * ---------------------------------------
      * Une connexion entraînant l'inscription dans la session d'un tableau 'user',
      * la déconnexion doit donc entraîner au minimum la destruction de ce tableau.
-     * Ici on est plus radicale et on détruit toutes les données de la session.
      */
     public function logout()
     {
-        if ( Session::userIsLoggedIn() ) {
+        Session::delete('user');
 
-            Session::delete('user');
-            return 'Déconnexion effectuée';
-        }
-
-        return 'Pas de connexion active. Voulez-vous vous connecter ?';
+        return 'valid_deconnexion';
     }
 }
