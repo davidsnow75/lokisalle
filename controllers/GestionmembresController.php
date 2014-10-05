@@ -20,32 +20,6 @@ class GestionmembresController extends AdminController
         $this->renderView('gestionmembres/index', $data);
     }
 
-    public function setadmin()
-    {
-        $membres_manager = $this->loadModel('MembresManagerModel');
-
-        // par défaut, seul l'utilisateur Manitou peut déclencher cette méthode
-        if ( !$membres_manager->user_is_godlike() ) {
-            Session::set('events.gestionmembres.msg', 'forbidden_access');
-            header('location: /gestionmembres');
-            return;
-        }
-
-        // si on accède à cette méthode depuis un formulaire, alors on a du travail
-        if ( !empty($_POST['id'] ) ) {
-
-            $modif_return = $membres_manager->modify_item(false);
-
-            Session::set('events.gestionmembres.msg', $modif_return);
-            header('location: /gestionmembres/index/' . intval($_POST['id']) );
-
-        } else { // sinon, on se contente de renvoyer la page standard
-
-            header('location: /gestionmembres');
-            return;
-        }
-    }
-
     // suppression d'un membre
     public function supprimer($id_membre)
     {
@@ -63,7 +37,8 @@ class GestionmembresController extends AdminController
 
             $membre_cible = $membres_manager->get_items( 'membres', [$clean_id], 'statut' );
 
-            if ( $membre_cible[0]['statut'] == '1' && !$membres_manager->user_is_godlike() ) {
+            // seul l'utilisateur spécial peut supprimer un administrateur
+            if ( $membre_cible[0]['statut'] == '1' && !Session::user_is_godlike() ) {
                 Session::set('events.gestionmembres.msg', 'forbidden_access');
                 header('location: /gestionmembres');
                 return;
@@ -82,11 +57,38 @@ class GestionmembresController extends AdminController
         }
     }
 
+    // passage au statut administrateur
+    public function setadmin()
+    {
+        $membres_manager = $this->loadModel('MembresManagerModel');
+
+        // par défaut, seul un utilisateur spécial peut déclencher cette méthode
+        if ( !Session::user_is_godlike() ) {
+            Session::set('events.gestionmembres.msg', 'forbidden_access');
+            header('location: /gestionmembres');
+            return;
+        }
+
+        // si on accède à cette méthode depuis un formulaire, alors on a du travail
+        if ( !empty($_POST['id'] ) ) {
+
+            $modif_return = $membres_manager->setadmin();
+
+            Session::set('events.gestionmembres.msg', $modif_return);
+            header('location: /gestionmembres/index/' . intval($_POST['id']) );
+
+        } else { // sinon, on se contente de renvoyer la page standard
+
+            header('location: /gestionmembres');
+            return;
+        }
+    }
+
     protected function test_events_msg()
     {
         if ( Session::get('events.gestionmembres.msg') ) {
             switch ( Session::flashget('events.gestionmembres.msg') ) {
-                case 'valid_modify_item' : $msg = 'Le membre a désormais le statut d\'administrateur.'; break;
+                case 'valid_setadmin'    : $msg = 'Le membre a désormais le statut d\'administrateur.'; break;
                 case 'valid_delete_item' : $msg = 'Le membre a été supprimé avec succès.'; break;
                 case 'unknown_item_id'   : $msg = 'Aucun membre n\'a été supprimé.'; break;
                 case 'forbidden_access'  : $msg = 'Vous n\'êtes pas autorisé à effectuer cette action.'; break;

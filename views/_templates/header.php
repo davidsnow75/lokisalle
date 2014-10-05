@@ -50,7 +50,7 @@
 <?php endif; ?>
     <div class="quick-access">
 <?php if ( Session::userIsLoggedIn() ): ?>
-      <a href="/connexion/deconnecter">Déconnexion</a> |
+      <a href="/deconnexion">Déconnexion</a> |
 <?php else: ?>
       <a href="/connexion">Connexion</a> |
       <a href="/inscription">Inscription</a> |

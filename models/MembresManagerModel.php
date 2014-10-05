@@ -71,16 +71,23 @@ class MembresManagerModel extends ItemManagerModel
             return 'adresse_length';
 
         else:
-            // tout semble correct, mais on doit vérifier que le pseudo et l'e-mail sont disponibles
+            // tout semble correct, mais on doit vérifier que le pseudo et l'e-mail sont disponibles.
+            // NOTE: cette méthode est employée aussi bien pour la création que pour la modification d'un membre.
+            // Dans le cas d'une modification, il ne faut pas faire ces tests si le membre ne change pas
+            // son pseudo ou son e-mail (et donc renvoie de manière légitime une valeur déjà existante en BDD).
             $sql = "SELECT id FROM membres
                     WHERE pseudo='" . $this->db->real_escape_string($_POST['pseudo']) . "';";
-            if ( $this->exequery($sql)->num_rows != 0) {
+            if ( $this->exequery($sql)->num_rows != 0                // si le pseudo existe déjà en BDD
+                 && $_POST['pseudo'] != Session::get('user.pseudo')  // si l'utilisateur a envoyé un autre pseudo que l'éventuel sien
+            ) {
                 return 'pseudo_unavailable';
             }
 
             $sql = "SELECT id FROM membres
                     WHERE email='" . $this->db->real_escape_string($_POST['email'])  . "';";
-            if ( $this->exequery($sql)->num_rows != 0) {
+            if ( $this->exequery($sql)->num_rows != 0
+                && $_POST['email'] != Session::get('user.email')  // si l'utilisateur a envoyé un autre email que l'éventuel sien
+            ) {
                 return 'email_unavailable';
             }
 
@@ -97,7 +104,9 @@ class MembresManagerModel extends ItemManagerModel
         }
 
         // on chiffre le mdp avant tout autre traitement pour ne pas l'altérer
-        $_POST['mdp'] = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
+        if ( isset($_POST['mdp']) ) {
+            $_POST['mdp'] = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
+        }
 
         // filtre des données potentiellement dangereuses
         foreach($_POST as $key => $value) {
@@ -106,7 +115,7 @@ class MembresManagerModel extends ItemManagerModel
 
         switch ( $action ) {
 
-            // insertion (et donc création) de la salle dans la base de données
+            // insertion (et donc création) de l'item dans la base de données
             case 'add_item':
                 $sql = "INSERT INTO membres
                         VALUES ('',
@@ -121,8 +130,23 @@ class MembresManagerModel extends ItemManagerModel
                                 '0');";
             break;
 
-            // modification de la salle dans la base de données
+
+            // modification de l'item dans la base de données
             case 'modify_item':
+                $sql = "UPDATE membres
+                        SET pseudo='"  . $clean['pseudo']  . "',
+                            mdp='"     . $clean['mdp']     . "',
+                            nom='"     . $clean['nom']     . "',
+                            email='"   . $clean['email']   . "',
+                            sexe='"    . $clean['sexe']    . "',
+                            ville='"   . $clean['ville']   . "',
+                            cp='"      . $clean['cp']      . "',
+                            adresse='" . $clean['adresse'] . "'
+                        WHERE id='"    . $clean['id']      . "';";
+            break;
+
+            // autre modification de l'item dans la base de données
+            case 'set_admin':
                 $sql = "UPDATE membres
                         SET statut='1'
                         WHERE id='" . $clean['id'] . "';";
@@ -134,12 +158,21 @@ class MembresManagerModel extends ItemManagerModel
         return $sql;
     }
 
-    public function user_is_godlike()
+    /**
+     * modifie le statut d'un membre en le passant administrateur
+     *
+     * @return string une chaîne résumant le résultat de l'opération, false en cas d'erreur fatale
+     */
+    public function setadmin()
     {
-        if ( Session::get('user.pseudo') === 'Erwan' ) {
-            return true;
+        // S'il manque qqchose, on s'arrête
+        if ( empty($_POST['id']) ) {
+            return false;
         }
 
-         return false;
+        $sql = $this->get_sql_request( 'set_admin' );
+        $result = $this->exequery($sql);
+
+        return 'valid_setadmin';
     }
 }

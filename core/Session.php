@@ -201,4 +201,15 @@ class Session
         // par défaut, on considère l'utilisateur n'est pas admin
         return false;
     }
+
+    /* TODO: déplacer cette fonction dans une classe indépendante
+     */
+    public static function user_is_godlike()
+    {
+        if ( Session::get('user.pseudo') === 'Erwan' ) {
+            return true;
+        }
+
+         return false;
+    }
 }
