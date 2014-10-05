@@ -5,6 +5,9 @@ function autoload($class)
     if ( file_exists('../core/' . $class . '.php') ) {
         require '../core/' . $class . '.php';
 
+    } elseif (file_exists('../lib/' . $class . '.php') ) {
+        require '../lib/' . $class . '.php';
+
     } elseif ( file_exists('../controllers/' . $class . '.php') ) {
         require '../controllers/' . $class . '.php';
 
