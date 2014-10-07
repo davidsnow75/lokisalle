@@ -46,8 +46,8 @@ DROP TABLE IF EXISTS `lokisalle`.`produits` ;
 
 CREATE TABLE IF NOT EXISTS `lokisalle`.`produits` (
   `id` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `date_arrivee` DATETIME NULL,
-  `date_depart` DATETIME NULL,
+  `date_arrivee` TIMESTAMP NULL,
+  `date_depart` TIMESTAMP NULL,
   `prix` INT(5) NULL,
   `etat` INT(1) NULL,
   `salles_id` INT UNSIGNED NOT NULL,
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `lokisalle`.`avis` (
   `id` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `commentaire` TEXT NULL,
   `note` INT(2) NULL,
-  `date` DATETIME NULL,
+  `date` TIMESTAMP NULL,
   `salles_id` INT UNSIGNED NOT NULL,
   `membres_id` INT(5) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
@@ -124,7 +124,7 @@ DROP TABLE IF EXISTS `lokisalle`.`commandes` ;
 CREATE TABLE IF NOT EXISTS `lokisalle`.`commandes` (
   `id` INT(6) UNSIGNED NOT NULL AUTO_INCREMENT,
   `montant` INT(5) NULL,
-  `date` DATETIME NULL,
+  `date` TIMESTAMP NULL,
   `membres_id` INT(5) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_commandes_membres1_idx` (`membres_id` ASC),

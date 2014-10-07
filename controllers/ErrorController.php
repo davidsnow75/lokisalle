@@ -13,6 +13,18 @@ class ErrorController extends Controller
         }
     }
 
+    public function showerror()
+    {
+        $error = Session::flashget('events.error.customerror');
+
+        if ( $error ) {
+            $this->renderView('error/custom_error', $error);
+        } else {
+            header('location: /');
+            exit(0);
+        }
+    }
+
     public function notFound()
     {
         if ( Session::get('events.error.notfound_url') ) {
