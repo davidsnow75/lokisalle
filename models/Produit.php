@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Cette classe décrit une instance de produit.
  *
  * Les vérifications opérées par les mutateurs sont 'grammaticales', et non logiques.
@@ -26,7 +26,8 @@ class Produit extends Model
      * (en lui fournissant son id), ou bien d'initialiser un nouveau produit avec un
      * tableau de données le renseignant.
      *
-     * @param array pour la création d'un nouveau produit, int pour la récupération via la BDD
+     * @param mixed $arg array pour la création d'un nouveau produit, int pour la récupération via la BDD
+     *
      * @throws Exception si l'initialisation échoue, avec un message décrivant l'erreur
      * @return void
      */
@@ -71,40 +72,13 @@ class Produit extends Model
 
 
     /* ACCESSEURS ---------------------------------------*/
-    public function getID()
-    {
-        return $this->id;
-    }
-
-    public function getDateArrivee()
-    {
-        return $this->date_arrivee;
-    }
-
-    public function getDateDepart()
-    {
-        return $this->date_depart;
-    }
-
-    public function getPrix()
-    {
-        return $this->prix;
-    }
-
-    public function getEtat()
-    {
-        return $this->etat;
-    }
-
-    public function getSalleID()
-    {
-        return $this->salle_id;
-    }
-
-    public function getPromoID()
-    {
-        return $this->promo_id;
-    }
+    public function getID()          { return $this->id; }
+    public function getDateArrivee() { return $this->date_arrivee; }
+    public function getDateDepart()  { return $this->date_depart; }
+    public function getPrix()        { return $this->prix; }
+    public function getEtat()        { return $this->etat; }
+    public function getSalleID()     { return $this->salle_id; }
+    public function getPromoID()     { return $this->promo_id; }
 
     /* MUTATEURS ----------------------------------------*/
 
@@ -143,10 +117,10 @@ class Produit extends Model
 
     public function setEtat( $etat )
     {
-        if ( $etat == false ) {
-            $this->etat = 0;
-        } else {
+        if ( $etat ) {
             $this->etat = 1;
+        } else {
+            $this->etat = 0;
         }
     }
 

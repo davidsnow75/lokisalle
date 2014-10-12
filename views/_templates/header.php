@@ -12,8 +12,8 @@
 
 <?php if ( DEBUG ): ?>
 <div class="debug cf">
-  <div class="debug__displayer <?= DEBUG_AGGRESSIF ? 'active' : '' ?>" data-toggle="display" data-target="debug__content">Informations de débogage <i class="fa fa-cogs"></i></div>
-  <div class="debug__content <?= DEBUG_AGGRESSIF ? 'display' : '' ?>" id="debug__content">
+  <a href="#debug__content" class="debug__displayer js-toggle <?= DEBUG_AGGRESSIF ? 'active' : '' ?>">Informations de débogage <i class="fa fa-cogs"></i></a>
+  <div id="debug__content" class="debug__content <?= DEBUG_AGGRESSIF ? 'active' : '' ?>">
     <?php $log = Session::flashget('debug'); ?>
 
     <?php foreach($log as $log_item_key => $log_item): ?>
@@ -75,7 +75,7 @@
     </ul>
 <?php if ( Session::userIsLoggedIn() && Session::userIsAdmin() ): ?>
     <div class="sub-menu">
-      <button type="button" class="displayer" data-toggle="display" data-target="menu-administration">Administration</button>
+      <a href="#menu-administration" class="displayer js-toggle">Administration</a>
       <ul id="menu-administration" class="admin-menu">
         <li class="menu-item"><a href="/gestionsalles">Gestion des salles</a></li>
         <li class="menu-item"><a href="#">Gestion des produits</a></li>

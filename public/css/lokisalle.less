@@ -28,33 +28,6 @@
   line-height: normal;
 }
 
-.bouton {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 8px 0;
-  padding: 5px 10px;
-  border: 1px solid @clr01-dark;
-  outline: none;
-  border-radius: 4px;
-  background-color: #fff;
-  color: @noir !important;
-  text-transform: uppercase;
-  line-height: 1.55;
-  font-family: @default-font, sans-serif;
-  font-size: 1em;
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: none!important;
-  }
-
-  &:active {
-    position: relative;
-    top: 2px;
-    left: 1px;
-  }
-}
-
 .msg-retour {
   color: red;
 }
@@ -108,107 +81,15 @@ a {
 }
 
 
-.table {
-  @media (min-width: @sm-min) {
-    & {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-    }
-    & thead { background-color: @clr02-medium; }
-    & tbody tr:nth-of-type(even) { background-color: #f6f6f6; }
-    & tbody tr:hover { background-color: @clr03-light; }
-    & td, & th { padding: 8px; border: 1px solid black; }
-    & td:last-of-type:hover { background-color: white; }
-    & td:last-of-type a:hover { color: #e74c3c; text-decoration: none; }
-  }
+@import '_bouton.less';
 
-  @media (max-width: @xs-max) {
-    // positionnement mobile
-    & {
-      display: block;
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-    }
+@import '_table.less';
 
-    & thead {
-      display: block;
-      float: left;
-      background-color: @clr02-medium;
-    }
+@import '_form.less';
 
-    & tbody {
-      display: block;
-      width: auto;
-      overflow-x: auto;
-      white-space: nowrap;
-      font-size: 0;
-    }
+@import '_debug.less';
 
-    & thead tr {
-      display: block;
-    }
 
-    & tbody tr {
-      display: inline-block;
-      font-size: 1rem;
-    }
-
-    & tbody tr:nth-of-type(even) { background-color: @clr02-light; }
-
-    & th,
-    & td { display: block; padding: 5px; }
-
-    // correction des bordures
-    & { border: 1px solid black; }
-
-    & thead tr { border-right: 1px solid #000; }
-    & tbody tr:not(:last-of-type) { border-right: 1px solid #babcbf; }
-
-    & th { border: 0; }
-    & th:not(:first-of-type) { border-top: 1px solid #000; }
-
-    & td { border: 0; }
-    & td:not(:first-of-type) { border-top: 1px solid #babcbf; }
-  }
-}
-
-// DEBUG
-.debug { }
-
-.debug__displayer {
-  position: relative;
-  z-index: 10;
-  padding: 5px 10px;
-  background-color: black;
-  color: white;
-  text-transform: uppercase;
-  cursor: pointer;
-
-  .fa { margin: 0 10px; }
-
-  &:before { content: "Afficher les "; }
-  &.active:before { content: "Cacher les "; }
-
-  &:hover { box-shadow: 0 2px 5px 0 black; }
-}
-
-.debug__content {
-  display: none;
-  padding: 15px;
-  &.display { display: block; }
-}
-
-.debug__key { font-weight: 700; }
-.debug__key:after { content: " : "; }
-
-.debug__log { font-family: monospace; }
-.debug__log--compound {
-  display: block;
-  white-space: pre;
-  margin: .5em;
-}
 
 //==============================================================================
 // HEADER PRINCIPAL
@@ -297,7 +178,7 @@ a {
 
   .admin-menu {
     display: none;
-    &.display { display: block; }
+    &.active { display: block; }
 
     position: relative;
     z-index: 10;
@@ -331,31 +212,12 @@ a {
     a { color: @clr01-dark; }
 }
 
-form {
-  input[type="submit"] {
-    display: inline-block;
-    padding: 5px;
-    margin: 10px 0;
-    cursor: pointer;
-  }
-
-  @media (min-width: @sm-min) {
-    display: inline-block;
-    text-align: right;
-
-    .form-group { .cf; margin-bottom: 10px; }
-    label { float: left; min-width: 250px; padding-right: 10px; }
-    input[type="radio"] { float: left; }
-  }
-
-  @media (max-width: @xs-max) {
-    label, input, select { display: block; width: 100%; }
-    label, input[type="submit"] { margin-top: 8px; }
-  }
-
-}
-
 @import '_gestionsalles.less';
+
+#ajouter-produit {
+  display: none;
+  &.active { display: block; }
+}
 
 //==============================================================================
 // FOOTER PRINCIPAL

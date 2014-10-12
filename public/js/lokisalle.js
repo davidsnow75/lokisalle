@@ -1,15 +1,25 @@
-var setDisplayer = function () {
+/**
+ * TOGGLERS
+ *
+ * Ajoute/retire la classe 'active' à un élément du DOM au clic sur celui qui porte
+ * la classe 'js-toggle'
+ */
 
-    var displayers = document.querySelectorAll('[data-toggle="display"]');
-    var i = 0;
-    var displayersNumber = displayers.length;
+(function () {
+    'use strict';
 
-    for (i; i < displayersNumber; i++) {
-        displayers[i].onclick = function () {
-            document.getElementById( this.getAttribute('data-target') ).classList.toggle('display');
+    var togglers,
+        togglersNb,
+        i;
+
+    togglers = document.querySelectorAll('.js-toggle');
+    togglersNb = togglers.length;
+
+    for (i = 0; i < togglersNb; i += 1) {
+        togglers[i].addEventListener('click', function () {
+            document.querySelector(this.getAttribute('href')).classList.toggle('active');
             this.classList.toggle('active');
-        };
+        });
     }
-}
+}());
 
-window.onload = setDisplayer;

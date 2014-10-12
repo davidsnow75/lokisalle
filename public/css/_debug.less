@@ -1,0 +1,33 @@
+.debug__displayer {
+  position: relative;
+  z-index: 10;
+  display: block;
+  padding: 5px 10px;
+  background-color: black;
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  .fa { margin: 0 10px; }
+
+  &:before { content: "Afficher les "; }
+  &.active:before { content: "Cacher les "; }
+
+  &:hover { box-shadow: 0 2px 5px 0 black; text-decoration: none; }
+}
+
+.debug__content {
+  display: none;
+  padding: 15px;
+  &.active { display: block; }
+}
+
+.debug__key { font-weight: 700; }
+.debug__key:after { content: " : "; }
+
+.debug__log { font-family: monospace; }
+.debug__log--compound {
+  display: block;
+  white-space: pre;
+  margin: .5em;
+}
