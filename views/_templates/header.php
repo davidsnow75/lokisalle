@@ -37,6 +37,11 @@
 
     <?php endforeach; ?>
 
+      <div class="debug__log-item">
+        <a href="#session-dump" class="debug__key js-toggle">$_SESSION</a>
+        <span class="debug__log debug__log--compound" id="session-dump"><?php var_dump($_SESSION); ?></span>
+      </div>
+
   </div>
 </div>
 <?php endif; ?>
@@ -78,7 +83,7 @@
       <a href="#menu-administration" class="displayer js-toggle">Administration</a>
       <ul id="menu-administration" class="admin-menu">
         <li class="menu-item"><a href="/gestionsalles">Gestion des salles</a></li>
-        <li class="menu-item"><a href="#">Gestion des produits</a></li>
+        <li class="menu-item"><a href="/gestionproduits">Gestion des produits</a></li>
         <li class="menu-item"><a href="/gestionmembres">Gestion des membres</a></li>
         <li class="menu-item"><a href="#">Gestion des commandes</a></li>
         <li class="menu-item"><a href="#">Gestion des avis</a></li>

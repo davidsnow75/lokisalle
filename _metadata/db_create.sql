@@ -46,23 +46,16 @@ DROP TABLE IF EXISTS `lokisalle`.`produits` ;
 
 CREATE TABLE IF NOT EXISTS `lokisalle`.`produits` (
   `id` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `date_arrivee` TIMESTAMP NULL,
-  `date_depart` TIMESTAMP NULL,
+  `date_arrivee` BIGINT NULL,
+  `date_depart` BIGINT NULL,
   `prix` INT(5) NULL,
   `etat` INT(1) NULL,
   `salles_id` INT UNSIGNED NOT NULL,
-  `promotions_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_produits_salles1_idx` (`salles_id` ASC),
-  INDEX `fk_produits_promotions1_idx` (`promotions_id` ASC),
   CONSTRAINT `fk_produits_salles1`
     FOREIGN KEY (`salles_id`)
     REFERENCES `lokisalle`.`salles` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_produits_promotions1`
-    FOREIGN KEY (`promotions_id`)
-    REFERENCES `lokisalle`.`promotions` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

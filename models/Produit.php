@@ -26,13 +26,17 @@ class Produit extends Model
      * (en lui fournissant son id), ou bien d'initialiser un nouveau produit avec un
      * tableau de données le renseignant.
      *
-     * @param mixed $arg array pour la création d'un nouveau produit, int pour la récupération via la BDD
+     * @param mixed $arg array pour la création d'un nouveau produit
+     *                   int   pour la récupération via la BDD
      *
      * @throws Exception si l'initialisation échoue, avec un message décrivant l'erreur
      * @return void
      */
-    public function __construct( $arg )
+    public function __construct( $db, $arg )
     {
+        /* on n'oublie pas de récupérer le connecteur mysqli */
+        parent::__construct($db);
+
         /* on a passé un tableau, c'est donc qu'on veut créer un produit */
         if ( is_array( $arg ) ) {
             $creation_produit_msg = $this->setProduit( $arg );
@@ -67,7 +71,7 @@ class Produit extends Model
         $this->prix         = $produit['prix'];
         $this->etat         = $produit['etat'];
         $this->salle_id     = $produit['salles_id'];
-        $this->promo_id     = $produit['promotions_id'];
+        // $this->promo_id     = $produit['promotions_id'];
     }
 
 
@@ -78,15 +82,15 @@ class Produit extends Model
     public function getPrix()        { return $this->prix; }
     public function getEtat()        { return $this->etat; }
     public function getSalleID()     { return $this->salle_id; }
-    public function getPromoID()     { return $this->promo_id; }
+    // public function getPromoID()     { return $this->promo_id; }
 
     /* MUTATEURS ----------------------------------------*/
 
     public function setDateArrivee( $date_arrivee )
     {
-        try {
-            $date_arrivee = new DateTime( $date_arrivee );
-        } catch (Exception $e) {
+        $date_arrivee = DateTime::createFromFormat('d/m/Y H:i:s', $date_arrivee . ' 00:00:00' );
+
+        if ( !$date_arrivee ) {
             throw new Exception('Le format de la date d\'arrivée fourni est incorrect.');
         }
 
@@ -95,20 +99,20 @@ class Produit extends Model
 
     public function setDateDepart( $date_depart )
     {
-        try {
-            $date_depart = new DateTime( $date_depart );
-        } catch (Exception $e) {
+        $date_depart = DateTime::createFromFormat('d/m/Y H:i:s', $date_depart . ' 00:00:00' );
+
+        if ( !$date_depart ) {
             throw new Exception('Le format de la date de départ fourni est incorrect.');
         }
 
-        $this->date_depart  = $date_depart->format('U');
+        $this->date_depart = $date_depart->format('U');
     }
 
     public function setPrix( $prix )
     {
         $prix = (int) $prix; // on s'assure de bien travailler sur un entier
 
-        if ( !$prix || strlen( (string) $prix ) < 6 ) {
+        if ( !$prix || strlen( (string) $prix ) > 6 ) {
             throw new Exception('Le prix doit être un entier non-nul et ne doit pas compter plus de 6 chiffres.');
         }
 
@@ -126,35 +130,36 @@ class Produit extends Model
 
     public function setSalleID( $salle_id )
     {
-        if ( !is_int($salle_id) || !$salle_id) {
-            throw new Exception('L\'ID de la salle du produit doit être un entier non-nul');
+        $salle_id = (int) $salle_id;
+
+        if ( !$salle_id ) {
+            throw new Exception('L\'ID de la salle du produit doit être un entier non-nul.');
         }
 
         $this->salle_id = $salle_id;
     }
 
-    public function setPromoID( $promo_id )
-    {
-        if ( !is_int($promo_id) || !$promo_id ) {
-            throw new Exception('L\'ID de la promotion du produit doit être un entier non-nul');
-        }
+    // public function setPromoID( $promo_id )
+    // {
+    //     $promo_id = (int) $promo_id;
 
-        $this->promo_id = $promo_id;
-    }
+    //     $this->promo_id = empty($promo_id) ? 0 : $promo_id;
+    // }
 
     /* Méthodes spécifiques -----------------------------*/
 
     public function setProduit( $produit_data )
     {
-        /* vérification de la présence des paramètres */
+        /* Vérification de la présence des paramètres.
+         * NOTE: promo_id est facultatif, mais doit exister. Il sera
+         * simplement fixé à 0 et ne renverra donc rien lors d'une requête SQL.
+         */
         if (
             !is_array( $produit_data)
+            || empty( $produit_data['salle_id'] )
             || empty( $produit_data['date_arrivee'] )
             || empty( $produit_data['date_depart'] )
             || empty( $produit_data['prix'] )
-            || empty( $produit_data['etat'] )
-            || empty( $produit_data['salles_id'] )
-            || empty( $produit_data['promo_id'] )
         ) {
             return 'Les paramètres fournis pour le peuplement de l\'objet sont invalides ou insuffisants.';
         }
@@ -165,9 +170,14 @@ class Produit extends Model
             $this->setDateArrivee( $produit_data['date_arrivee'] );
             $this->setDateDepart( $produit_data['date_depart'] );
             $this->setPrix( $produit_data['prix'] );
-            $this->setEtat( $produit_data['etat'] );
-            $this->setSalleID( $produit_data['salles_id'] );
-            $this->setPromoID( $produit_data['promo_id'] );
+            $this->setEtat( 0 );
+            $this->setSalleID( $produit_data['salle_id'] );
+
+            // if ( empty($produit_data['promo_id']) ) {
+            //     $this->setPromoID( 0 );
+            // } else {
+            //     $this->setPromoID( $produit_data['promo_id'] );
+            // }
 
         } catch (Exception $e) {
             return $e->getMessage();

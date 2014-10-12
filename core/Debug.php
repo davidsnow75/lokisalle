@@ -61,4 +61,11 @@ class Debug
     {
         self::log('parameters', $parameters);
     }
+
+    public static function logCustom( $key, $data )
+    {
+        if ( !in_array($key, ['get', 'post', 'url', 'controller', 'action', 'parameters']) ) {
+            self::log( $key, $data );
+        }
+    }
 }

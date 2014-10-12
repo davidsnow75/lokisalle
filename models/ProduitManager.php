@@ -11,9 +11,18 @@
  * }
  *
  */
+require '../lib/ItemCollector.trait.php';
 
 class ProduitManager extends Model
 {
+    use ItemCollector;
+
+
+    public static function getProduits( $db, $ids = [], $fields = '*' )
+    {
+        return self::getItems($db, 'produits', $ids, $fields);
+    }
+
     /**
      * destiné à recevoir une instance de Produit
      */
@@ -26,8 +35,11 @@ class ProduitManager extends Model
      * @throws Exception l'argument fourni n'est pas une instance de Produit
      * @return void
      */
-    public function __construct( $produit )
+    public function __construct( $db, $produit = '' )
     {
+        /* on n'oublie pas de récupérer le connecteur mysqli */
+        parent::__construct($db);
+
         if ( !($produit instanceof Produit) ) {
             throw new Exception('Le produit manipulé est invalide.');
         } else {
@@ -60,12 +72,11 @@ class ProduitManager extends Model
             case 'insert':
                 $sql = "INSERT INTO produits
                         VALUES ('',
-                                '" . $this->produit->getDateArrivee() . ",
-                                '" . $this->produit->getDateDepart()  . ",
-                                '" . $this->produit->getPrix()        . ",
-                                '" . $this->produit->getEtat()        . ",
-                                '" . $this->produit->getSalleID()     . ",
-                                '" . $this->produit->getPromoID()     . "');";
+                                '" . $this->produit->getDateArrivee() . "',
+                                '" . $this->produit->getDateDepart()  . "',
+                                '" . $this->produit->getPrix()        . "',
+                                '" . $this->produit->getEtat()        . "',
+                                '" . $this->produit->getSalleID()     . "');";
                 break;
 
             case 'update':
@@ -74,8 +85,7 @@ class ProduitManager extends Model
                             date_depart='"   . $this->produit->getDateDepart()  . "',
                             prix='"          . $this->produit->getPrix()        . "',
                             etat='"          . $this->produit->getEtat()        . "',
-                            salles_id='"     . $this->produit->getSalleID()     . "',
-                            promotions_id='" . $this->produit->getPromoID()     . "'
+                            salles_id='"     . $this->produit->getSalleID()     . "'
                         WHERE id='" . $this->produit->getID() . "';";
                 break;
 
@@ -156,18 +166,37 @@ class ProduitManager extends Model
 
         if ( $result->num_rows != 0 ) {
 
-            while ( $doublon_produit = $result->fetch_assoc() ) {
+            $dap = date( 'Ymd', $this->produit->getDateArrivee() );
+            $ddp = date( 'Ymd', $this->produit->getDateDepart() );
+
+            while ( $doublon = $result->fetch_assoc() ) {
+
+                // si da < da', alors dd < dd'
+                // si da' < da, alors dd' < dd
+                // !(da = da')
+                // !(dd = dd')
+                //
+                $da = date( 'Ymd', $doublon['date_arrivee'] );
+                $dd = date( 'Ymd', $doublon['date_depart'] );
+
+
                 if (
-                    $doublon_produit['date_arrivee'] < $this->produit->getDateArrivee()
-                    && $this->produit->getDateArrivee() < $doublon_produit['date_depart']
+                    // si les dates d'arrivée, ou les dates de départ, sont identiques
+                    $da == $dap || $dd == $dap
+
+                    // ou si la date d'arrivée du produit est strictement postérieure à la date d'arrivée du doubon mais antérieure ou égale à la date de départ du doublon
+                    || ($da < $dap && $dd >= $dap)
+
+                    // et réciproquement
+                    || ($dap < $da && $ddp >= $da)
                 ) {
-                    $vrai_doublon_produit[] = $doublon_produit['id'];
+                    $vrai_doublons[] = $doublon['id'];
                 }
             }
         }
 
-        if ( !empty($vrai_doublon_produit) ) {
-            throw new Exception('Le produit manipulé est en conflit avec les produits aux références suivantes : ' . implode(', ', $vrai_doublon_produit) . '.');
+        if ( !empty($vrai_doublons) ) {
+            throw new Exception('Le produit manipulé est en conflit avec les produits listés <a href="/gestionproduits/index/' . implode('/', $vrai_doublons) . '" target="_blank">sur cette page</a>.');
         }
     }
 
@@ -221,7 +250,7 @@ class ProduitManager extends Model
             throw new Exception('Les paramètres donnés pour modification du produit sont invalides.');
         }
 
-        $champs_valables = ['DateArrivee', 'DateDepart', 'Prix', 'Etat', 'SalleID', 'PromoID'];
+        $champs_valables = ['DateArrivee', 'DateDepart', 'Prix', 'Etat', 'SalleID'];
 
         /* et on supprime tous les autres */
         foreach ($modifs as $modif_cle => $modif) {
