@@ -17,7 +17,6 @@ class ProduitManager extends Model
 {
     use ItemCollector;
 
-
     public static function getProduits( $db, $ids = [], $fields = '*' )
     {
         return self::getItems($db, 'produits', $ids, $fields);
@@ -41,7 +40,7 @@ class ProduitManager extends Model
         parent::__construct($db);
 
         if ( !($produit instanceof Produit) ) {
-            throw new Exception('Le produit manipulé est invalide.');
+            throw new Exception('Le produit courant est invalide.');
         } else {
             $this->produit = $produit;
         }
@@ -171,14 +170,14 @@ class ProduitManager extends Model
 
             while ( $doublon = $result->fetch_assoc() ) {
 
-                // si da < da', alors dd < dd'
-                // si da' < da, alors dd' < dd
-                // !(da = da')
-                // !(dd = dd')
-                //
+                /* les tests que l'on s'apprête à faire n'ont de sens que si les deux produits sont différents */
+                if ( $doublon['id'] == $this->produit->getID() ) {
+                    continue;
+                }
+
+
                 $da = date( 'Ymd', $doublon['date_arrivee'] );
                 $dd = date( 'Ymd', $doublon['date_depart'] );
-
 
                 if (
                     // si les dates d'arrivée, ou les dates de départ, sont identiques

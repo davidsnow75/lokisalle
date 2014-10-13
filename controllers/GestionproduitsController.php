@@ -59,4 +59,57 @@ class GestionproduitsController extends AdminController
         header('location: /gestionproduits');
         exit;
     }
+
+    public function modifier( $id )
+    {
+        if ( empty($id) ) {
+            header('location: /gestionproduits');
+            exit;
+        }
+
+        /* si on a renvoyé le formulaire de modification d'un produit */
+        if ( isset($_POST['id']) && $_POST['id'] == $id ) {
+
+            $modifs = [];
+
+            foreach ($_POST as $key => $value) {
+                switch ($key) {
+                    case 'date_arrivee': $modifs['DateArrivee'] = $value; break;
+                    case 'date_depart' : $modifs['DateDepart']  = $value; break;
+                    case 'prix'        : $modifs['Prix']        = $value; break;
+                    case 'etat'        : $modifs['Etat']        = $value; break;
+                    case 'salle_id'    : $modifs['SalleID']     = $value; break;
+                }
+            }
+
+            try {
+                $produit = new Produit( $this->db, $id );
+            } catch (Exception $e) {
+                header('location: /gestionproduits/index/' . intval($id) );
+                exit;
+            }
+
+            try {
+                $manager = new ProduitManager( $this->db, $produit );
+                $manager->updateProduit( $modifs );
+            } catch (Exception $e) {
+                Session::set('events.gestionproduits.msg', $e->getMessage());
+                header('location: /gestionproduits/modifier/' . intval($id) );
+                exit;
+            }
+
+            /* renvoi vers page de base */
+            Session::set('events.gestionproduits.msg', 'Le produit a été modifié avec succès.');
+            header('location: /gestionproduits');
+            exit;
+        }
+
+        /* sinon, on se contente d'afficher le formulaire de modification */
+        $data['produit'] = ProduitManager::getProduits( $this->db, [$id] );
+        $data['salles'] = $this->loadModel('SallesManagerModel')->get_items('salles');
+
+        $data['msg'] = Session::flashget('events.gestionproduits.msg');;
+
+        $this->renderView('gestionproduits/modifier', $data);
+    }
 }

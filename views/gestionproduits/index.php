@@ -49,12 +49,41 @@
     </form>
 
     <?php if ( empty($data['produits']) ): ?>
-    <p>Aucun produit n'a été trouvé.</p>
+
+      <p>Aucun produit n'a été trouvé.</p>
+
     <?php else: ?>
 
-      <?php foreach( $data['produits'] as $produit ): ?>
-        <pre><?php var_dump($produit) ?></pre>
-      <?php endforeach; ?>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date d'arrivée</th>
+            <th>Date de départ</th>
+            <th>Prix</th>
+            <th>État</th>
+            <th>Salle</th>
+            <th style="font-style: italic;">Action</th>
+          </tr>
+        <tbody>
+          <?php $affichage_ok = array_walk_recursive( $data['produits'], function (&$valeur) { $valeur = htmlentities( $valeur, ENT_QUOTES, "utf-8" ); } ); ?>
+
+          <?php foreach($data['produits'] as $produit): ?>
+            <tr>
+              <td><?= $produit['id'] ?></td>
+              <td><?= date('d/m/Y', $produit['date_arrivee'] ) ?></td>
+              <td><?= date('d/m/Y', $produit['date_depart'] )?></td>
+              <td><?= $produit['prix'] ?> €</td>
+              <td><?= $produit['etat'] === '1' ? 'Réservé' : 'Disponible' ?></td>
+              <td><a href="/gestionsalles/index/<?= $produit['salles_id'] ?>"><?= $produit['salles_id'] ?></a></td>
+              <td>
+                <a href="/gestionproduits/modifier/<?= $produit['id'] ?>">modifier</a> |
+                <a href="/gestionproduits/supprimer/<?= $produit['id'] ?>">supprimer</a>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
 
     <?php endif; ?>
 
