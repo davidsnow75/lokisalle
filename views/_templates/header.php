@@ -12,7 +12,7 @@
 
 <?php if ( DEBUG ): ?>
 <div class="debug cf">
-  <a href="#debug__content" class="debug__displayer js-toggle <?= DEBUG_AGGRESSIF ? 'active' : '' ?>">Informations de débogage <i class="fa fa-cogs"></i></a>
+  <span class="debug__displayer js-toggle <?= DEBUG_AGGRESSIF ? 'active' : '' ?>" data-target="#debug__content">Informations de débogage <i class="fa fa-cogs"></i></span>
   <div id="debug__content" class="debug__content <?= DEBUG_AGGRESSIF ? 'active' : '' ?>">
     <?php $log = Session::flashget('debug'); ?>
 
