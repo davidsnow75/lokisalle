@@ -38,14 +38,6 @@ class GestionproduitsController extends AdminController
         /* initialisation du produit */
         try {
             $produit = new Produit( $this->db, $_POST );
-        } catch (Exception $e) {
-            Session::set('events.gestionproduits.msg', $e->getMessage());
-            header('location: /gestionproduits');
-            exit;
-        }
-
-        /* création du produit en BDD */
-        try {
             $produitManager = new ProduitManager( $this->db, $produit );
             $produitManager->insertProduit();
         } catch (Exception $e) {
@@ -84,12 +76,6 @@ class GestionproduitsController extends AdminController
 
             try {
                 $produit = new Produit( $this->db, $id );
-            } catch (Exception $e) {
-                header('location: /gestionproduits/index/' . intval($id) );
-                exit;
-            }
-
-            try {
                 $manager = new ProduitManager( $this->db, $produit );
                 $manager->updateProduit( $modifs );
             } catch (Exception $e) {

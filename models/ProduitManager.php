@@ -154,6 +154,7 @@ class ProduitManager extends Model
 
     /**
      * Vérifie que la salle du produit n'est pas utilisée sur le même créneau horaire par un autre produit
+     * Vérifie également que la salle demandée existe réellement !
      *
      * @throws Exception si le produit ne satisfait pas cette condition
      * @return void
@@ -163,34 +164,34 @@ class ProduitManager extends Model
         $sql = "SELECT id, date_arrivee, date_depart FROM produits WHERE salles_id='" . $this->produit->getSalleID() . "';";
         $result = $this->exequery($sql);
 
-        if ( $result->num_rows != 0 ) {
+        if ( $result->num_rows == 0 ) {
+            throw new Exception('La salle demandée pour le produit n\'existe pas.');
+        }
 
-            $dap = date( 'Ymd', $this->produit->getDateArrivee() );
-            $ddp = date( 'Ymd', $this->produit->getDateDepart() );
+        $dap = date( 'Ymd', $this->produit->getDateArrivee() );
+        $ddp = date( 'Ymd', $this->produit->getDateDepart() );
 
-            while ( $doublon = $result->fetch_assoc() ) {
+        while ( $doublon = $result->fetch_assoc() ) {
 
-                /* les tests que l'on s'apprête à faire n'ont de sens que si les deux produits sont différents */
-                if ( $doublon['id'] == $this->produit->getID() ) {
-                    continue;
-                }
+            /* les tests que l'on s'apprête à faire n'ont de sens que si les deux produits sont différents */
+            if ( $doublon['id'] == $this->produit->getID() ) {
+                continue;
+            }
 
+            $da = date( 'Ymd', $doublon['date_arrivee'] );
+            $dd = date( 'Ymd', $doublon['date_depart'] );
 
-                $da = date( 'Ymd', $doublon['date_arrivee'] );
-                $dd = date( 'Ymd', $doublon['date_depart'] );
+            if (
+                // si les dates d'arrivée, ou les dates de départ, sont identiques
+                $da == $dap || $dd == $dap
 
-                if (
-                    // si les dates d'arrivée, ou les dates de départ, sont identiques
-                    $da == $dap || $dd == $dap
+                // ou si la date d'arrivée du produit est strictement postérieure à la date d'arrivée du doubon mais antérieure ou égale à la date de départ du doublon
+                || ($da < $dap && $dd >= $dap)
 
-                    // ou si la date d'arrivée du produit est strictement postérieure à la date d'arrivée du doubon mais antérieure ou égale à la date de départ du doublon
-                    || ($da < $dap && $dd >= $dap)
-
-                    // et réciproquement
-                    || ($dap < $da && $ddp >= $da)
-                ) {
-                    $vrai_doublons[] = $doublon['id'];
-                }
+                // et réciproquement
+                || ($dap < $da && $ddp >= $da)
+            ) {
+               $vrai_doublons[] = $doublon['id'];
             }
         }
 

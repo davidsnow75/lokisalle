@@ -53,7 +53,6 @@ class Produit extends Model
          * récupération d'un produit de la BDD.
          */
         $sql = "SELECT * FROM produits WHERE id='" . intval($arg) . "';";
-
         $result = $this->exequery($sql);
 
         if ( $result->num_rows == 0 ) {
