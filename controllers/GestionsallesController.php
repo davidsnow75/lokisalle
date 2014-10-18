@@ -10,23 +10,15 @@ class GestionsallesController extends AdminController
     public function index()
     {
         $requested_ids = func_get_args();
-
-        $salles_manager = $this->loadModel('SallesManagerModel');
-
-        $data['salles'] = $salles_manager->get_items('salles', $requested_ids);
-
+        $data['salles'] = $this->loadModel('SallesManagerModel')->get_items('salles', $requested_ids);
         $data['msg'] = $this->test_events_msg();
-
         $this->renderView('gestionsalles/index', $data);
     }
 
     // ajout d'une salle (formulaire)
     public function ajouter()
     {
-        $salles_manager = $this->loadModel('SallesManagerModel');
-
-        $ajout_return = $salles_manager->add_item( 'salles' );
-
+        $ajout_return = $this->loadModel('SallesManagerModel')->add_item('salles');
         Session::set('events.gestionsalles.msg', $ajout_return);
         header('location: /gestionsalles');
     }

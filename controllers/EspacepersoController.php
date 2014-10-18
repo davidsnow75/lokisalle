@@ -4,11 +4,9 @@ class EspacepersoController extends MembreController
 {
     public function index()
     {
-        $membres_manager = $this->loadModel('MembresManagerModel');
-
         // requête des infos du membre
         $fields = 'id, pseudo, nom, email, sexe, ville, cp, adresse, statut';
-        $data['membres'] = $membres_manager->get_items( 'membres', [$this->id], $fields );
+        $data['membres'] = $this->loadModel('MembresManagerModel')->get_items( 'membres', [$this->id], $fields );
 
         // stockage d'un éventuel msg de la part d'un modèle
         $data['msg'] = $this->test_events_msg();

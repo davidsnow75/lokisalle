@@ -24,3 +24,5 @@ define('DEBUG_AGGRESSIF', false);
 define('ADMIN_CONTROLLERS_ARE_PREFIXED', false);
 // le préfixe pour les fichiers de contrôleur admin
 define('ADMIN_CONTROLLER_PREFIX', 'gestion');
+
+setlocale (LC_TIME, 'fr_FR.utf8','fra');

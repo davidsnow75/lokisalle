@@ -4,13 +4,9 @@ trait ItemCollector
 {
     public static function getItems( $db, $table, $id_items = [], $fields = '*' )
     {
-        // Si la table est absente ou incorrecte, alors on s'arrête là
-        if ( empty($table) || !is_string( $table ) ) {
-            return [];
-        }
-
-        // avant de continuer, on sécurise l'argument passé
+        // avant de continuer, on sécurise les arguments passés
         $table = $db->real_escape_string( $table );
+        $fields = $db->real_escape_string( $fields );
 
         // Y a-t-il eu des items spécifiquement demandés ?
         if ( is_array($id_items) && $id_items !== [] ) {
@@ -32,6 +28,12 @@ trait ItemCollector
 
         $result = $db->query($sql);
 
+        if ( !$result ) { // la requête a renvoyé une erreur
+            Session::set('events.error.db_error', $db->error);
+            header('location: /error/db_error');
+            exit(1);
+        }
+
         if ( $result->num_rows === 0 ) {
             return []; // pas d'élément trouvé
         }
@@ -42,4 +44,25 @@ trait ItemCollector
 
         return $items;
     }
+
+    public static function getItemsSample( $db, $sql )
+    {
+        $result = $db->query($sql);
+
+        if ( !$result ) { // la requête a renvoyé une erreur
+            Session::set('events.error.db_error', $db->error);
+            header('location: /error/db_error');
+            exit(1);
+        }
+
+        if ( $result->num_rows === 0 ) {
+            return []; // pas d'élément trouvé
+        }
+
+        while ($item = $result->fetch_assoc() ) {
+            $items[] = $item;
+        }
+
+        return $items;
+     }
 }

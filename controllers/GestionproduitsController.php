@@ -8,13 +8,12 @@ class GestionproduitsController extends AdminController
 {
     public function index()
     {
-        /* récupération des salles pour préremplir les champs du formulaire */
-        $salles_manager = $this->loadModel('SallesManagerModel');
-        $data['salles'] = $salles_manager->get_items('salles');
-
         /* récupération des produits */
         $ids = func_get_args();
         $data['produits'] = ProduitManager::getProduits( $this->db, $ids );
+
+        /* récupération des salles pour préremplir les champs du formulaire */
+        $data['salles'] = $this->loadModel('SallesManagerModel')->get_items('salles');
 
         /* récupération d'un éventuel msg d'erreur */
         $data['msg'] = Session::flashget('events.gestionproduits.msg');
@@ -93,8 +92,7 @@ class GestionproduitsController extends AdminController
         /* sinon, on se contente d'afficher le formulaire de modification */
         $data['produit'] = ProduitManager::getProduits( $this->db, [$id] );
         $data['salles'] = $this->loadModel('SallesManagerModel')->get_items('salles');
-
-        $data['msg'] = Session::flashget('events.gestionproduits.msg');;
+        $data['msg'] = Session::flashget('events.gestionproduits.msg');
 
         $this->renderView('gestionproduits/modifier', $data);
     }

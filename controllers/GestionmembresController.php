@@ -8,12 +8,8 @@ class GestionmembresController extends AdminController
     public function index()
     {
         $requested_ids = func_get_args();
-
-        $membres_manager = $this->loadModel('MembresManagerModel');
-
         $fields = 'id, pseudo, nom, email, sexe, ville, cp, adresse, statut';
-
-        $data['membres'] = $membres_manager->get_items( 'membres', $requested_ids, $fields );
+        $data['membres'] = $this->loadModel('MembresManagerModel')->get_items( 'membres', $requested_ids, $fields );
 
         $data['msg'] = $this->test_events_msg();
 

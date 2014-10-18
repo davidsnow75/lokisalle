@@ -4,6 +4,7 @@ class AccueilController extends Controller
 {
     public function index()
     {
-        $this->renderView('accueil/index');
+        $data['produits'] = ProduitManager::getThreeLastProduits($this->db);
+        $this->renderView('accueil/index', $data);
     }
 }
