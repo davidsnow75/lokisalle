@@ -8,8 +8,7 @@ class ErrorController extends Controller
         if ( Session::flashget('events.error.default_error') ) {
             $this->renderView('error/default_error');
         } else {
-            header('location: /');
-            exit(0);
+            $this->quit('/');
         }
     }
 
@@ -20,8 +19,7 @@ class ErrorController extends Controller
         if ( $error ) {
             $this->renderView('error/custom_error', $error);
         } else {
-            header('location: /');
-            exit(0);
+            $this->quit('/');
         }
     }
 
@@ -40,8 +38,7 @@ class ErrorController extends Controller
             $this->renderView('error/404', $data);
 
         } else {
-            header('location: /');
-            exit(0);
+            $this->quit('/');
         }
     }
 
@@ -51,8 +48,7 @@ class ErrorController extends Controller
             $data['error'] = Session::flashget('events.error.db_error');
             $this->renderView('error/db_error', $data);
         } else {
-            header('location: /');
-            exit(0);
+            $this->quit('/');
         }
     }
 }

@@ -26,16 +26,12 @@ class EspacepersoController extends MembreController
             // si l'id demandé pour modification ne correspond pas à l'utilisateur qui
             // demande la modif, alors on interdit toute poursuite des opérations
             if ( $_POST['id'] !== $this->id ) {
-                Session::set('events.espaceperso.msg', 'forbidden_access');
-                header( 'location: /espaceperso' );
-                exit;
+                $this->quitWithLog('/espaceperso', 'events.espaceperso.msg', 'forbidden_access');
             }
 
             $modif_return = $membres_manager->modify_item();
 
-            Session::set('events.espaceperso.msg', $modif_return);
-            header( 'location: /espaceperso/modifier' );
-            exit;
+            $this->quitWithLog('/espaceperso/modifier', 'events.espaceperso.msg', $modif_return);
 
         } else { // sinon, on se contente d'afficher le formulaire de modification d'un membre
 

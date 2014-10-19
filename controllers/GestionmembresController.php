@@ -20,8 +20,7 @@ class GestionmembresController extends AdminController
     public function supprimer($id_membre)
     {
         if ( empty($id_membre) ) {
-            header('location: /gestionmembres');
-            return;
+            $this->quit('/gestionmembres');
         }
 
         $membres_manager = $this->loadModel('MembresManagerModel');
@@ -35,15 +34,12 @@ class GestionmembresController extends AdminController
 
             // seul l'utilisateur spécial peut supprimer un administrateur
             if ( $membre_cible[0]['statut'] == '1' && !Session::user_is_godlike() ) {
-                Session::set('events.gestionmembres.msg', 'forbidden_access');
-                header('location: /gestionmembres');
-                return;
+                $this->quitWithLog('/gestionmembres', 'events.gestionmembres.msg', 'forbidden_access');
             }
 
             $delete_return = $membres_manager->delete_item( 'membres', intval($_POST['id']) );
 
-            Session::set('events.gestionmembres.msg', $delete_return);
-            header('location: /gestionmembres');
+            $this->quitWithLog('/gestionmembres', 'events.gestionmembres.msg', $delete_return);
 
         } else {
             // la validation n'a donc pas été envoyée, on affiche un message d'alerte
@@ -60,23 +56,18 @@ class GestionmembresController extends AdminController
 
         // par défaut, seul un utilisateur spécial peut déclencher cette méthode
         if ( !Session::user_is_godlike() ) {
-            Session::set('events.gestionmembres.msg', 'forbidden_access');
-            header('location: /gestionmembres');
-            return;
+            $this->quitWithLog('/gestionmembres', 'events.gestionmembres.msg', 'forbidden_access');
         }
 
         // si on accède à cette méthode depuis un formulaire, alors on a du travail
         if ( !empty($_POST['id'] ) ) {
 
             $modif_return = $membres_manager->setadmin();
-
-            Session::set('events.gestionmembres.msg', $modif_return);
-            header('location: /gestionmembres/index/' . intval($_POST['id']) );
+            $this->quitWithLog( '/gestionmembres/index/' . intval($_POST['id']), 'events.gestionmembres.msg', $modif_return )
 
         } else { // sinon, on se contente de renvoyer la page standard
 
-            header('location: /gestionmembres');
-            return;
+            $this->quit('/gestionmembres');
         }
     }
 

@@ -5,28 +5,21 @@ class InscriptionController extends Controller
     public function index()
     {
         if ( Session::userIsLoggedIn() ) {
-            header('location: /connexion');
-            return;
+            $this->quit('/connexion');
         }
 
         $data['msg'] = $this->test_events_msg();
-
         $this->renderView('inscription/index', $data);
     }
 
     public function inscrire()
     {
-        $membres_manager = $this->loadModel('MembresManagerModel');
-
-        $register_return = $membres_manager->add_item( 'membres' );
+        $register_return = $this->loadModel('MembresManagerModel')->add_item('membres');
 
         if ( $register_return === 'valid_add_item' ) {
-            Session::set('events.connexion.msg', 'valid_inscription');
-            header('location: /connexion');
-
+            $this->quitWithLog( '/connexion', 'events.connexion.msg', 'valid_inscription' );
         } else {
-            Session::set('events.inscription.msg', $register_return);
-            header('location: /inscription');
+            $this->quitWithLog( '/inscription', 'events.inscription.msg', $register_return );
         }
     }
 

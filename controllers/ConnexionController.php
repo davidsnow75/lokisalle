@@ -7,8 +7,7 @@ class ConnexionController extends Controller
         parent::__construct();
 
         if ( Session::userIsLoggedIn() ) {
-           header('location: /espaceperso');
-           exit;
+           $this->quit('/espaceperso');
         }
     }
 
@@ -30,7 +29,7 @@ class ConnexionController extends Controller
             Session::set('events.connexion.msg', $login_return);
         }
 
-        header('location: /connexion');
+        $this->quit('/connexion');
     }
 
     protected function test_events_msg()

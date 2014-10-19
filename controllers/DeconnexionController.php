@@ -7,9 +7,7 @@ class DeconnexionController extends Controller
         parent::__construct();
 
         if ( !Session::userIsLoggedIn() ) {
-            Session::set('events.connexion.msg', 'no_active_connexion');
-            header('location: /connexion');
-            exit;
+            $this->quitWithLog('/connexion', 'events.connexion.msg', 'no_active_connexion');
         }
     }
 
@@ -23,9 +21,6 @@ class DeconnexionController extends Controller
     {
         $login_model = $this->loadModel('LoginModel');
         $logout_msg = $login_model->logout();
-
-        Session::set('events.connexion.msg', $logout_msg);
-        header('location: /connexion');
-        exit;
+        $this->quitWithLog('/connexion', 'events.connexion.msg', $logout_msg);
     }
 }

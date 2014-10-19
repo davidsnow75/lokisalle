@@ -19,16 +19,14 @@ class GestionsallesController extends AdminController
     public function ajouter()
     {
         $ajout_return = $this->loadModel('SallesManagerModel')->add_item('salles');
-        Session::set('events.gestionsalles.msg', $ajout_return);
-        header('location: /gestionsalles');
+        $this->quitWithLog( '/gestionsalles', 'events.gestionsalles.msg', $ajout_return );
     }
 
     // modification d'une salle (formulaire)
     public function modifier($id_salle)
     {
         if ( empty($id_salle) ) {
-            header('location: /gestionsalles');
-            return;
+            $this->quit('/gestionsalles');
         }
 
         $salles_manager = $this->loadModel('SallesManagerModel');
@@ -37,17 +35,14 @@ class GestionsallesController extends AdminController
         if ( !empty($_POST['id'] ) ) {
 
             $modif_return = $salles_manager->modify_item();
-
-            Session::set('events.gestionsalles.msg', $modif_return);
-            header('location: /gestionsalles/modifier/' . intval($_POST['id']) );
+            $this->quit( '/gestionsalles/modifier/' . intval($_POST['id']), 'events.gestionsalles.msg', $modif_return );
 
         } else { // sinon, on se contente d'afficher le formulaire de modification d'une salle
 
             $data['salle'] = $salles_manager->get_items( 'salles', array($id_salle) );
 
             if ( empty($data['salle']) ) {
-                header('location: /gestionsalles/index/' . intval($id_salle));
-                return;
+                $this->quit('/gestionsalles/index/' . intval($id_salle));
             }
 
             $data['msg'] = $this->test_events_msg();
@@ -61,8 +56,7 @@ class GestionsallesController extends AdminController
     public function supprimer($id_salle)
     {
         if ( empty($id_salle) ) {
-            header('location: /gestionsalles');
-            return;
+            $this->quit('/gestionsalles');
         }
 
         $salles_manager = $this->loadModel('SallesManagerModel');
@@ -71,14 +65,10 @@ class GestionsallesController extends AdminController
         if ( !empty($_POST['id']) ) {
 
             $delete_return = $salles_manager->delete_item( 'salles', intval($_POST['id']) );
+            $this->quitWithLog('/gestionsalles', 'events.gestionsalles.msg', $delete_return );
 
-            Session::set('events.gestionsalles.msg', $delete_return);
-            header('location: /gestionsalles');
-
-        } else {
-            // la validation n'a donc pas été envoyée, on affiche un message d'alerte
+        } else { // la validation n'a donc pas été envoyée, on affiche un message d'alerte
             $data = (int) $id_salle;
-
             $this->renderView('gestionsalles/supprimer', $data);
         }
     }
