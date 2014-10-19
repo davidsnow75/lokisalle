@@ -44,12 +44,25 @@ abstract class Controller
     }
 
     /**
-     * Charge le modèle donné en argument en lui transmettant la connection
-     * à la BDD
+     * Renvoie une instance d'une classe à qui on aura passé en premier argument pour son
+     * constructeur le connecteur à la BDD.
+     *
+     * Cette fonction peut être appelée avec un minimum d'un argument (le nom de la classe)
+     * et un maximum illimité d'argument. À partir du second argument, ils seront tout simplement
+     * transmis au constructeur de la classe qui les utilisera si besoin est.
      */
-    public function loadModel($modele_a_charger)
+    public function loadModel()
     {
-        return new $modele_a_charger($this->db);
+        $args = func_get_args();
+
+        if (empty($args)) {
+            return false; // si aucun argument n'a été passé
+        }
+
+        $reflection = new ReflectionClass( $args[0] );
+        $args[0] = $this->db;
+
+        return $reflection->newInstanceArgs( $args );
     }
 
     /**
@@ -67,5 +80,18 @@ abstract class Controller
         }
 
         require '../views/_templates/footer.php';
+    }
+
+    /**
+     *
+     */
+    public function quit( $location ) {
+        header('location: http://lokisalle' . $location);
+        exit;
+    }
+
+    public function quitWithLog( $location, $logkey, $log ) {
+        Session::set( $logkey, $log );
+        $this->quit( $location );
     }
 }

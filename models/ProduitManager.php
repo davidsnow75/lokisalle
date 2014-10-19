@@ -1,58 +1,9 @@
 <?php
 
-/* Manager de Produit
- *
- * À instancier dans un bloc try
- *
- * try {
- *     $produitmanager = new ProduitManager( $produit );
- * } catch (Exception $e) {
- *     echo $e->getMessage();
- * }
- *
- */
-require '../lib/ItemCollector.trait.php';
+/* Manager de Produit */
 
 class ProduitManager extends Model
 {
-    use ItemCollector;
-
-    public static function getProduits( $db, $ids = [], $fields = '*' )
-    {
-        return self::getItems($db, 'produits', $ids, $fields);
-    }
-
-    public static function getThreeLastProduits( $db )
-    {
-        $sql = "SELECT
-                    produits.id           AS produitID,
-                    produits.date_arrivee AS produitDebut,
-                    produits.date_depart  AS produitFin,
-                    produits.prix         AS produitPrix,
-                    produits.etat         AS produitEtat,
-                    salles.id             AS salleID,
-                    salles.pays           AS sallePays,
-                    salles.ville          AS salleVille,
-                    salles.adresse        AS salleAdresse,
-                    salles.cp             AS salleCP,
-                    salles.titre          AS salleTitre  ,
-                    salles.description    AS salleDescription,
-                    salles.photo          AS sallePhoto,
-                    salles.capacite       AS salleCapacite,
-                    salles.categorie      AS salleCategorie
-                FROM
-                    produits
-                LEFT JOIN
-                    salles ON salles.id = produits.salles_id
-                WHERE
-                    FROM_UNIXTIME( produits.date_arrivee ) > CURDATE()
-                ORDER BY
-                    produits.id DESC
-                LIMIT 0,3;";
-
-        return self::getItemsSample( $db, $sql );
-    }
-
     /**
      * destiné à recevoir une instance de Produit
      */
@@ -184,6 +135,21 @@ class ProduitManager extends Model
     }
 
     /**
+     * Vérifie que la salle du produit existe réellement
+     *
+     * @throws Exception si le produit ne satisfait pas cette condition
+     * @return void
+     */
+    public function checkSalle()
+    {
+        $sql = "SELECT id FROM salles WHERE id = " . $this->produit->getSalleID() . ";";
+
+        if ( !$this->exequery($sql)->num_rows ) {
+            throw new Exception('La salle demandée pour le produit n\'existe pas.');
+        }
+    }
+
+    /**
      * Vérifie que la salle du produit n'est pas utilisée sur le même créneau horaire par un autre produit
      * Vérifie également que la salle demandée existe réellement !
      *
@@ -192,11 +158,12 @@ class ProduitManager extends Model
      */
     public function checkProduitUnique()
     {
-        $sql = "SELECT id, date_arrivee, date_depart FROM produits WHERE salles_id='" . $this->produit->getSalleID() . "';";
+        $sql = "SELECT id, date_arrivee, date_depart FROM produits WHERE salles_id=" . $this->produit->getSalleID() . ";";
         $result = $this->exequery($sql);
 
-        if ( $result->num_rows == 0 ) {
-            throw new Exception('La salle demandée pour le produit n\'existe pas.');
+        /* s'il n'y a pas de résultat, alors pas de conflit possible */
+        if ( !$result->num_rows ) {
+            return;
         }
 
         $dap = date( 'Ymd', $this->produit->getDateArrivee() );
@@ -253,6 +220,9 @@ class ProduitManager extends Model
         /* première condition: les dates doivent être cohérentes */
         $this->checkDateArrivee();
         $this->checkDateRetour();
+
+        /* deuxième condition: la salle doit exister */
+        $this->checkSalle();
 
         /* deuxième condition: une salle ne peut pas être utilisée par plus d'un produit à la fois */
         $this->checkProduitUnique();

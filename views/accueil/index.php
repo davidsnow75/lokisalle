@@ -37,7 +37,7 @@
             <p><?= $produit['produitPrix'] ?>€ pour <?= $produit['salleCapacite'] ?> personnes</p>
           </div>
           <div class="col xs12">
-          <p><a href="/gestionsalles/index/<?= $produit['salleID'] ?>">Voir la fiche détaillée</a></p>
+          <p><a href="/produit/index/<?= $produit['produitID'] ?>">Voir la fiche détaillée</a></p>
             <?php if ( Session::userIsLoggedIn() ): ?>
               <p><a href="#">Ajouter au panier</a></p>
             <?php else: ?>

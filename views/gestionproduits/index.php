@@ -19,7 +19,7 @@
         <label>Salle concernée&nbsp;:</label>
         <select name="salle_id">
           <?php foreach ($data['salles'] as $salle): ?>
-          <option value="<?= $salle['id'] ?>" <?= Session::get('post_data.ajouter-produit.salle_id') == $salle['id'] ? 'selected' : '' ?>><?= $salle['titre'] ?> (<?= $salle['id'] ?>)</option>
+          <option value="<?= $salle['id'] ?>" <?= Session::get('post_data.ajouter-produit.salle_id') == $salle['id'] ? 'selected' : '' ?>><?= $salle['titre'] ?> (<?= $salle['id'] ?>) - <?= $salle['ville'] ?></option>
           <?php endforeach; ?>
         </select>
 
