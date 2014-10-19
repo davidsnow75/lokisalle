@@ -71,6 +71,7 @@ abstract class Controller
      */
     public function renderView($view, $data = null)
     {
+        require '../views/functions.php';
         require '../views/_templates/header.php';
 
         if ( file_exists('../views/' . $view . '.php') ) {

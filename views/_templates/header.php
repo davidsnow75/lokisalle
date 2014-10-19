@@ -73,7 +73,7 @@
   <div class="ctn">
     <ul>
       <li class="menu-item current-menu-item"><i class="fa fa-home"></i>&nbsp; <a href="/">Accueil</a></li>
-      <li class="menu-item"><i class="fa fa-book"></i>&nbsp; <a href="#">Réservation</a></li>
+      <li class="menu-item"><i class="fa fa-book"></i>&nbsp; <a href="/reservation">Réservation</a></li>
       <li class="menu-item"><i class="fa fa-search"></i>&nbsp; <a href="">Recherche</a></li>
       <li class="menu-item"><i class="fa fa-user"></i>&nbsp; <a href="/connexion">Espace personnel</a></li>
       <li class="menu-item"><i class="fa fa-lightbulb-o"></i>&nbsp; <a href="#">À propos</a></li>

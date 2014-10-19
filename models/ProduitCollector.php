@@ -33,6 +33,18 @@ class ProduitCollector extends ItemCollector
         return $this->getItemsCustomSQL( $sql );
     }
 
+    public function getAllValidProduits()
+    {
+        $sql = "SELECT $this->fields
+                FROM produits
+                LEFT JOIN salles ON salles.id = produits.salles_id
+                WHERE FROM_UNIXTIME( produits.date_arrivee ) > CURDATE()
+                      AND produits.etat = 0
+                ORDER BY produits.date_arrivee;";
+
+        return $this->getItemsCustomSQL( $sql );
+    }
+
     public function getThreeLastProduits()
     {
         $sql = "SELECT $this->fields

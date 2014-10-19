@@ -1,0 +1,22 @@
+.produitSM {
+    position: relative;
+    overflow: hidden;
+    margin: 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.produitSM p { margin: .5em 0; padding: 0 15px; }
+
+.produitSM__links {
+    @media (min-width: @lg-min) {
+        position: absolute;
+        bottom: 0; right: 0;
+    }
+
+    text-align: right;
+}
+
+.produitSM__links > p > a:before {
+    content: "× ";
+}
