@@ -19,7 +19,7 @@ class GestionsallesController extends AdminController
     public function ajouter()
     {
         $ajout_return = $this->loadModel('SallesManagerModel')->add_item('salles');
-        $this->quitWithLog( '/gestionsalles', 'events.gestionsalles.msg', $ajout_return );
+        $this->quit( '/gestionsalles', 'events.gestionsalles.msg', $ajout_return );
     }
 
     // modification d'une salle (formulaire)
@@ -65,7 +65,7 @@ class GestionsallesController extends AdminController
         if ( !empty($_POST['id']) ) {
 
             $delete_return = $salles_manager->delete_item( 'salles', intval($_POST['id']) );
-            $this->quitWithLog('/gestionsalles', 'events.gestionsalles.msg', $delete_return );
+            $this->quit('/gestionsalles', 'events.gestionsalles.msg', $delete_return );
 
         } else { // la validation n'a donc pas été envoyée, on affiche un message d'alerte
             $data = (int) $id_salle;

@@ -7,7 +7,7 @@ class DeconnexionController extends Controller
         parent::__construct();
 
         if ( !Session::userIsLoggedIn() ) {
-            $this->quitWithLog('/connexion', 'events.connexion.msg', 'no_active_connexion');
+            $this->quit('/connexion', 'events.connexion.msg', 'no_active_connexion');
         }
     }
 
@@ -21,6 +21,6 @@ class DeconnexionController extends Controller
     {
         $login_model = $this->loadModel('LoginModel');
         $logout_msg = $login_model->logout();
-        $this->quitWithLog('/connexion', 'events.connexion.msg', $logout_msg);
+        $this->quit('/connexion', 'events.connexion.msg', $logout_msg);
     }
 }

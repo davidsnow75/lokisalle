@@ -17,9 +17,9 @@ class InscriptionController extends Controller
         $register_return = $this->loadModel('MembresManagerModel')->add_item('membres');
 
         if ( $register_return === 'valid_add_item' ) {
-            $this->quitWithLog( '/connexion', 'events.connexion.msg', 'valid_inscription' );
+            $this->quit( '/connexion', 'events.connexion.msg', 'valid_inscription' );
         } else {
-            $this->quitWithLog( '/inscription', 'events.inscription.msg', $register_return );
+            $this->quit( '/inscription', 'events.inscription.msg', $register_return );
         }
     }
 

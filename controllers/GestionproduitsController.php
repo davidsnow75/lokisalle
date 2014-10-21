@@ -38,11 +38,11 @@ class GestionproduitsController extends AdminController
             $produit = $this->loadModel( 'Produit', $_POST );
             $this->loadModel('ProduitManager', $produit)->insertProduit();
         } catch (Exception $e) {
-            $this->quitWithLog('/gestionproduits', 'events.gestionproduits.msg', $e->getMessage());
+            $this->quit('/gestionproduits', 'events.gestionproduits.msg', $e->getMessage());
         }
 
         /* renvoi vers page de base */
-        $this->quitWithLog('/gestionproduits', 'events.gestionproduits.msg', 'Le produit a été créé avec succès.');
+        $this->quit('/gestionproduits', 'events.gestionproduits.msg', 'Le produit a été créé avec succès.');
     }
 
     public function modifier( $id )
@@ -70,11 +70,11 @@ class GestionproduitsController extends AdminController
                 $produit = $this->loadModel( 'Produit', $id );
                 $this->loadModel('ProduitManager', $produit)->updateProduit( $modifs );
             } catch (Exception $e) {
-                $this->quitWithLog('/gestionproduits/modifier/' . intval($id), 'events.gestionproduits.msg', $e->getMessage());
+                $this->quit('/gestionproduits/modifier/' . intval($id), 'events.gestionproduits.msg', $e->getMessage());
             }
 
             /* renvoi vers page de base */
-            $this->quitWithLog('/gestionproduits', 'events.gestionproduits.msg', 'Le produit a été modifié avec succès.');
+            $this->quit('/gestionproduits', 'events.gestionproduits.msg', 'Le produit a été modifié avec succès.');
         }
 
         /* sinon, on se contente d'afficher le formulaire de modification */

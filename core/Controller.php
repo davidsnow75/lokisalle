@@ -86,13 +86,12 @@ abstract class Controller
     /**
      *
      */
-    public function quit( $location ) {
+    public function quit( $location, $logkey = false, $log = false ) {
+        if ( $logkey && $log && is_string($logkey) ) {
+            Session::set( $logkey, $log );
+        }
+
         header('location: http://lokisalle' . $location);
         exit;
-    }
-
-    public function quitWithLog( $location, $logkey, $log ) {
-        Session::set( $logkey, $log );
-        $this->quit( $location );
     }
 }
