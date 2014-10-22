@@ -70,10 +70,12 @@ class ProduitManager extends Model
                         WHERE id='" . $this->produit->getID() . "';";
                 break;
 
-            default: $sql = ''; // TODO: vérifier si on ne peut pas mieux faire que ça
+            default: $sql = false;
         }
 
-        $result = $this->exequery($sql);
+        if ( $sql ) {
+            $this->exequery($sql);
+        }
     }
 
     /*=======================================================================*/

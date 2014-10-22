@@ -87,7 +87,7 @@
         <li class="menu-item"><a href="/gestionmembres">Gestion des membres</a></li>
         <li class="menu-item"><a href="#">Gestion des commandes</a></li>
         <li class="menu-item"><a href="#">Gestion des avis</a></li>
-        <li class="menu-item"><a href="#">Gestion des codes promo</a></li>
+        <li class="menu-item"><a href="/gestionpromotions">Gestion des codes promo</a></li>
         <li class="menu-item"><a href="#">Statistiques</a></li>
         <li class="menu-item"><a href="#">Newsletters</a></li>
       </ul>

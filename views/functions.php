@@ -1,5 +1,16 @@
 <?php
+/*---------------------------------------------------------------------------*/
+function displayMsg( $data ) {
+  if ( empty($data['msg']) ) { return; }
 
+  ob_start(); ?>
+
+  <p class="msg-retour"><?= $data['msg'] ?></p>
+
+<?php return ob_get_clean();
+}
+
+/*---------------------------------------------------------------------------*/
 function showProduit( $produit ) {
 /*
     $produit['produitID']
