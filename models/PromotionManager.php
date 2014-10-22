@@ -5,7 +5,7 @@ class PromotionManager extends Model
     protected $promotion;
 
     const INSERT_SUCCESS = 'La promotion a bien été enregistrée.';
-    const UPDATE_SUCCESS = 'La promotion a bien été modifée.';
+    const UPDATE_SUCCESS = 'La promotion a bien été modifiée.';
     const DELETE_SUCCESS = 'La promotion a bien été supprimée.';
     const INSERT_FAILURE = 'La promotion n\'a pas pu être enregistrée.';
     const UPDATE_FAILURE = 'La promotion n\'a pas pu être mise à jour.';
@@ -86,7 +86,6 @@ class PromotionManager extends Model
 
         $champs_valables = ['code_promo', 'reduction'];
 
-        /* et on supprime tous les autres */
         foreach ($modifs as $modif_cle => $modif) {
             if ( !in_array( $modif_cle, $champs_valables, true ) || !is_scalar( $modif ) ) {
                 unset( $modifs[$modif_cle] );

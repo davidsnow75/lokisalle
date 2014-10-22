@@ -1,23 +1,13 @@
 <?php
 
-/**
- * Gestion des produits par l'administrateur
- */
-
 class GestionproduitsController extends AdminController
 {
     public function index()
     {
-        /* récupération des produits */
         $ids = func_get_args();
         $data['produits'] = $this->loadModel('ProduitCollector')->getProduits( $ids );
-
-        /* récupération des salles pour préremplir les champs du formulaire */
         $data['salles'] = $this->loadModel('SallesManagerModel')->get_items('salles');
-
-        /* récupération d'un éventuel msg d'erreur */
         $data['msg'] = Session::flashget('events.gestionproduits.msg');
-
         $this->renderView('gestionproduits/index', $data);
     }
 
@@ -28,33 +18,32 @@ class GestionproduitsController extends AdminController
         }
 
         /* sticky form */
-        foreach($_POST as $key => $value) {
-            $html_clean[$key] = htmlentities($value, ENT_QUOTES, "utf-8");
-        }
+        foreach($_POST as $key => $value) { $html_clean[$key] = htmlentities($value, ENT_QUOTES, "utf-8"); }
         Session::set('post_data.ajouter-produit', $html_clean);
 
-        /* initialisation du produit */
+        /* création */
         try {
-            $produit = $this->loadModel( 'Produit', $_POST );
-            $this->loadModel('ProduitManager', $produit)->insertProduit();
+            $produit = $this->loadModel('Produit', $_POST);
+            $insertMsg = $this->loadModel('ProduitManager', $produit)->insertProduit();
         } catch (Exception $e) {
             $this->quit('/gestionproduits', 'events.gestionproduits.msg', $e->getMessage());
         }
 
-        /* renvoi vers page de base */
-        $this->quit('/gestionproduits', 'events.gestionproduits.msg', 'Le produit a été créé avec succès.');
+        /* suppression du sticky form & renvoi vers page de base */
+        Session::delete('post_data.ajouter-produit');
+        $this->quit('/gestionproduits', 'events.gestionproduits.msg', $insertMsg);
     }
 
     public function modifier( $id )
     {
-        if ( empty($id) ) {
+        $id = (int) func_get_arg(0);
+
+        if ( !$id ) {
             $this->quit('/gestionproduits');
         }
 
-        /* si on a renvoyé le formulaire de modification d'un produit */
+        /* si le formulaire a été saisi */
         if ( isset($_POST['id']) && $_POST['id'] == $id ) {
-
-            $modifs = [];
 
             foreach ($_POST as $key => $value) {
                 switch ($key) {
@@ -68,20 +57,18 @@ class GestionproduitsController extends AdminController
 
             try {
                 $produit = $this->loadModel( 'Produit', $id );
-                $this->loadModel('ProduitManager', $produit)->updateProduit( $modifs );
+                $deleteMsg = $this->loadModel('ProduitManager', $produit)->updateProduit( $modifs );
             } catch (Exception $e) {
                 $this->quit('/gestionproduits/modifier/' . intval($id), 'events.gestionproduits.msg', $e->getMessage());
             }
 
-            /* renvoi vers page de base */
-            $this->quit('/gestionproduits', 'events.gestionproduits.msg', 'Le produit a été modifié avec succès.');
+            $this->quit('/gestionproduits', 'events.gestionproduits.msg', $updateMsg);
         }
 
-        /* sinon, on se contente d'afficher le formulaire de modification */
+        /* le formulaire n'a pas été saisi */
         $data['produit'] = $this->loadModel('ProduitCollector')->getProduits( $id );
-        $data['salles']  = $this->loadModel('SallesManagerModel')->get_items('salles');
-        $data['msg']     = Session::flashget('events.gestionproduits.msg');
-
+        $data['salles'] = $this->loadModel('SallesManagerModel')->get_items('salles');
+        $data['msg'] = Session::flashget('events.gestionproduits.msg');
         $this->renderView('gestionproduits/modifier', $data);
     }
 }

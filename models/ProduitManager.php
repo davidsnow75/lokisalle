@@ -1,54 +1,35 @@
 <?php
 
-/* Manager de Produit */
-
 class ProduitManager extends Model
 {
-    /**
-     * destiné à recevoir une instance de Produit
-     */
     protected $produit;
 
-    /**
-     * Constructeur de ProduitManager
-     *
-     * @param object une instance de Produit
-     * @throws Exception l'argument fourni n'est pas une instance de Produit
-     * @return void
-     */
-    public function __construct( $db, $produit = '' )
-    {
-        /* on n'oublie pas de récupérer le connecteur mysqli */
-        parent::__construct($db);
+    const INSERT_SUCCESS = 'Le produit a bien été enregistré.';
+    const UPDATE_SUCCESS = 'Le produit a bien été modifié.';
+    const DELETE_SUCCESS = 'Le produit a bien été supprimé.';
+    const INSERT_FAILURE = 'Le produit n\'a pas pu être enregistré.';
+    const UPDATE_FAILURE = 'Le produit n\'a pas pu être mis à jour.';
+    const DELETE_FAILURE = 'Le produit n\'a pas pu être supprimé.';
+    const INVALID_UPDATE_INPUT = 'Le produit n\'a pas pu être mis à jour à cause de données invalides.';
+    const INVALID_DATE_ARRIVEE = 'La date d\'arrivée doit être postérieure à la date du jour.';
+    const INVALID_DATE_DEPART = 'La date d\'arrivée doit être antérieure ou égale à la date de départ.';
+    const SALLE_NOT_FOUND = 'La salle demandée pour le produit n\'existe pas.';
+    const PROMO_NOT_FOUND = 'La promotion demandée pour le produit n\'existe pas.';
+    /* problème pour checkProduitUnique() */
 
-        if ( !($produit instanceof Produit) ) {
-            throw new Exception('Le produit courant est invalide.');
-        } else {
-            $this->produit = $produit;
-        }
+    public function __construct($db, Produit $produit)
+    {
+        parent::__construct($db);
+        $this->produit = $produit;
     }
 
     /*=======================================================================*/
     /*                 Méthode principale de ProduitManager                  */
     /*=======================================================================*/
-
-    /**
-     * Ajoute ou met à jour un produit dans la table produits de la BDD
-     *
-     * ProduitToDb() est protégée et ne s'emploie de l'extérieur que via des
-     * méthodes 'alias', et ce pour éviter de risquer une erreur sur le paramètre $action.
-     *
-     * @return string un message d'erreur en cas d'insertion impossible, void sinon
-     */
     protected function ProduitToDb( $action )
     {
-        try {
-            $this->checkProduit();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        $this->checkProduit();
 
-        /* le produit est valide, on continue */
         switch ( $action ) {
             case 'insert':
                 $sql = "INSERT INTO produits
@@ -57,7 +38,8 @@ class ProduitManager extends Model
                                 '" . $this->produit->getDateDepart()  . "',
                                 '" . $this->produit->getPrix()        . "',
                                 '" . $this->produit->getEtat()        . "',
-                                '" . $this->produit->getSalleID()     . "');";
+                                '" . $this->produit->getSalleID()     . "',
+                                '" . $this->produit->getPromoID()     . "');";
                 break;
 
             case 'update':
@@ -66,44 +48,54 @@ class ProduitManager extends Model
                             date_depart='"   . $this->produit->getDateDepart()  . "',
                             prix='"          . $this->produit->getPrix()        . "',
                             etat='"          . $this->produit->getEtat()        . "',
-                            salles_id='"     . $this->produit->getSalleID()     . "'
+                            salles_id='"     . $this->produit->getSalleID()     . "',
+                            promotions_id='" . $this->produit->getPromoID()     . "'
                         WHERE id='" . $this->produit->getID() . "';";
+                break;
+
+            case 'delete':
+                $sql = "DELETE FROM produits WHERE id = '" . $this->produit->getId() . "';";
                 break;
 
             default: $sql = false;
         }
 
-        if ( $sql ) {
-            $this->exequery($sql);
-        }
+        return $sql ? $this->exequery($sql) : false;
     }
 
     /*=======================================================================*/
     /*                   Alias pour l'utilisation de ProduitToDb()           */
     /*=======================================================================*/
-
     public function insertProduit()
     {
-        /* Enregistrement (création) du produit dans la BDD */
-        $insert_return = $this->ProduitToDb( 'insert' );
-        if ( $insert_return ) {
-            throw new Exception( $insert_return );
+        if ( !$this->ProduitToDb('insert') ) {
+            throw new Exception(self::INSERT_FAILURE);
+        } else {
+            return self::INSERT_SUCCESS;
         }
     }
 
     public function updateProduit( $modifs )
     {
-        /* Modification interne du produit */
-        $modif_return = $this->alterProduit( $modifs );
-        if ( $modif_return ) {
-            throw new Exception( $modif_return );
-        }
+        $this->alterProduit( $modifs );
 
-        /* Enregistrement (modification) du produit dans la BDD */
-        $update_return = $this->ProduitToDb( 'update' );
-        if ( $update_return ) {
-            throw new Exception( $update_return );
+        if ( !$this->ProduitToDb('update') ) {
+            throw new Exception(self::UPDATE_FAILURE);
+        } else {
+            return self::UPDATE_SUCCESS;
         }
+    }
+
+    public function deleteProduit()
+    {
+        if ( !$this->ProduitToDb('delete') ) {
+            throw new Exception(self::DELETE_FAILURE);
+        }
+        // à en croire http://php.net/manual/fr/language.oop5.cloning.php
+        // cela devrait suffir à supprimer l'objet (interne et externe)
+        unset( $this->produit );
+
+        return self::DELETE_SUCCESS;
     }
 
     /*=======================================================================*/
@@ -119,7 +111,7 @@ class ProduitManager extends Model
     public function checkDateArrivee()
     {
         if ( date( 'Ymd', $this->produit->getDateArrivee() ) <= date( 'Ymd', time() ) ) {
-            throw new Exception('La date d\'arrivée doit être postérieure à la date du jour.');
+            throw new Exception(self::INVALID_DATE_ARRIVEE);
         }
     }
 
@@ -132,7 +124,7 @@ class ProduitManager extends Model
     public function checkDateRetour()
     {
         if ( $this->produit->getDateArrivee() > $this->produit->getDateDepart() ) {
-            throw new Exception('La date d\'arrivée doit être antérieure ou égale à la date de départ.');
+            throw new Exception(self::INVALID_DATE_DEPART);
         }
     }
 
@@ -145,9 +137,24 @@ class ProduitManager extends Model
     public function checkSalle()
     {
         $sql = "SELECT id FROM salles WHERE id = " . $this->produit->getSalleID() . ";";
-
         if ( !$this->exequery($sql)->num_rows ) {
-            throw new Exception('La salle demandée pour le produit n\'existe pas.');
+            throw new Exception(self::SALLE_NOT_FOUND);
+        }
+    }
+
+    /**
+     * Vérifie que l'id de la promo du produit, s'il existe, renvoie bien à une promo existante
+     *
+     * @throws Exception si le produit ne satisfait pas cette condition
+     * @return void
+     */
+    public function checkPromo()
+    {
+        if ( $this->produit->getPromoID() ) {
+            $sql = "SELECT id FROM salles WHERE id = " . $this->produit->getPromoID() . ";";
+            if ( !$this->exequery($sql)->num_rows ) {
+                throw new Exception(self::PROMO_NOT_FOUND);
+            }
         }
     }
 
@@ -201,17 +208,6 @@ class ProduitManager extends Model
     }
 
     /**
-     * Vérifie que l'id de la promo du produit, s'il existe, renvoie bien à une promo existante
-     *
-     * @throws Exception si le produit ne satisfait pas cette condition
-     * @return void
-     */
-    /*public function checkPromo()
-    {
-
-    }*/
-
-    /**
      * Teste la validité globale du produit
      *
      * @throws Exception si le produit ne satisfait pas toutes les conditions
@@ -223,10 +219,11 @@ class ProduitManager extends Model
         $this->checkDateArrivee();
         $this->checkDateRetour();
 
-        /* deuxième condition: la salle doit exister */
+        /* deuxième condition: la salle (et éventuellement la promo) doit exister */
         $this->checkSalle();
+        $this->checkPromo();
 
-        /* deuxième condition: une salle ne peut pas être utilisée par plus d'un produit à la fois */
+        /* troisième condition: une salle ne peut pas être utilisée par plus d'un produit à la fois */
         $this->checkProduitUnique();
     }
 
@@ -250,24 +247,22 @@ class ProduitManager extends Model
     public function checkModifications( $modifs )
     {
         if ( !is_array($modifs) ) {
-            throw new Exception('Les paramètres donnés pour modification du produit sont invalides.');
+            throw new Exception(self::INVALID_UPDATE_INPUT);
         }
 
-        $champs_valables = ['DateArrivee', 'DateDepart', 'Prix', 'Etat', 'SalleID'];
+        $champs_valables = ['DateArrivee', 'DateDepart', 'Prix', 'Etat', 'SalleID', 'PromoID'];
 
-        /* et on supprime tous les autres */
         foreach ($modifs as $modif_cle => $modif) {
             if ( !in_array( $modif_cle, $champs_valables, true ) || !is_scalar( $modif ) ) {
                 unset( $modifs[$modif_cle] );
             }
         }
 
-        /* on vérifie qu'il reste des choses à traiter après ce nettoyage */
         if ( empty($modifs) ) {
-            throw new Exception('Les paramètres donnés pour modification du produit sont invalides.');
+            throw new Exception(self::INVALID_UPDATE_INPUT);
         }
 
-        return $modifs; // on peut renvoyer sereinement un tableau de modifications valides
+        return $modifs;
     }
 
     /**
@@ -281,20 +276,10 @@ class ProduitManager extends Model
      */
     public function alterProduit( $modifs )
     {
-        /* on s'assure d'abord de la validité des modifications demandées */
-        try {
-            $modifs = $this->checkModifications( $modifs );
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        $modifs = $this->checkModifications( $modifs );
 
-        /* on altère le produit courant avec ces modifications */
         foreach ($modifs as $modif_key => $modif) {
-            try {
-                call_user_func( [$this->produit, 'set' . $modif_key], $modif );
-            } catch (Exception $e) {
-                return $e->getMessage();
-            }
+            call_user_func( [$this->produit, 'set' . $modif_key], $modif );
         }
     }
 }
