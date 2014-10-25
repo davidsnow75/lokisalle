@@ -1,21 +1,21 @@
 server {
-	listen 80;
+    listen 80;
 
-	root /home/janotus/www/lokisalle/public;
-	index index.php index.html index.htm;
+    root /home/janotus/www/lokisalle/public;
+    index index.php index.html index.htm;
 
-	server_name lokisalle;
+    server_name lokisalle;
 
-	location / {
-		try_files $uri /index.php;
-	}
+    location / {
+        try_files $uri /index.php?$args;
+    }
 
-	location ~ \.php$ {
-		try_files $uri /index.php;
+    location ~ \.php$ {
+        try_files $uri /index.php?$args;
 
-		# With php5-fpm:
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
-		fastcgi_index index.php;
-		include fastcgi_params;
-	}
+        # With php5-fpm:
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+    }
 }

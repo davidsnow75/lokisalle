@@ -5,7 +5,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Si le projet est dans un sous-dossier du hostname, décommenter la ligne suivante en changeant /path/to/lokisalle par votre chemin depuis le hostname (ne pas oublier le slash de début et de fin)
+    # Si le projet est dans un sous-dossier du hostname, décommenter la ligne suivante
+    # en changeant /path/to/lokisalle par votre chemin depuis le hostname
+    # (ne pas oublier le slash de début et de fin)
+    
     #RewriteBase /path/to/lokisalle/
 
     # Exceptions à la règle de réécriture: si on demande un fichier existant
