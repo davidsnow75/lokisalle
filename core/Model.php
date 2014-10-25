@@ -20,9 +20,8 @@ abstract class Model
             Session::set('events.error.db_error', $this->db->error);
  
             $baselocation = $_SERVER['HTTP_HOST'];
-            if ( SUBFOLDER ) {
-                $baselocation .= SUBFOLDER;
-            }
+            if ( SUBFOLDER )  { $baselocation .= SUBFOLDER; }
+            if ( NO_REWRITE ) { $baselocation .= '/index.php'; }
  
             header('location: http://' . $baselocation . '/error/db_error');
             exit;

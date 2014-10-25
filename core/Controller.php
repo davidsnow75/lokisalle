@@ -97,6 +97,10 @@ abstract class Controller
             $baselocation .= SUBFOLDER;
         }
 
+        if ( NO_REWRITE ) {
+            $baselocation .= '/index.php';
+        }
+
         header('location: http://' . $baselocation . $location);
         exit;
     }

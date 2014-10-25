@@ -22,7 +22,7 @@ define('NO_REWRITE', false);
 define('DEFAULT_CONTROLLER', 'Accueil');
 
 // souhaite-on voir les infos de debug ?
-define('DEBUG', true);
+define('DEBUG', false);
 // si oui, souhaite-on les afficher par défaut ?
 define('DEBUG_AGGRESSIF', false);
 
