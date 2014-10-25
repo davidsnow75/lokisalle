@@ -52,8 +52,15 @@ class Produit extends Model
                 throw new Exception(self::NOT_FOUND);
             }
 
-            $this->$id = $arg
-            $this->setPromo( $result->fetch_assoc() );
+            $produit = $result->fetch_assoc();
+
+            $this->id = $arg;
+            $this->date_arrivee = $produit['date_arrivee'];
+            $this->date_depart = $produit['date_depart'];
+            $this->prix = $produit['prix'];
+            $this->etat = $produit['etat'];
+            $this->salle_id = $produit['salles_id'];
+            $this->promo_id = $produit['promotions_id'];
         }
     }
 
@@ -64,7 +71,14 @@ class Produit extends Model
     public function getPrix()        { return $this->prix; }
     public function getEtat()        { return $this->etat; }
     public function getSalleID()     { return $this->salle_id; }
-    public function getPromoID()     { return $this->promo_id; }
+
+    public function getPromoID( $output = 'php' ) {
+        if ( $output === 'db' && !$this->promo_id ) {
+            return 'NULL';
+        } else {
+            return $this->promo_id;
+        }
+    }
 
     /* MUTATEURS ----------------------------------------*/
     public function setDateArrivee( $date_arrivee )
@@ -99,7 +113,7 @@ class Produit extends Model
 
     public function setEtat( $etat )
     {
-        $this->etat = (bool) $etat;
+        $this->etat = $etat ? 1 : 0;
     }
 
     public function setSalleID( $salle_id )
@@ -126,7 +140,7 @@ class Produit extends Model
             || empty( $array['date_depart'] )
             || empty( $array['prix'] )
             || empty( $array['salle_id'] )
-            || !isset( $array['etat'] )
+            // || !isset( $array['etat'] )
             || !isset( $array['promo_id'] )
         ) {
             throw new Exception(self::INVALID_INPUT);

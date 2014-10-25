@@ -28,29 +28,31 @@ class ProduitManager extends Model
     /*=======================================================================*/
     protected function ProduitToDb( $action )
     {
-        $this->checkProduit();
-
         switch ( $action ) {
             case 'insert':
+                $this->checkProduit();
+
                 $sql = "INSERT INTO produits
                         VALUES ('',
-                                '" . $this->produit->getDateArrivee() . "',
-                                '" . $this->produit->getDateDepart()  . "',
-                                '" . $this->produit->getPrix()        . "',
-                                '" . $this->produit->getEtat()        . "',
-                                '" . $this->produit->getSalleID()     . "',
-                                '" . $this->produit->getPromoID()     . "');";
+                                " . $this->produit->getDateArrivee() . ",
+                                " . $this->produit->getDateDepart()  . ",
+                                " . $this->produit->getPrix()        . ",
+                                " . $this->produit->getEtat()        . ",
+                                " . $this->produit->getSalleID()     . ",
+                                " . $this->produit->getPromoID('db') . ");";
                 break;
 
             case 'update':
+                $this->checkProduit();
+
                 $sql = "UPDATE produits
-                        SET date_arrivee='"  . $this->produit->getDateArrivee() . "',
-                            date_depart='"   . $this->produit->getDateDepart()  . "',
-                            prix='"          . $this->produit->getPrix()        . "',
-                            etat='"          . $this->produit->getEtat()        . "',
-                            salles_id='"     . $this->produit->getSalleID()     . "',
-                            promotions_id='" . $this->produit->getPromoID()     . "'
-                        WHERE id='" . $this->produit->getID() . "';";
+                        SET date_arrivee="  . $this->produit->getDateArrivee() . ",
+                            date_depart="   . $this->produit->getDateDepart()  . ",
+                            prix="          . $this->produit->getPrix()        . ",
+                            etat="          . $this->produit->getEtat()        . ",
+                            salles_id="     . $this->produit->getSalleID()     . ",
+                            promotions_id=" . $this->produit->getPromoID('db') . "
+                        WHERE id=" . $this->produit->getID() . ";";
                 break;
 
             case 'delete':
@@ -202,8 +204,8 @@ class ProduitManager extends Model
             }
         }
 
-        if ( !empty($vrai_doublons) ) { 
-            throw new Exception('Le produit manipulé est en conflit avec les produits aux références suivantes: ' . implode(', ', $vrai_doublons) '.');
+        if ( !empty($vrai_doublons) ) {
+            throw new Exception('Le produit manipulé est en conflit avec les produits aux références suivantes: ' . implode(', ', $vrai_doublons) . '.');
         }
     }
 

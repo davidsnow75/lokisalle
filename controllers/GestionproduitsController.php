@@ -5,7 +5,8 @@ class GestionproduitsController extends AdminController
     public function index()
     {
         $ids = func_get_args();
-        $data['produits'] = $this->loadModel('ProduitCollector')->getProduits( $ids );
+        $data['produits'] = $this->loadModel('ProduitCollector')->getAllProduit( 'withPromo' );
+        $data['promotions'] = $this->loadModel('PromotionCollector')->getPromotions();
         $data['salles'] = $this->loadModel('SallesManagerModel')->get_items('salles');
         $data['msg'] = Session::flashget('events.gestionproduits.msg');
         $this->renderView('gestionproduits/index', $data);
@@ -52,6 +53,7 @@ class GestionproduitsController extends AdminController
                     case 'prix'        : $modifs['Prix']        = $value; break;
                     case 'etat'        : $modifs['Etat']        = $value; break;
                     case 'salle_id'    : $modifs['SalleID']     = $value; break;
+                    case 'promo_id'    : $modifs['PromoID']     = $value; break;
                 }
             }
 
@@ -66,9 +68,39 @@ class GestionproduitsController extends AdminController
         }
 
         /* le formulaire n'a pas été saisi */
-        $data['produit'] = $this->loadModel('ProduitCollector')->getProduits( $id );
+        $data['produit'] = $this->loadModel('ProduitCollector')->getSingleProduit( $id, 'withPromo' );
+        $data['promotions'] = $this->loadModel('PromotionCollector')->getPromotions();
         $data['salles'] = $this->loadModel('SallesManagerModel')->get_items('salles');
         $data['msg'] = Session::flashget('events.gestionproduits.msg');
         $this->renderView('gestionproduits/modifier', $data);
+    }
+
+    public function supprimer()
+    {
+        $id = (int) func_get_arg(0);
+
+        if ( !$id ) {
+            $this->quit('/gestionproduits');
+        }
+
+        /* si le formulaire a été saisi */
+        if ( isset($_POST['id']) && $_POST['id'] == $id ) {
+            try {
+                $produit = $this->loadModel('Produit', $id);
+                $deleteMsg = $this->loadModel('ProduitManager', $produit)->deleteProduit();
+            } catch (Exception $e) {
+                $this->quit('/gestionproduits/supprimer/' . $id, 'events.gestionproduits.msg', $e->getMessage());
+            }
+
+            $this->quit('/gestionproduits', 'events.gestionproduits.msg', $deleteMsg);
+        }
+
+        /* le formulaire n'a pas été saisi */
+        try {
+            $produit = $this->loadModel('Produit', $id);
+            $this->renderView('gestionproduits/supprimer', ['produit_id' => $id]);
+        } catch (Exception $e) {
+            $this->quit('/gestionproduits/index/' . $id, 'events.gestionproduits.msg', $e->getMessage());
+        }
     }
 }

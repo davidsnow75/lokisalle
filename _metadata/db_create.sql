@@ -50,21 +50,21 @@ CREATE TABLE IF NOT EXISTS `lokisalle`.`produits` (
   `date_depart` BIGINT NULL,
   `prix` INT(5) NULL,
   `etat` INT(1) NULL,
-  `salles_id` INT UNSIGNED NOT NULL,
-  `promotions_id` INT UNSIGNED NOT NULL,
+  `salles_id` INT UNSIGNED NULL,
+  `promotions_id` INT UNSIGNED NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_produits_salles1_idx` (`salles_id` ASC),
   INDEX `fk_produits_promotions1_idx` (`promotions_id` ASC),
   CONSTRAINT `fk_produits_salles1`
     FOREIGN KEY (`salles_id`)
     REFERENCES `lokisalle`.`salles` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_produits_promotions1`
     FOREIGN KEY (`promotions_id`)
     REFERENCES `lokisalle`.`promotions` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 

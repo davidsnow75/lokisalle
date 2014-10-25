@@ -82,9 +82,9 @@ class GestionpromotionsController extends AdminController
         /* le formulaire n'a pas été saisi */
         try {
             $promotion = $this->loadModel('Promotion', $id);
-            $this->renderView('/gestionpromotions/supprimer', ['promo_id' => $id]);
+            $this->renderView('gestionpromotions/supprimer', ['promo_id' => $id]);
         } catch (Exception $e) {
-            $this->quit('/gestionpromotions' . $id, 'events.gestionpromotions.msg', $e->getMessage());
+            $this->quit('/gestionpromotions/index/' . $id, 'events.gestionpromotions.msg', $e->getMessage());
         }
     }
 }

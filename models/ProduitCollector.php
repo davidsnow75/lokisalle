@@ -18,17 +18,46 @@ class ProduitCollector extends ItemCollector
                        salles.capacite       AS salleCapacite,
                        salles.categorie      AS salleCategorie';
 
+      private $fieldsWidthPromo = 'promotions.id         AS promoId,
+                                   promotions.code_promo AS promoCode,
+                                   promotions.reduction  AS promoReduction';
+
+
     public function getProduits( $ids = [], $fields = '*' )
     {
         return $this->getItems( 'produits', $ids, $fields );
     }
 
-    public function getSingleProduit( $id )
+    public function getAllProduit( $join = '' )
     {
-        $sql = "SELECT $this->fields
-                FROM produits
-                LEFT JOIN salles ON salles.id = produits.salles_id
-                WHERE produits.id = '" . intval( $id ) . "';";
+        if ( $join === 'withPromo' ) {
+            $sql = "SELECT $this->fields, $this->fieldsWidthPromo
+                    FROM produits
+                    LEFT JOIN salles ON salles.id = produits.salles_id
+                    LEFT JOIN promotions ON promotions.id = produits.promotions_id;";
+        } else {
+            $sql = "SELECT $this->fields
+                    FROM produits
+                    LEFT JOIN salles ON salles.id = produits.salles_id;";
+        }
+
+        return $this->getItemsCustomSQL( $sql );
+    }
+
+    public function getSingleProduit( $id, $join = '' )
+    {
+        if ( $join === 'withPromo' ) {
+            $sql = "SELECT $this->fields, $this->fieldsWidthPromo
+                    FROM produits
+                    LEFT JOIN salles ON salles.id = produits.salles_id
+                    LEFT JOIN promotions ON promotions.id = produits.promotions_id
+                    WHERE produits.id = '" . intval( $id ) . "';";
+        } else {
+            $sql = "SELECT $this->fields
+                    FROM produits
+                    LEFT JOIN salles ON salles.id = produits.salles_id
+                    WHERE produits.id = '" . intval( $id ) . "';";
+        }
 
         return $this->getItemsCustomSQL( $sql );
     }

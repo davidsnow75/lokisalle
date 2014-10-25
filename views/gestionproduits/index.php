@@ -18,6 +18,7 @@
 
         <label>Salle concernée&nbsp;:</label>
         <select name="salle_id">
+          <option value="">Choisissez la salle</option>
           <?php foreach ($data['salles'] as $salle): ?>
           <option value="<?= $salle['id'] ?>" <?= Session::get('post_data.ajouter-produit.salle_id') == $salle['id'] ? 'selected' : '' ?>><?= $salle['titre'] ?> (<?= $salle['id'] ?>) - <?= $salle['ville'] ?></option>
           <?php endforeach; ?>
@@ -32,11 +33,12 @@
         <label>Prix&nbsp;:</label>
         <input type="number" name="prix" value="<?= Session::get('post_data.ajouter-produit.prix') ?>">
 
-        <?php if ( !empty($data['promo']) ): ?>
+        <?php if ( !empty($data['promotions']) ): ?>
         <label>Promotion&nbsp;:</label>
-        <select name="promo">
-          <?php foreach ($data['promos'] as $promo): ?>
-          <option value="<?= $promo['id'] ?>" <?php Session::get('post_data.ajouter-produit.promo_id') == $promo['id'] ? 'selected' : '' ?>><?= $promo['code_promo'] ?> (<?= $promo['reduction'] ?>)</option>
+        <select name="promo_id">
+          <option value="">Pas de promo</option>
+          <?php foreach ($data['promotions'] as $promo): ?>
+          <option value="<?= $promo['promoId'] ?>" <?php Session::get('post_data.ajouter-produit.promo_id') == $promo['promoId'] ? 'selected' : '' ?>><?= $promo['promoCode'] ?> (<?= $promo['promoReduction'] ?> €)</option>
           <?php endforeach; ?>
         </select>
         <?php endif; ?>
@@ -63,6 +65,7 @@
             <th>Prix</th>
             <th>État</th>
             <th>Salle</th>
+            <th>Promotions</th>
             <th style="font-style: italic;">Action</th>
           </tr>
         <tbody>
@@ -70,15 +73,16 @@
 
           <?php foreach($data['produits'] as $produit): ?>
             <tr>
-              <td><?= $produit['id'] ?></td>
-              <td><?= date('d/m/Y', $produit['date_arrivee'] ) ?></td>
-              <td><?= date('d/m/Y', $produit['date_depart'] )?></td>
-              <td><?= $produit['prix'] ?> €</td>
-              <td><?= $produit['etat'] === '1' ? 'Réservé' : 'Disponible' ?></td>
-              <td><a href="<?= racine() ?>/gestionsalles/index/<?= $produit['salles_id'] ?>"><?= $produit['salles_id'] ?></a></td>
+              <td><?= $produit['produitID'] ?></td>
+              <td><?= date('d/m/Y', $produit['produitDebut'] ) ?></td>
+              <td><?= date('d/m/Y', $produit['produitFin'] )?></td>
+              <td><?= $produit['produitPrix'] ?> €</td>
+              <td><?= $produit['produitEtat'] === '1' ? 'Réservé' : 'Disponible' ?></td>
+              <td><a href="<?= racine() ?>/gestionsalles/index/<?= $produit['salleID'] ?>"><?= $produit['salleID'] ?></a></td>
+              <td><a href="<?= racine() ?>/gestionpromotions/index/<?= $produit['promoId'] ?>"><?= $produit['promoId'] ?></a></td>
               <td>
-                <a href="<?= racine() ?>/gestionproduits/modifier/<?= $produit['id'] ?>">modifier</a> |
-                <a href="<?= racine() ?>/gestionproduits/supprimer/<?= $produit['id'] ?>">supprimer</a>
+                <a href="<?= racine() ?>/gestionproduits/modifier/<?= $produit['produitID'] ?>">modifier</a> |
+                <a href="<?= racine() ?>/gestionproduits/supprimer/<?= $produit['produitID'] ?>">supprimer</a>
               </td>
             </tr>
           <?php endforeach; ?>

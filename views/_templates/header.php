@@ -80,7 +80,7 @@
     </ul>
 <?php if ( Session::userIsLoggedIn() && Session::userIsAdmin() ): ?>
     <div class="sub-menu">
-      <a href="#menu-administration" class="displayer js-toggle">Administration</a>
+      <span data-target="#menu-administration" class="displayer js-toggle">Administration</span>
       <ul id="menu-administration" class="admin-menu">
         <li class="menu-item"><a href="<?= racine() ?>/gestionsalles">Gestion des salles</a></li>
         <li class="menu-item"><a href="<?= racine() ?>/gestionproduits">Gestion des produits</a></li>
