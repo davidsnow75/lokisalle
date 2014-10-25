@@ -30,10 +30,14 @@ class GestionmembresController extends AdminController
 
             $clean_id = intval($_POST['id']);
 
-            $membre_cible = $membres_manager->get_items( 'membres', [$clean_id], 'statut' );
+            $membre_cible = $membres_manager->get_items( 'membres', [$clean_id], 'id, statut' );
 
+            // un utilisateur ne peut pas se supprimer lui-même et
             // seul l'utilisateur spécial peut supprimer un administrateur
-            if ( $membre_cible[0]['statut'] == '1' && !Session::user_is_godlike() ) {
+            if (
+                $membre_cible[0]['id'] == Session::get('user.id')
+                || ( $membre_cible[0]['statut'] == '1' && !Session::user_is_godlike() )
+            ) {
                 $this->quit('/gestionmembres', 'events.gestionmembres.msg', 'forbidden_access');
             }
 
