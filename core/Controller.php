@@ -91,7 +91,13 @@ abstract class Controller
             Session::set( $logkey, $log );
         }
 
-        header('location: http://lokisalle' . $location);
+        $baselocation = $_SERVER['HTTP_HOST'];
+
+        if ( SUBFOLDER ) {
+            $baselocation .= SUBFOLDER;
+        }
+
+        header('location: http://' . $baselocation . $location);
         exit;
     }
 }

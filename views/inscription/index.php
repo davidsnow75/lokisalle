@@ -7,7 +7,7 @@
     <p class="msg-retour"><?= $data['msg'] ?></p>
 <?php endif; ?>
 
-    <form action="/inscription/inscrire" method="post" class="form">
+    <form action="<?= racine() ?>/inscription/inscrire" method="post" class="form">
       <fieldset>
         <legend>Inscription</legend>
 

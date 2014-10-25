@@ -52,11 +52,11 @@ function showProduit( $produit ) {
     <p>Du <strong><?= strftime( '%e %b %Y', $produit['produitDebut']) ?></strong> au <strong><?= strftime( '%e %b %Y', $produit['produitFin']) ?></strong> - <em><?= $produit['salleVille'] ?></em></p>
     <p><strong><?= $produit['produitPrix'] ?>€</strong> pour <strong><?= $produit['salleCapacite'] ?></strong> personnes</p>
     <p class="produitSM__links">
-      <a href="/produit/index/<?= $produit['produitID'] ?>">Voir la fiche détaillée</a> |
+      <a href="<?= racine() ?>/produit/index/<?= $produit['produitID'] ?>">Voir la fiche détaillée</a> |
       <?php if ( Session::userIsLoggedIn() ): ?>
         <a href="#">Ajouter au panier</a>
       <?php else: ?>
-        <a href="/connexion">Connectez-vous pour l'ajouter au panier</a>
+        <a href="<?= racine() ?>/connexion">Connectez-vous pour l'ajouter au panier</a>
       <?php endif; ?>
     </p>
   </div>

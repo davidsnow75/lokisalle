@@ -10,10 +10,10 @@
     <?php $produit = $data['produit'][0]; ?>
 
     <ul>
-      <li><a href="/gestionproduits">Afficher tous les produits</a></li>
+      <li><a href="<?= racine() ?>/gestionproduits">Afficher tous les produits</a></li>
     </ul>
 
-    <form action="/gestionproduits/modifier/<?= $produit['id'] ?>" method="post" class="form">
+    <form action="<?= racine() ?>/gestionproduits/modifier/<?= $produit['id'] ?>" method="post" class="form">
       <fieldset>
         <legend>Modification du produit <?= $produit['id'] ?></legend>
 

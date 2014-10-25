@@ -8,11 +8,11 @@
 <?php endif; ?>
 
     <p class="tcenter">
-      <a href="/gestionsalles" class="displayer">Afficher toutes les salles</a>
+      <a href="<?= racine() ?>/gestionsalles" class="displayer">Afficher toutes les salles</a>
       <a href="#ajout-salle-form" class="displayer js-toggle">Ajouter une salle</a>
     </p>
     <div id="ajout-salle-form" class="ajout-salle-form <?= Session::get('post_data.add_item_salles') ? 'active' : '' ?>">
-      <form action="/gestionsalles/ajouter" method="post" class="form">
+      <form action="<?= racine() ?>/gestionsalles/ajouter" method="post" class="form">
         <fieldset>
           <legend>Ajout d'une salle</legend>
 
@@ -59,8 +59,8 @@
       <div class="metadata">
         <span class="salle-id"><?= $salle['id'] ?></span>
         <span class="salle-action">
-          <a href="/gestionsalles/modifier/<?= $salle['id'] ?>">modification</a> |
-          <a href="/gestionsalles/supprimer/<?= $salle['id'] ?>">suppression</a>
+          <a href="<?= racine() ?>/gestionsalles/modifier/<?= $salle['id'] ?>">modification</a> |
+          <a href="<?= racine() ?>/gestionsalles/supprimer/<?= $salle['id'] ?>">suppression</a>
         </span>
       </div><!-- /.metadata -->
       <div class="data">

@@ -18,8 +18,14 @@ abstract class Model
 
         if ( !$result ) { // la requête a renvoyé une erreur
             Session::set('events.error.db_error', $this->db->error);
-            header('location: /error/db_error');
-            exit(1);
+ 
+            $baselocation = $_SERVER['HTTP_HOST'];
+            if ( SUBFOLDER ) {
+                $baselocation .= SUBFOLDER;
+            }
+ 
+            header('location: http://' . $baselocation . '/error/db_error');
+            exit;
         }
 
         return $result;

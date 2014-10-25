@@ -8,11 +8,11 @@
     <?php endif; ?>
 
     <ul>
-      <li><a href="/gestionproduits">Afficher tous les produits</a></li>
+      <li><a href="<?= racine() ?>/gestionproduits">Afficher tous les produits</a></li>
       <li><a href="#ajouter-produit" class="js-toggle <?= Session::get('post_data.ajouter-produit') ? 'active' : '' ?>">Ajouter un produit</a></li>
     </ul>
 
-    <form action="/gestionproduits/ajouter" method="post" class="form <?= Session::get('post_data.ajouter-produit') ? 'active' : '' ?>" id="ajouter-produit">
+    <form action="<?= racine() ?>/gestionproduits/ajouter" method="post" class="form <?= Session::get('post_data.ajouter-produit') ? 'active' : '' ?>" id="ajouter-produit">
       <fieldset>
         <legend>Ajout d'un produit</legend>
 
@@ -75,10 +75,10 @@
               <td><?= date('d/m/Y', $produit['date_depart'] )?></td>
               <td><?= $produit['prix'] ?> €</td>
               <td><?= $produit['etat'] === '1' ? 'Réservé' : 'Disponible' ?></td>
-              <td><a href="/gestionsalles/index/<?= $produit['salles_id'] ?>"><?= $produit['salles_id'] ?></a></td>
+              <td><a href="<?= racine() ?>/gestionsalles/index/<?= $produit['salles_id'] ?>"><?= $produit['salles_id'] ?></a></td>
               <td>
-                <a href="/gestionproduits/modifier/<?= $produit['id'] ?>">modifier</a> |
-                <a href="/gestionproduits/supprimer/<?= $produit['id'] ?>">supprimer</a>
+                <a href="<?= racine() ?>/gestionproduits/modifier/<?= $produit['id'] ?>">modifier</a> |
+                <a href="<?= racine() ?>/gestionproduits/supprimer/<?= $produit['id'] ?>">supprimer</a>
               </td>
             </tr>
           <?php endforeach; ?>

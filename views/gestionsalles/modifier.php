@@ -7,11 +7,11 @@
     <p class="msg-retour"><?= $data['msg'] ?></p>
 <?php endif; ?>
 
-    <p><a href="/gestionsalles">Cliquez ici pour retourner à l'affichage des salles.</a></p>
+    <p><a href="<?= racine() ?>/gestionsalles">Cliquez ici pour retourner à l'affichage des salles.</a></p>
 
     <?php $salle = $data['salle'][0]; ?>
 
-    <form action="/gestionsalles/modifier/<?= $salle['id'] ?>" method="post" class="form">
+    <form action="<?= racine() ?>/gestionsalles/modifier/<?= $salle['id'] ?>" method="post" class="form">
       <fieldset>
         <legend>Modification de la salle <?= $salle['id'] ?></legend>
 

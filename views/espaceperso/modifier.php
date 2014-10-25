@@ -9,7 +9,7 @@
 
     <?php $membre = $data['membre'][0]; ?>
 
-    <form action="/espaceperso/modifier" method="post" class="form">
+    <form action="<?= racine() ?>/espaceperso/modifier" method="post" class="form">
       <fieldset>
         <legend>Modifier son profil</legend>
 

@@ -7,7 +7,7 @@
     <p class="msg-retour"><?= $data['msg'] ?></p>
 <?php endif; ?>
 
-    <p><a href="/espaceperso/modifier">Modifier votre profil</a></p>
+    <p><a href="<?= racine() ?>/espaceperso/modifier">Modifier votre profil</a></p>
 
   </div>
 </div>

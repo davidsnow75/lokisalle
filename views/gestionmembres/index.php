@@ -7,7 +7,7 @@
     <p class="msg-retour"><?= $data['msg'] ?></p>
 <?php endif; ?>
 
-    <p><a href="/gestionmembres">Afficher tous les membres.</a></p>
+    <p><a href="<?= racine() ?>/gestionmembres">Afficher tous les membres.</a></p>
 
 <?php if ( $data['membres'] === [] ): ?>
 
@@ -43,7 +43,7 @@
             <td><?= $membre['cp'] ?></td>
             <td><?= $membre['adresse'] ?></td>
             <td><?= $membre['statut'] == '1' ? 'admin' : 'membre' ?></td>
-            <td><a href="/gestionmembres/supprimer/<?= $membre['id'] ?>">supprimer</a></td>
+            <td><a href="<?= racine() ?>/gestionmembres/supprimer/<?= $membre['id'] ?>">supprimer</a></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
@@ -52,7 +52,7 @@
 
     <h2>Donner le statut d'administrateur à un membre</h2>
 
-    <form method="post" action="/gestionmembres/setadmin">
+    <form method="post" action="<?= racine() ?>/gestionmembres/setadmin">
       <div class="form-group">
         <label>Sélectionner le membre choisi&nbsp;: </label>
         <select name="id">

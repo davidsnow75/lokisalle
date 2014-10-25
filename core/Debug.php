@@ -17,7 +17,7 @@ class Debug
                 $class .= ' debug__log--compound';
             }
 
-            Session::set('debug.' . $key, '<span class="' . $class . '">' . htmlentities( $data, ENT_QUOTES, "utf-8" ) . '</span>');
+            Session::set('debug.' . $key, '<span class="' . $class . '">' . $data . '</span>');
         }
     }
 

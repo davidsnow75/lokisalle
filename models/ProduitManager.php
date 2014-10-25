@@ -202,8 +202,8 @@ class ProduitManager extends Model
             }
         }
 
-        if ( !empty($vrai_doublons) ) {
-            throw new Exception('Le produit manipulé est en conflit avec les produits listés <a href="/gestionproduits/index/' . implode('/', $vrai_doublons) . '" target="_blank">sur cette page</a>.');
+        if ( !empty($vrai_doublons) ) { 
+            throw new Exception('Le produit manipulé est en conflit avec les produits aux références suivantes: ' . implode(', ', $vrai_doublons) '.');
         }
     }
 

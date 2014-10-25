@@ -3,7 +3,7 @@
 
     <h1>Réservation d'un produit</h1>
 
-    <p><a href="/">Retour à l'accueil</a></p>
+    <p><a href="<?= racine() ?>/">Retour à l'accueil</a></p>
 
     <div class="lgn">
     <?php foreach($data['produits'] as $produit): ?>

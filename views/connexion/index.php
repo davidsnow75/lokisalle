@@ -7,7 +7,7 @@
     <p class="msg-retour"><?= $data['msg'] ?></p>
 <?php endif; ?>
 
-    <form action="/connexion/connecter" method="post" class="form">
+    <form action="<?= racine() ?>/connexion/connecter" method="post" class="form">
       <fieldset>
         <legend>Connexion</legend>
 
@@ -21,7 +21,7 @@
       </fieldset>
     </form>
 
-    <p>Pas encore inscrit ? <a href="/inscription">Cliquez ici pour corriger cela !</a></p>
+    <p>Pas encore inscrit ? <a href="<?= racine() ?>/inscription">Cliquez ici pour corriger cela !</a></p>
 
   </div>
 </div>

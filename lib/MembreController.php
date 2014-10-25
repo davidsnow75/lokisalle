@@ -15,13 +15,11 @@ abstract class MembreController extends Controller
     {
         // contrôle des permissions d'accès
         if ( !Session::userIsLoggedIn() ) {
-            header('location: /connexion');
-            exit;
+            $this->quit('/connexion');
         }
 
         $this->id = Session::get('user.id');
 
-        // le lien à la bdd est créé à chaque instanciation d'un contrôleur
-        $this->openDatabaseConnection();
+        parent::__construct();
     }
 }

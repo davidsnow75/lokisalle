@@ -8,10 +8,10 @@
     <?php $promotion = $data['promotions'][0]; ?>
 
     <ul>
-      <li><a href="/gestionpromotions">Afficher toutes les promotions</a></li>
+      <li><a href="<?= racine() ?>/gestionpromotions">Afficher toutes les promotions</a></li>
     </ul>
 
-    <form action="/gestionpromotions/modifier/<?= $promotion['promoId'] ?>" method="post" class="form">
+    <form action="<?= racine() ?>/gestionpromotions/modifier/<?= $promotion['promoId'] ?>" method="post" class="form">
       <fieldset>
         <legend>Modification de la promotion <?= $promotion['promoId'] ?></legend>
 

@@ -6,7 +6,7 @@
     <p>L'erreur suivante s'est produite :</p>
     <p><?= $data ?></p>
 
-    <p>Retournez à l'accueil en cliquant <a href="/">ici</a>.</p>
+    <p>Retournez à l'accueil en cliquant <a href="<?= racine() ?>/">ici</a>.</p>
 
   </div>
 </div>

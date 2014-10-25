@@ -3,7 +3,7 @@
 
     <h1>Détails</h1>
 
-    <p><a href="/">Retour à l'accueil</a></p>
+    <p><a href="<?= racine() ?>/">Retour à l'accueil</a></p>
 
 <?php /*
                       $produit['produitID']
@@ -35,7 +35,7 @@
     <?php endforeach; ?>
     </div>
 
-    <p><a href="/">Retour à l'accueil</a></p>
+    <p><a href="<?= racine() ?>/">Retour à l'accueil</a></p>
 
   </div>
 </div>

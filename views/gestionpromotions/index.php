@@ -6,11 +6,11 @@
     <?= displayMsg($data) ?>
 
     <ul>
-      <li><a href="/gestionpromotions">Afficher toutes les promotions</a></li>
+      <li><a href="<?= racine() ?>/gestionpromotions">Afficher toutes les promotions</a></li>
       <li><a href="#ajouter-promo" class="js-toggle <?= Session::get('post_data.ajouter-promo') ? 'active' : '' ?>">Ajouter une promotion</a></li>
     </ul>
 
-    <form action="/gestionpromotions/ajouter" method="post" class="form toggle-display <?= Session::get('post_data.ajouter-promo') ? 'active' : '' ?>" id="ajouter-promo">
+    <form action="<?= racine() ?>/gestionpromotions/ajouter" method="post" class="form toggle-display <?= Session::get('post_data.ajouter-promo') ? 'active' : '' ?>" id="ajouter-promo">
       <fieldset>
         <legend>Ajout d'une promotion</legend>
 
@@ -47,8 +47,8 @@
               <td><?= $promotion['promoCode'] ?></td>
               <td><?= $promotion['promoReduction'] ?> €</td>
               <td>
-                <a href="/gestionpromotions/modifier/<?= $promotion['promoId'] ?>">modifier</a> |
-                <a href="/gestionpromotions/supprimer/<?= $promotion['promoId'] ?>">supprimer</a>
+                <a href="<?= racine() ?>/gestionpromotions/modifier/<?= $promotion['promoId'] ?>">modifier</a> |
+                <a href="<?= racine() ?>/gestionpromotions/supprimer/<?= $promotion['promoId'] ?>">supprimer</a>
               </td>
             </tr>
           <?php endforeach; ?>
