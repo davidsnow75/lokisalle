@@ -70,52 +70,35 @@ class Application {
      */
     private function analyser_url() {
 
-        if (isset( $_GET['url'] )) {
+        $url = $_SERVER['REQUEST_URI'];
 
-            // décomposer l'url demandée en autant de partie que de slash
-            $url = trim($_GET['url'], '/');
-            $url = filter_var($url, FILTER_SANITIZE_URL);
-            $url_array = explode('/', $url);
+        $url_array = rawurldecode($url);
 
-            // si on demande un url commençant par /admin, il ne faut pas la traiter telle quelle
-            // (désactivé dans notre cas)
-            if ( ADMIN_CONTROLLERS_ARE_PREFIXED ) {
-                $url_array = $this->clean_admin_from_url_array($url_array);
-            }
-
-            // peuple l'objet des infos tirées de l'URL
-            $this->url        = $url;
-            $this->controller = isset($url_array[0]) ? ucfirst($url_array[0]) : $this->controller;
-            $this->action     = isset($url_array[1]) ? $url_array[1]          : $this->action;
-
-            // nous voulons récupérer les éventuels paramètres dans un tableau.
-            // un moyen efficace pour cela est le suivant:
-
-            // on supprime contrôleur et action (peu importe à unset() qu'ils existent ou non)
-            unset( $url_array[0], $url_array[1] );
-
-            // il ne reste plus dans $url_array que les paramètres, alors on réindexe le tableau
-            $this->parameters = array_values($url_array);
-        }
-    }
-
-    /*
-     * modifie $url_array s'il commence par 'admin' en un tableau compréhensible par l'application
-     */
-    private function clean_admin_from_url_array( $url_array )
-    {
-        if ( isset($url_array[0]) && $url_array[0] === 'admin' ) {
-
-            if ( isset($url_array[1]) ) {
-                $url_array[1] = ADMIN_CONTROLLER_PREFIX . $url_array[1];
-            } else {
-                $url_array[1] = 'connexion'; // on veut que /admin soit traité par ConnexionController
-            }
-
-            unset( $url_array[0] );
-            $url_array = array_values( $url_array );
+        if ( SUBFOLDER ) {
+            $count = 1;
+            $url_array = str_replace( SUBFOLDER, '', $url_array, $count );
         }
 
-        return $url_array;
+        if ( NO_REWRITE ) {
+            $count = 1;
+            $url_array = str_replace( '/index.php', '', $url_array, $count );
+        }
+
+        // il ne reste plus dans l'URL que des infos destinées à l'application
+        $url_array = explode('/', trim($url_array, '/'));
+
+        // peuple l'objet des infos tirées de l'URL
+        $this->url        = $url;
+        $this->controller = !empty($url_array[0]) ? ucfirst($url_array[0]) : $this->controller;
+        $this->action     = !empty($url_array[1]) ? $url_array[1]          : $this->action;
+
+        // nous voulons récupérer les éventuels paramètres dans un tableau.
+        // un moyen efficace pour cela est le suivant:
+
+        // on supprime contrôleur et action (peu importe à unset() qu'ils existent ou non)
+        unset( $url_array[0], $url_array[1] );
+
+        // il ne reste plus dans $url_array que les paramètres, alors on réindexe le tableau
+        $this->parameters = array_values($url_array);
     }
 }

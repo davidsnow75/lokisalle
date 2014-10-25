@@ -11,6 +11,6 @@
   </div>
 </footer>
 
-  <script src="/js/lokisalle.js"></script>
+  <script src="<?= assetdir() ?>/js/lokisalle.js"></script>
   </body>
 </html>

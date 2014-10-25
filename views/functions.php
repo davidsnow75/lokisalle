@@ -1,4 +1,17 @@
 <?php
+
+function racine() {
+  if ( NO_REWRITE ) {
+    return SUBFOLDER . '/index.php';
+  } else {
+    return SUBFOLDER;
+  }
+}
+
+function assetdir() {
+  return SUBFOLDER;
+}
+
 /*---------------------------------------------------------------------------*/
 function displayMsg( $data ) {
   if ( empty($data['msg']) ) { return; }

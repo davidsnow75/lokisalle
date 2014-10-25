@@ -9,8 +9,14 @@
 // infos de connexion à la base de données (via un objet mysqli)
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'lokisalle');
-define('DB_USER', 'lokiser');
-define('DB_PASS', 'lokipass');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+
+// si le projet est en dans un sous-dossier du hostname, le définir ici (sans slash final)
+define('SUBFOLDER', '/lokisalle');
+
+// si le projet ne tourne pas sous rewriting d'URLs
+define('NO_REWRITE', false);
 
 // le contrôleur par défaut (celui de la page d'accueil)
 define('DEFAULT_CONTROLLER', 'Accueil');
@@ -19,10 +25,5 @@ define('DEFAULT_CONTROLLER', 'Accueil');
 define('DEBUG', true);
 // si oui, souhaite-on les afficher par défaut ?
 define('DEBUG_AGGRESSIF', false);
-
-// souhaite-t-on préfixer les urls d'administration avec 'admin' ?
-define('ADMIN_CONTROLLERS_ARE_PREFIXED', false);
-// le préfixe pour les fichiers de contrôleur admin
-define('ADMIN_CONTROLLER_PREFIX', 'gestion');
 
 setlocale (LC_TIME, 'fr_FR.utf8','fra');
