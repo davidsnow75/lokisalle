@@ -70,25 +70,28 @@ class Application {
      */
     private function analyser_url() {
 
-        $url = $_SERVER['REQUEST_URI'];
+        $requested_uri = $_SERVER['REQUEST_URI'];
 
-        $url_array = rawurldecode($url);
+        // on isole chemin et query string pour ne garder que le chemin
+        $url = explode('?', rawurldecode($requested_uri));
+        $url = $url[0];
 
+        // Nettoyage de l'URL des infos non-essentielles
         if ( SUBFOLDER ) {
             $count = 1;
-            $url_array = str_replace( SUBFOLDER, '', $url_array, $count );
+            $url = str_replace( SUBFOLDER, '', $url, $count );
         }
 
         if ( NO_REWRITE ) {
             $count = 1;
-            $url_array = str_replace( '/index.php', '', $url_array, $count );
+            $url = str_replace( '/index.php', '', $url, $count );
         }
 
         // il ne reste plus dans l'URL que des infos destinées à l'application
-        $url_array = explode('/', trim($url_array, '/'));
+        $url_array = explode('/', trim($url, '/'));
 
         // peuple l'objet des infos tirées de l'URL
-        $this->url        = $url;
+        $this->url        = $requested_uri;
         $this->controller = !empty($url_array[0]) ? ucfirst($url_array[0]) : $this->controller;
         $this->action     = !empty($url_array[1]) ? $url_array[1]          : $this->action;
 
