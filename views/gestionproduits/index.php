@@ -79,7 +79,11 @@
               <td><?= $produit['produitPrix'] ?> €</td>
               <td><?= $produit['produitEtat'] === '1' ? 'Réservé' : 'Disponible' ?></td>
               <td><a href="<?= racine() ?>/gestionsalles/index/<?= $produit['salleID'] ?>"><?= $produit['salleID'] ?></a></td>
+              <?php if ( empty($produit['promodId']) ): ?>
+              <td><em>non concerné</em></td>
+              <?php else: ?>
               <td><a href="<?= racine() ?>/gestionpromotions/index/<?= $produit['promoId'] ?>"><?= $produit['promoId'] ?></a></td>
+              <?php endif; ?>
               <td>
                 <a href="<?= racine() ?>/gestionproduits/modifier/<?= $produit['produitID'] ?>">modifier</a> |
                 <a href="<?= racine() ?>/gestionproduits/supprimer/<?= $produit['produitID'] ?>">supprimer</a>

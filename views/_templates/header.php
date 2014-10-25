@@ -75,6 +75,9 @@
       <li class="menu-item current-menu-item"><i class="fa fa-home"></i>&nbsp; <a href="<?= racine() ?>/">Accueil</a></li>
       <li class="menu-item"><i class="fa fa-book"></i>&nbsp; <a href="<?= racine() ?>/reservation">Réservation</a></li>
       <li class="menu-item"><i class="fa fa-search"></i>&nbsp; <a href="">Recherche</a></li>
+      <?php if ( Session::userIsLoggedIn() && Session::get('panier.produits')): ?>
+      <li class="menu-item"><i class="fa fa-shopping-cart"></i>&nbsp; <a href="<?= racine() ?>/panier">Panier</a></li>
+    <?php endif; ?>
       <li class="menu-item"><i class="fa fa-user"></i>&nbsp; <a href="<?= racine() ?>/connexion">Espace personnel</a></li>
       <li class="menu-item"><i class="fa fa-lightbulb-o"></i>&nbsp; <a href="#">À propos</a></li>
     </ul>

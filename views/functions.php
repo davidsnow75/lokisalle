@@ -24,6 +24,11 @@ function displayMsg( $data ) {
 }
 
 /*---------------------------------------------------------------------------*/
+function cleanArray( &$array ) {
+  array_walk_recursive( $array, function (&$valeur) { $valeur = htmlentities( $valeur, ENT_QUOTES, "utf-8" ); } );
+}
+
+/*---------------------------------------------------------------------------*/
 function showProduit( $produit ) {
 /*
     $produit['produitID']
@@ -54,7 +59,7 @@ function showProduit( $produit ) {
     <p class="produitSM__links">
       <a href="<?= racine() ?>/produit/index/<?= $produit['produitID'] ?>">Voir la fiche détaillée</a> |
       <?php if ( Session::userIsLoggedIn() ): ?>
-        <a href="#">Ajouter au panier</a>
+        <a href="<?= racine() ?>/panier/ajouter/<?= $produit['produitID'] ?>">Ajouter au panier</a>
       <?php else: ?>
         <a href="<?= racine() ?>/connexion">Connectez-vous pour l'ajouter au panier</a>
       <?php endif; ?>
@@ -66,3 +71,6 @@ function showProduit( $produit ) {
 }
 
 /*---------------------------------------------------------------------------*/
+function niceDate( $timestamp ) {
+  return date('d/m/Y', $timestamp);
+}
