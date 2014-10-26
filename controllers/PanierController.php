@@ -4,10 +4,11 @@ class PanierController extends MembreController
 {
     const ADD_SUCCESS = 'Le produit a bien été ajouté au panier.';
     const REM_SUCCESS = 'Le produit a bien été supprimé du panier.';
+    const PROMO_SUCCESS = 'La promotion a bien été appliquée au panier.';
 
     public function index()
     {
-        $data['panier'] = $this->loadModel('Panier', Session::get('panier'))->getPanier();
+        $data['panier'] = $this->loadModel('Panier', Session::get('panier'))->toDisplay();
         $data['msg'] = Session::flashget('events.panier.msg');
         $this->renderView('panier/index', $data);
     }
@@ -23,12 +24,12 @@ class PanierController extends MembreController
 
         try {
             $produit = $this->loadModel('Produit', $id);
-            $panier->add($produit);
+            $panier->addProduit($produit);
         } catch (Exception $e) {
             $this->quit('/panier', 'events.panier.msg', $e->getMessage());
         }
 
-        Session::set( 'panier', $panier->getPanier() );
+        Session::set( 'panier', $panier->toSession() );
         $this->quit('/panier', 'events.panier.msg', self::ADD_SUCCESS);
     }
 
@@ -43,12 +44,12 @@ class PanierController extends MembreController
 
         try {
             $produit = $this->loadModel('Produit', $id);
-            $panier->rem($produit);
+            $panier->remProduit($produit);
         } catch (Exception $e) {
             $this->quit('/panier', 'events.panier.msg', $e->getMessage());
         }
 
-        Session::set( 'panier', $panier->getPanier() );
+        Session::set( 'panier', $panier->toSession() );
         $this->quit('/panier', 'events.panier.msg', self::REM_SUCCESS);
     }
 
@@ -56,5 +57,24 @@ class PanierController extends MembreController
     {
         $this->loadModel('Panier')->clear();
         $this->quit('/panier');
+    }
+
+    public function addpromo()
+    {
+        if ( empty($_POST['code_promo']) ) {
+            $this->quit('/panier');
+        }
+
+        $panier = $this->loadModel('Panier', Session::get('panier'));
+
+        try {
+            $promotion = $this->loadModel('Promotion', $_POST['code_promo']);
+            $panier->addPromotion($promotion);
+        } catch (Exception $e) {
+            $this->quit('/panier', 'events.panier.msg', $e->getMessage());
+        }
+
+        Session::set( 'panier', $panier->toSession() );
+        $this->quit('/panier', 'events.panier.msg', self::PROMO_SUCCESS);
     }
 }

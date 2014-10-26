@@ -19,15 +19,22 @@ class Promotion extends Model
             $this->setPromo( $arg );
 
         } else {
-            $arg = (int) $arg;
-            $sql = "SELECT * FROM promotions WHERE id='" . $arg . "';";
+            $value = (int) $arg;
+
+            if ( $value ) {
+                $field = 'id';
+            } else {
+                $value = "'" . $this->db->real_escape_string( (string) $arg ) . "'";
+                $field = 'code_promo';
+            }
+
+            $sql = "SELECT * FROM promotions WHERE $field = $value;";
 
             $result = $this->exequery($sql);
             if ( !$result->num_rows ) {
                 throw new Exception(self::NOT_FOUND);
             }
 
-            $this->id = $arg;
             $this->setPromo( $result->fetch_assoc() );
         }
     }
@@ -40,6 +47,11 @@ class Promotion extends Model
     public function getReduction() { return $this->reduction; }
 
     /* mutateurs */
+    public function setId( $id )
+    {
+        $this->id = $id;
+    }
+
     public function setCode_promo( $code )
     {
         $code = (string) $code;
@@ -69,6 +81,10 @@ class Promotion extends Model
             || empty( $array['reduction'] )
         ) {
             throw new Exception(self::INVALID_INPUT);
+        }
+
+        if ( !empty( $array['id']) ) {
+            $this->setId( $array['id'] );
         }
 
         $this->setCode_promo( $array['code_promo'] );
