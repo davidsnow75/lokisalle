@@ -5,6 +5,7 @@ class PanierController extends MembreController
     const ADD_SUCCESS = 'Le produit a bien été ajouté au panier.';
     const REM_SUCCESS = 'Le produit a bien été supprimé du panier.';
     const PROMO_SUCCESS = 'La promotion a bien été appliquée au panier.';
+    const SOLD_PRODUITS = 'Des produits ont été supprimés de votre panier car ils n\'étaient plus disponibles. Merci de bien vouloir relancer le paiement.';
     const COMMANDE_SUCCESS = 'Votre commande a bien été enregistrée, merci !';
     const CGV = 'Vous devez accepter les conditions générales de vente avant de pouvoir valider votre commande.';
 
@@ -47,7 +48,7 @@ class PanierController extends MembreController
         try {
             $produit = $this->loadModel('Produit', $id);
             if ( $panier->hasProduit($produit) ) {
-                $panier->remProduit($produit);
+                $panier->remProduit($produit->getID());
             } else {
                 $this->quit('/panier');
             }
@@ -96,7 +97,21 @@ class PanierController extends MembreController
 
         $panier = $this->loadModel('Panier', Session::get('panier'));
 
-        $commande = $this->loadModel('Commande', $panier->toDb());
+        try {
+            $commande = $this->loadModel('Commande', $panier->toDb());
+            $soldProduitsId = false;
+        } catch (Exception $e) {
+            $soldProduitsId = explode('/', $e->getMessage());
+        }
+
+        if ( $soldProduitsId ) {
+            foreach( $soldProduitsId as $id ) {
+                $panier->remProduit($id);
+            }
+
+            Session::set( 'panier', $panier->toSession() );
+            $this->quit('/panier', 'events.panier.msg', self::SOLD_PRODUITS);
+        }
 
         try {
             $commande->insert();

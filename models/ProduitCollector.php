@@ -22,7 +22,7 @@ class ProduitCollector extends ItemCollector
                                    promotions.code_promo AS promoCode,
                                    promotions.reduction  AS promoReduction';
 
-    public function getProduits( $ids = [] )
+    public function getProduits( $ids = [], $fields = '' )
     {
         /* construction d'une clause WHERE si besoin est */
         if ( !empty($ids) ) {
@@ -41,11 +41,16 @@ class ProduitCollector extends ItemCollector
         }
 
         /* la requête proprement dite */
-        $sql = "SELECT $this->fields, $this->fieldsWidthPromo
-                FROM produits
-                LEFT JOIN salles ON salles.id = produits.salles_id
-                LEFT JOIN promotions ON promotions.id = produits.promotions_id
-                $where;";
+        if ( $fields ) {
+            $sql = "SELECT " . $this->db->real_escape_string($fields) . " FROM produits $where;";
+
+        } else {
+            $sql = "SELECT $this->fields, $this->fieldsWidthPromo
+                    FROM produits
+                    LEFT JOIN salles ON salles.id = produits.salles_id
+                    LEFT JOIN promotions ON promotions.id = produits.promotions_id
+                    $where;";
+        }
 
         return $this->getItemsCustomSQL( $sql );
     }

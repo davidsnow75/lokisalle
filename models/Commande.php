@@ -39,7 +39,19 @@ class Commande extends Model
     public function setProduits( $produits )
     {
         $collector = new ProduitCollector($this->db);
-        $this->produits = $collector->getProduits( $produits, 'id' );
+        $this->produits = $collector->getProduits( $produits, 'id, etat' );
+
+        $sold_produits = [];
+
+        foreach ($this->produits as $produit) {
+            if ( $produit['etat'] ) {
+                $sold_produits[] = $produit['id'];
+            }
+        }
+
+        if ( !empty($sold_produits) ) {
+            throw new Exception(implode('/', $sold_produits));
+        }
     }
 
     public function insert()

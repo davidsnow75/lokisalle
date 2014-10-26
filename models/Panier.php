@@ -4,7 +4,7 @@ class Panier extends Model
 {
     const TVA = 19.6;
     const PRODUIT_ALREADY_SET = 'Ce produit est déjà présent dans le panier.';
-    const PRODUIT_OBSOLETE = 'Le produit n\'a pas pu être ajouté car il n\'est plus valide.';
+    const PRODUIT_OBSOLETE = 'Le produit n\'a pas pu être ajouté au panier car il n\'est plus disponible.';
     const PROMO_ALREADY_SET = 'Cette promotion a déjà été appliquée au panier.';
 
     protected $produits   = [];
@@ -146,6 +146,10 @@ class Panier extends Model
             throw new Exception(self::PRODUIT_ALREADY_SET);
         }
 
+        if ( $produit->getEtat() ) {
+            throw new Exception(self::PRODUIT_OBSOLETE);
+        }
+
         $manager = new ProduitManager($this->db, $produit);
 
         try {
@@ -172,11 +176,11 @@ class Panier extends Model
 
     /**
      * Retire un produit du panier
-     * @param  Produit $produit le produit à retirer
+     * @param  int $produitId l'ID du produit à retirer
      */
-    public function remProduit(Produit $produit)
+    public function remProduit( $produitId )
     {
-        unset( $this->produits[$produit->getID()] );
+        unset( $this->produits[$produitId] );
     }
 
     /**
