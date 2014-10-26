@@ -44,7 +44,11 @@ class PanierController extends MembreController
 
         try {
             $produit = $this->loadModel('Produit', $id);
-            $panier->remProduit($produit);
+            if ( $panier->hasProduit($produit) ) {
+                $panier->remProduit($produit);
+            } else {
+                $this->quit('/panier');
+            }
         } catch (Exception $e) {
             $this->quit('/panier', 'events.panier.msg', $e->getMessage());
         }

@@ -4,6 +4,7 @@ class Panier extends Model
 {
     const TVA = 19.6;
     const PRODUIT_ALREADY_SET = 'Ce produit est déjà présent dans le panier.';
+    const PRODUIT_OBSOLETE = 'Le produit n\'a pas pu être ajouté car il n\'est plus valide.';
     const PROMO_ALREADY_SET = 'Cette promotion a déjà été appliquée au panier.';
 
     protected $produits   = [];
@@ -70,13 +71,18 @@ class Panier extends Model
 
     /**
      * Calcule et renvoie le montant total HT du panier, avant promotions
-     * @return int le montant total du panier
+     * @param  int $totalPromo (facultatif) le montant de la réduction à appliquer
+     * @return int             le montant total du panier
      */
-    public function calcProduitsTotal()
+    public function calcProduitsTotal( $totalPromo = 0 )
     {
         $total = 0;
         foreach ( $this->produits as $produit ) {
             $total += $produit['produitPrix'];
+        }
+
+        if ( $totalPromo ) {
+            $total -= $totalPromo;
         }
 
         return ($total < 0) ? 0 : $total;
@@ -121,13 +127,31 @@ class Panier extends Model
     }
 
     /**
+     * teste la présence du produit dans le panier
+     * @param  Produit $produit le produit à tester
+     * @return boolean          true si le produit est déjà présent dans le panier, false sinon
+     */
+    public function hasProduit(Produit $produit)
+    {
+        return isset( $this->produits[ $produit->getID() ] );
+    }
+
+    /**
      * Ajoute au panier un produit à condition qu'il n'y soit pas déjà présent
      * @param Produit $produit le produit à ajouter au panier
      */
     public function addProduit(Produit $produit)
     {
-        if ( isset( $this->produits[$produit->getID()] ) ) {
+        if ( $this->hasProduit($produit) ) {
             throw new Exception(self::PRODUIT_ALREADY_SET);
+        }
+
+        $manager = new ProduitManager($this->db, $produit);
+
+        try {
+            $manager->checkDateArrivee();
+        } catch (Exception $e) {
+            throw new Exception(self::PRODUIT_OBSOLETE);
         }
 
         $this->setProduits( [$produit->getID()] );
@@ -176,14 +200,17 @@ class Panier extends Model
      */
     public function toDisplay()
     {
+        $promo = $this->calcPromotionsTotal();
         $totalHT = $this->calcProduitsTotal();
+        $totalHTPromo = $this->calcProduitsTotal( $promo );
 
         return [
             'produits' => $this->produits,
             'promotions' => $this->promotions,
-            'total' => $totalHT,
-            'totalPromo' => $this->calcPromotionsTotal(),
-            'tva' => $this->calcTVA($totalHT)
+            'totalHT' => $totalHT,
+            'promo' => $promo,
+            'totalHTPromo' => $totalHTPromo,
+            'tva' => $this->calcTVA($totalHTPromo)
         ];
     }
 }

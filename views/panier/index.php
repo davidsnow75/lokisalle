@@ -14,24 +14,37 @@
       <?php $panier = $data['panier']; ?>
 
 <?php /*
+["produits"]
   ['produitID']
-  ['produitDebut']
-  ['produitFin']
-  ['produitPrix']
-  ['produitEtat']
-  ['salleID']
-  ['sallePays']
-  ['salleVille']
-  ['salleAdresse']
-  ['salleCP']
-  ['salleTitre']
-  ['salleDescription']
-  ['sallePhoto']
-  ['salleCapacite']
-  ['salleCategorie']
-  ['promoId']
-  ['promoCode']
-  ['promoReduction']
+    ["produitID"]
+    ["produitDebut"]
+    ["produitFin"]
+    ["produitPrix"]
+    ["produitEtat"]
+    ["salleID"]
+    ["sallePays"]
+    ["salleVille"]
+    ["salleAdresse"]
+    ["salleCP"]
+    ["salleTitre"]
+    ["salleDescription"]
+    ["sallePhoto"]
+    ["salleCapacite"]
+    ["salleCategorie"]
+    ["promoId"]
+    ["promoCode"]
+    ["promoReduction"]
+
+["promotions"]
+  ["promoId"]
+    ["promoId"]
+    ["promoCode"]
+    ["promoReduction"]
+
+['totalHT']
+['promo']
+['totalHTPromo']
+['tva']
 */ ?>
 
       <p><a href="<?= racine() ?>/panier/vider">Vider le panier</a></p>
@@ -50,23 +63,35 @@
             <th style="font-style: italic;">Retirer</th>
           </tr>
         <tbody>
-          <?php foreach($panier['produits'] as $a): ?>
+          <?php foreach($panier['produits'] as $p): ?>
           <tr>
-            <td><a href="<?= racine() ?>/produit/index/<?= $a['produitID'] ?>"><?= $a['produitID'] ?></a></td>
-            <td><?= $a['salleTitre'] ?></td>
-            <td class="js-hautomatic-panier-photo"><img class="img-responsive" src="<?= assetdir() ?><?= $a['sallePhoto'] ?>"></td>
-            <td><?= $a['salleVille'] ?></td>
-            <td><?= $a['salleCapacite'] ?></td>
-            <td><?= niceDate($a['produitDebut']) ?></td>
-            <td><?= niceDate($a['produitFin']) ?></td>
-            <td><?= $a['produitPrix'] ?> €</td>
-            <td><a href="<?= racine() ?>/panier/supprimer/<?= $a['produitID'] ?>">X</a></td>
+            <td><a href="<?= racine() ?>/produit/index/<?= $p['produitID'] ?>"><?= $p['produitID'] ?></a></td>
+            <td><?= $p['salleTitre'] ?></td>
+            <td class="js-hautomatic-panier-photo"><img class="img-responsive" src="<?= assetdir() ?><?= $p['sallePhoto'] ?>"></td>
+            <td><?= $p['salleVille'] ?></td>
+            <td><?= $p['salleCapacite'] ?></td>
+            <td><?= niceDate($p['produitDebut']) ?></td>
+            <td><?= niceDate($p['produitFin']) ?></td>
+            <td><?= $p['produitPrix'] ?> €</td>
+            <td><a href="<?= racine() ?>/panier/supprimer/<?= $p['produitID'] ?>">X</a></td>
           </tr>
           <?php endforeach; ?>
         </tbody>
         <tfoot>
+          <?php if ( empty($panier['promo']) ): ?>
+            <tr>
+              <td colspan="9">Prix HT: <?= $panier['totalHT'] ?> €</td>
+            </tr>
+          <?php else: ?>
+            <tr>
+              <td colspan="9">
+                Prix HT: <del><?= $panier['totalHT'] ?> €</del> <strong><?= $panier['totalHTPromo'] ?> €</strong> grâce au(x) code(s) promo entré(s),
+                soit une réduction de <?php printf("%6.2f", ( $panier['promo'] * 100 ) / $panier['totalHT'] ) ?> % !
+              </td>
+            </tr>
+          <?php endif; ?>
           <tr>
-            <td colspan="9">Prix total TTC (TVA = 19.6%) : <?= $panier['total'] + $panier['tva'] ?> €</td>
+            <td colspan="9">Prix TTC: <?= $panier['totalHTPromo'] + $panier['tva'] ?> €  <small><em>(TVA = 19.6%)</em></small></td>
           </tr>
         </tfoot>
       </table>
