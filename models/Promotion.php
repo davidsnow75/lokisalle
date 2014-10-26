@@ -34,7 +34,9 @@ class Promotion extends Model
 
     /* accesseurs */
     public function getId() { return $this->id; }
-    public function getCode_promo() { return $this->code_promo; }
+    public function getCode_promo( $output = '' ) {
+        return ( $output === 'sql' ) ? $this->db->real_escape_string($this->code_promo) : $this->code_promo;
+    }
     public function getReduction() { return $this->reduction; }
 
     /* mutateurs */

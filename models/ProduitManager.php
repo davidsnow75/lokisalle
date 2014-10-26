@@ -39,7 +39,7 @@ class ProduitManager extends Model
                                 " . $this->produit->getPrix()        . ",
                                 " . $this->produit->getEtat()        . ",
                                 " . $this->produit->getSalleID()     . ",
-                                " . $this->produit->getPromoID('db') . ");";
+                                " . $this->produit->getPromoID('sql') . ");";
                 break;
 
             case 'update':
@@ -51,7 +51,7 @@ class ProduitManager extends Model
                             prix="          . $this->produit->getPrix()        . ",
                             etat="          . $this->produit->getEtat()        . ",
                             salles_id="     . $this->produit->getSalleID()     . ",
-                            promotions_id=" . $this->produit->getPromoID('db') . "
+                            promotions_id=" . $this->produit->getPromoID('sql') . "
                         WHERE id=" . $this->produit->getID() . ";";
                 break;
 

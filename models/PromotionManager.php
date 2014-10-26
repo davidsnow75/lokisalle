@@ -10,6 +10,7 @@ class PromotionManager extends Model
     const INSERT_FAILURE = 'La promotion n\'a pas pu être enregistrée.';
     const UPDATE_FAILURE = 'La promotion n\'a pas pu être mise à jour.';
     const DELETE_FAILURE = 'La promotion n\'a pas pu être supprimée.';
+    const PROMO_EXISTS   = 'Ce code promo est déjà utilisé par une autre promotion.';
     const INVALID_UPDATE_INPUT = 'La promotion n\'a pas pu être mise à jour à cause de données invalides.';
 
     public function __construct($db, Promotion $promotion)
@@ -23,15 +24,19 @@ class PromotionManager extends Model
     {
         switch ($action) {
             case 'insert':
+                $this->checkCodePromoUnique();
+
                 $sql = "INSERT INTO promotions
                         VALUES ('',
-                                '" . $this->promotion->getCode_promo() . "',
+                                '" . $this->promotion->getCode_promo('sql') . "',
                                 '" . $this->promotion->getReduction()  . "');";
                 break;
 
             case 'update':
+                $this->checkCodePromoUnique();
+
                 $sql = "UPDATE promotions
-                        SET code_promo = '" . $this->promotion->getCode_promo() . "',
+                        SET code_promo = '" . $this->promotion->getCode_promo('sql') . "',
                             reduction = '"  . $this->promotion->getReduction()  . "'
                         WHERE id = '" . $this->promotion->getId() . "';";
                 break;
@@ -78,6 +83,14 @@ class PromotionManager extends Model
     }
 
     /* MÉTHODES SPÉCIFIQUES */
+    public function checkCodePromoUnique()
+    {
+       $sql = "SELECT id FROM promotions WHERE code_promo = '" . $this->promotion->getCode_promo('sql') . "';";
+       if ( $this->exequery($sql)->num_rows ) {
+           throw new Exception(self::PROMO_EXISTS);
+       }
+    }
+
     public function checkModifications( $modifs )
     {
         if ( !is_array($modifs) ) {

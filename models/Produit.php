@@ -72,8 +72,8 @@ class Produit extends Model
     public function getEtat()        { return $this->etat; }
     public function getSalleID()     { return $this->salle_id; }
 
-    public function getPromoID( $output = 'php' ) {
-        if ( $output === 'db' && !$this->promo_id ) {
+    public function getPromoID( $output = '' ) {
+        if ( $output === 'sql' && !$this->promo_id ) {
             return 'NULL';
         } else {
             return $this->promo_id;
