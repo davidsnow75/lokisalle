@@ -88,7 +88,7 @@
         <li class="menu-item"><a href="<?= racine() ?>/gestionsalles">Gestion des salles</a></li>
         <li class="menu-item"><a href="<?= racine() ?>/gestionproduits">Gestion des produits</a></li>
         <li class="menu-item"><a href="<?= racine() ?>/gestionmembres">Gestion des membres</a></li>
-        <li class="menu-item"><a href="#">Gestion des commandes</a></li>
+        <li class="menu-item"><a href="<?= racine() ?>/gestioncommandes">Gestion des commandes</a></li>
         <li class="menu-item"><a href="#">Gestion des avis</a></li>
         <li class="menu-item"><a href="<?= racine() ?>/gestionpromotions">Gestion des codes promo</a></li>
         <li class="menu-item"><a href="#">Statistiques</a></li>

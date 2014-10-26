@@ -22,24 +22,30 @@ class ProduitCollector extends ItemCollector
                                    promotions.code_promo AS promoCode,
                                    promotions.reduction  AS promoReduction';
 
-
-    public function getProduits( $ids = [], $fields = '*' )
+    public function getProduits( $ids = [] )
     {
-        return $this->getItems( 'produits', $ids, $fields );
-    }
+        /* construction d'une clause WHERE si besoin est */
+        if ( !empty($ids) ) {
+            $ids = is_array($ids) ? $ids : [$ids];
 
-    public function getAllProduit( $join = '' )
-    {
-        if ( $join === 'withPromo' ) {
-            $sql = "SELECT $this->fields, $this->fieldsWidthPromo
-                    FROM produits
-                    LEFT JOIN salles ON salles.id = produits.salles_id
-                    LEFT JOIN promotions ON promotions.id = produits.promotions_id;";
+            $where = " WHERE produits.id=";
+
+            $last_item_key = count($ids) - 1;
+            $i = -1;
+            while ( ++$i < $last_item_key ) {
+                $where .= intval( $ids[$i] ) . " OR produits.id=";
+            }
+            $where .= intval( $ids[$i] );
         } else {
-            $sql = "SELECT $this->fields
-                    FROM produits
-                    LEFT JOIN salles ON salles.id = produits.salles_id;";
+            $where = '';
         }
+
+        /* la requête proprement dite */
+        $sql = "SELECT $this->fields, $this->fieldsWidthPromo
+                FROM produits
+                LEFT JOIN salles ON salles.id = produits.salles_id
+                LEFT JOIN promotions ON promotions.id = produits.promotions_id
+                $where;";
 
         return $this->getItemsCustomSQL( $sql );
     }
@@ -87,7 +93,8 @@ class ProduitCollector extends ItemCollector
         return $this->getItemsCustomSQL( $sql );
     }
 
-    public function getThreeSimilarProduits( $produit ) {
+    public function getThreeSimilarProduits( $produit )
+    {
         $id    = (int) $produit['produitID'];
         $ville = $this->db->real_escape_string( $produit['salleVille'] );
         $month = date( 'm', $produit['produitDebut'] );

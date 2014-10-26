@@ -38,6 +38,10 @@
   height: auto;
 }
 
+.pseudolink {
+  cursor: pointer;
+}
+
 .toggle-display:not(.active) {
   display: none;
 }
@@ -233,6 +237,14 @@ a {
 .table.panier .img-responsive {
   max-width: 200px;
   margin: auto;
+}
+
+.gestioncommandes.pseudolink.active {
+  font-size: 0;
+}
+.gestioncommandes.pseudolink.active:after {
+  font-size: 1rem;
+  content: "Masquer";
 }
 
 //==============================================================================

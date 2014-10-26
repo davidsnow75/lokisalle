@@ -5,7 +5,7 @@ class GestionproduitsController extends AdminController
     public function index()
     {
         $ids = func_get_args();
-        $data['produits'] = $this->loadModel('ProduitCollector')->getAllProduit( 'withPromo' );
+        $data['produits'] = $this->loadModel('ProduitCollector')->getProduits( $ids );
         $data['promotions'] = $this->loadModel('PromotionCollector')->getPromotions();
         $data['salles'] = $this->loadModel('SallesManagerModel')->get_items('salles');
         $data['msg'] = Session::flashget('events.gestionproduits.msg');
