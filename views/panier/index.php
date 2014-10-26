@@ -100,6 +100,11 @@
         <p>Utiliser un code promo&nbsp;: <input type="text" name="code_promo"><input type="submit"></p>
       </form>
 
+
+      <form method="post" action="<?= racine() ?>/panier/payer">
+        <p class="tright">Je déclare accepter les <a href="<?= racine() ?>/cgv">conditions générales de vente</a> : <input type="checkbox" name="cgv_ok"> <input type="submit" name="payer" value="PAYER"></p>
+      </form>
+
     <?php endif; ?>
 
   </div>

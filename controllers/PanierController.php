@@ -5,6 +5,8 @@ class PanierController extends MembreController
     const ADD_SUCCESS = 'Le produit a bien été ajouté au panier.';
     const REM_SUCCESS = 'Le produit a bien été supprimé du panier.';
     const PROMO_SUCCESS = 'La promotion a bien été appliquée au panier.';
+    const COMMANDE_SUCCESS = 'Votre commande a bien été enregistrée, merci !';
+    const CGV = 'Vous devez accepter les conditions générales de vente avant de pouvoir valider votre commande.';
 
     public function index()
     {
@@ -80,5 +82,29 @@ class PanierController extends MembreController
 
         Session::set( 'panier', $panier->toSession() );
         $this->quit('/panier', 'events.panier.msg', self::PROMO_SUCCESS);
+    }
+
+    public function payer()
+    {
+        if ( !isset($_POST['payer']) ) {
+            $this->quit('/panier');
+        }
+
+        if ( empty($_POST['cgv_ok']) ) {
+            $this->quit('/panier', 'events.panier.msg', self::CGV);
+        }
+
+        $panier = $this->loadModel('Panier', Session::get('panier'));
+
+        $commande = $this->loadModel('Commande', $panier->toDb());
+
+        try {
+            $commande->insert();
+        } catch (Exception $e) {
+            $this->quit('/panier', 'events.panier.msg', $e->getMessage());
+        }
+
+        $panier->clear();
+        $this->quit('/panier', 'events.panier.msg', self::COMMANDE_SUCCESS);
     }
 }

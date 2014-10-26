@@ -123,16 +123,16 @@ DROP TABLE IF EXISTS `lokisalle`.`commandes` ;
 
 CREATE TABLE IF NOT EXISTS `lokisalle`.`commandes` (
   `id` INT(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `montant` INT(5) NULL,
-  `date` TIMESTAMP NULL,
-  `membres_id` INT(5) UNSIGNED NOT NULL,
+  `montant` INT NULL,
+  `date` BIGINT NULL,
+  `membres_id` INT(5) UNSIGNED NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_commandes_membres1_idx` (`membres_id` ASC),
   CONSTRAINT `fk_commandes_membres1`
     FOREIGN KEY (`membres_id`)
     REFERENCES `lokisalle`.`membres` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -162,20 +162,20 @@ DROP TABLE IF EXISTS `lokisalle`.`details_commandes` ;
 CREATE TABLE IF NOT EXISTS `lokisalle`.`details_commandes` (
   `id` INT(6) UNSIGNED NOT NULL AUTO_INCREMENT,
   `commandes_id` INT(6) UNSIGNED NOT NULL,
-  `produits_id` INT(5) UNSIGNED NOT NULL,
+  `produits_id` INT(5) UNSIGNED NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_details_commandes_commandes1_idx` (`commandes_id` ASC),
   INDEX `fk_details_commandes_produits1_idx` (`produits_id` ASC),
   CONSTRAINT `fk_details_commandes_commandes1`
     FOREIGN KEY (`commandes_id`)
     REFERENCES `lokisalle`.`commandes` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_details_commandes_produits1`
     FOREIGN KEY (`produits_id`)
     REFERENCES `lokisalle`.`produits` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 

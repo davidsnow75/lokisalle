@@ -119,11 +119,11 @@ class Panier extends Model
     /**
      * Calcule et renvoie le montant total de la TVA à appliquer au panier
      * @param  int   $total le montant total HT
-     * @return float        le montant de la TVA à ajouter au total HT
+     * @return int          le montant de la TVA à ajouter au total HT
      */
     public function calcTVA( $total )
     {
-        return $total * self::TVA/100;
+        return floor($total * self::TVA/100);
     }
 
     /**
@@ -211,6 +211,24 @@ class Panier extends Model
             'promo' => $promo,
             'totalHTPromo' => $totalHTPromo,
             'tva' => $this->calcTVA($totalHTPromo)
+        ];
+    }
+
+    /**
+     * Renvoie les données du panier telles qu'elles pourront être traitées par une Commande
+     *
+     * @return array
+     */
+    public function toDb()
+    {
+        $promo = $this->calcPromotionsTotal();
+        $totalHTPromo = $this->calcProduitsTotal( $promo );
+        $montant = $totalHTPromo + $this->calcTVA($totalHTPromo);
+
+        return [
+            'montant'    => $montant,
+            'membres_id' => Session::get('user.id'),
+            'produits'   => array_keys($this->produits)
         ];
     }
 }
