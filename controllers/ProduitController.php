@@ -16,7 +16,9 @@ class ProduitController extends Controller
 
         $data['produit'] = $collector->getSingleProduit( $id );
 
-        if ( !empty($data['produit']) ) {
+        if ( empty($data['produit']) ) {
+            $this->quit('/reservation');
+        } else {
             $data['similarProduits'] = $collector->getThreeSimilarProduits( $data['produit'][0] );
         }
 
