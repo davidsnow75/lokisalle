@@ -105,9 +105,6 @@ abstract class ItemManagerModel extends Model
             return $post_data_ok;
         }
 
-        // tout est bon, mais y a-t-il eu une photo postée ?
-        // TODO: implémenter un upload d'images sécurisé
-
         // Les données sont validées, on n'a plus besoin du sticky form
         Session::delete('post_data.add_item_' . $table);
 

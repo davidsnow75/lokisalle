@@ -10,6 +10,7 @@ class SallesManagerModel extends ItemManagerModel
     {
         // les nombres sont passés en chaînes de caractère, on convertit donc pour se simplifier le travail
         if ( !empty($post_data['capacite']) ) { $post_data['capacite'] = intval($post_data['capacite']); }
+        if ( empty($post_data['photo']) ) { $post_data['photo'] = '/uploads/img/default_salle.jpg'; }
 
         // tous les tests préalables au traitement des données sont faits ici
         if ( empty($post_data['pays']) ):
@@ -47,6 +48,9 @@ class SallesManagerModel extends ItemManagerModel
 
         elseif ( strlen($post_data['description']) < 3 ):
             return 'description_length';
+
+        elseif ( strlen($post_data['photo']) > 200 ):
+            return 'photo_salle_url_length';
 
         elseif ( empty($post_data['capacite']) ):
             return 'capacite_missing';
@@ -86,30 +90,30 @@ class SallesManagerModel extends ItemManagerModel
             case 'add_item':
                 $sql = "INSERT INTO salles
                         VALUES ('',
-                                '" . $clean['pays']                   . "',
-                                '" . $clean['ville']                  . "',
-                                '" . $clean['adresse']                . "',
-                                '" . $clean['cp']                     . "',
-                                '" . $clean['titre']                  . "',
-                                '" . $clean['description']            . "',
-                                '" . '/uploads/img/default_salle.jpg' . "',
-                                '" . $clean['capacite']               . "',
-                                '" . $clean['categorie']              . "');";
+                                '" . $clean['pays']            . "',
+                                '" . $clean['ville']           . "',
+                                '" . $clean['adresse']         . "',
+                                '" . $clean['cp']              . "',
+                                '" . $clean['titre']           . "',
+                                '" . $clean['description']     . "',
+                                '" . $clean['photo'] . "',
+                                '" . $clean['capacite']        . "',
+                                '" . $clean['categorie']       . "');";
             break;
 
             // modification de la salle dans la base de données
             case 'modify_item':
                 $sql = "UPDATE salles
-                        SET pays='"        . $clean['pays']                   . "',
-                            ville='"       . $clean['ville']                  . "',
-                            adresse='"     . $clean['adresse']                . "',
-                            cp='"          . $clean['cp']                     . "',
-                            titre='"       . $clean['titre']                  . "',
-                            description='" . $clean['description']            . "',
-                            photo='"       . '/uploads/img/default_salle.jpg' . "',
-                            capacite='"    . $clean['capacite']               . "',
-                            categorie='"   . $clean['categorie']              . "'
-                        WHERE id='"        . $clean['id']                     . "';";
+                        SET pays='"        . $clean['pays']            . "',
+                            ville='"       . $clean['ville']           . "',
+                            adresse='"     . $clean['adresse']         . "',
+                            cp='"          . $clean['cp']              . "',
+                            titre='"       . $clean['titre']           . "',
+                            description='" . $clean['description']     . "',
+                            photo='"       . $clean['photo'] . "',
+                            capacite='"    . $clean['capacite']        . "',
+                            categorie='"   . $clean['categorie']       . "'
+                        WHERE id='"        . $clean['id']              . "';";
             break;
 
             default: $sql = '';

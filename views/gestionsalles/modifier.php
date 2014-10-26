@@ -33,6 +33,9 @@
         <label>Description&nbsp;: </label>
         <textarea name="description"><?= $salle['description'] ?></textarea>
 
+        <label>Photo&nbsp;:</label>
+        <input type="text" name="photo" value="<?= $salle['photo'] ?>">
+
         <label>Capacité&nbsp;: </label>
         <input type="number" name="capacite" value="<?= $salle['capacite'] ?>">
 

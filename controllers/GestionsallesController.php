@@ -77,28 +77,29 @@ class GestionsallesController extends AdminController
     {
         if ( Session::get('events.gestionsalles.msg') ) {
             switch ( Session::flashget('events.gestionsalles.msg') ) {
-                case 'valid_add_item'       : $msg = 'La salle a été créée avec succès.'; break;
-                case 'valid_modify_item'    : $msg = 'La salle a été modifiée avec succès.'; break;
-                case 'valid_delete_item'    : $msg = 'La salle a été supprimée avec succès.'; break;
-                case 'pays_missing'         : $msg = 'Le pays doit être renseigné.'; break;
-                case 'pays_length'          : $msg = 'Le pays doit faire entre 2 et 20 caractères.'; break;
-                case 'ville_missing'        : $msg = 'La ville doit être renseignée.'; break;
-                case 'ville_length'         : $msg = 'La ville doit faire entre 2 et 20 caractères.'; break;
-                case 'adresse_missing'      : $msg = 'L\'adresse doit être renseignée.'; break;
-                case 'adresse_length'       : $msg = 'L\'adresse doit faire entre 2 et 20 caractères.'; break;
-                case 'zipcode_missing'      : $msg = 'Le code postal doit être renseigné.'; break;
-                case 'zipcode_length'       : $msg = 'Le code postal doit faire entre 2 et 5 caractères.'; break;
-                case 'titre_missing'        : $msg = 'Le titre doit être renseigné.'; break;
-                case 'titre_length'         : $msg = 'Le titre doit faire entre 2 et 200 caractères.'; break;
-                case 'description_missing'  : $msg = 'La description doit être renseignée.'; break;
-                case 'description_length'   : $msg = 'La description doit faire au minimum 3 caractères.'; break;
-                case 'capacite_missing'     : $msg = 'La capacité doit être renseignée.'; break;
-                case 'capacite_doesnt_fit'  : $msg = 'La capacité doit être un nombre entier.'; break;
-                case 'capacite_length'      : $msg = 'La capacité ne peut excéder un nombre à trois chiffres.'; break;
-                case 'categorie_missing'    : $msg = 'La catégorie doit être renseignée.'; break;
-                case 'categorie_doesnt_fit' : $msg = 'La catégorie entrée n\'est pas disponible.'; break;
-                case 'unknown_item_id'      : $msg = 'Aucune salle n\'a été supprimée.'; break;
-                default                     : $msg = 'Une erreur inconnue s\'est produite.';
+                case 'valid_add_item'         : $msg = 'La salle a été créée avec succès.'; break;
+                case 'valid_modify_item'      : $msg = 'La salle a été modifiée avec succès.'; break;
+                case 'valid_delete_item'      : $msg = 'La salle a été supprimée avec succès.'; break;
+                case 'pays_missing'           : $msg = 'Le pays doit être renseigné.'; break;
+                case 'pays_length'            : $msg = 'Le pays doit faire entre 2 et 20 caractères.'; break;
+                case 'ville_missing'          : $msg = 'La ville doit être renseignée.'; break;
+                case 'ville_length'           : $msg = 'La ville doit faire entre 2 et 20 caractères.'; break;
+                case 'adresse_missing'        : $msg = 'L\'adresse doit être renseignée.'; break;
+                case 'adresse_length'         : $msg = 'L\'adresse doit faire entre 2 et 20 caractères.'; break;
+                case 'zipcode_missing'        : $msg = 'Le code postal doit être renseigné.'; break;
+                case 'zipcode_length'         : $msg = 'Le code postal doit faire entre 2 et 5 caractères.'; break;
+                case 'titre_missing'          : $msg = 'Le titre doit être renseigné.'; break;
+                case 'titre_length'           : $msg = 'Le titre doit faire entre 2 et 200 caractères.'; break;
+                case 'description_missing'    : $msg = 'La description doit être renseignée.'; break;
+                case 'description_length'     : $msg = 'La description doit faire au minimum 3 caractères.'; break;
+                case 'photo_salle_url_length' : $msg = 'L\'url de la photo ne doit pas faire plus de 200 caractères.'; break;
+                case 'capacite_missing'       : $msg = 'La capacité doit être renseignée.'; break;
+                case 'capacite_doesnt_fit'    : $msg = 'La capacité doit être un nombre entier.'; break;
+                case 'capacite_length'        : $msg = 'La capacité ne peut excéder un nombre à trois chiffres.'; break;
+                case 'categorie_missing'      : $msg = 'La catégorie doit être renseignée.'; break;
+                case 'categorie_doesnt_fit'   : $msg = 'La catégorie entrée n\'est pas disponible.'; break;
+                case 'unknown_item_id'        : $msg = 'Aucune salle n\'a été supprimée.'; break;
+                default                       : $msg = 'Une erreur inconnue s\'est produite.';
             }
         } else {
             $msg = null;
