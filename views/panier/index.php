@@ -36,7 +36,7 @@
 
       <p><a href="<?= racine() ?>/panier/vider">Vider le panier</a></p>
 
-      <table class="table">
+      <table class="table panier">
         <thead>
           <tr>
             <th>Produit</th>

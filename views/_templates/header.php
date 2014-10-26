@@ -38,7 +38,7 @@
     <?php endforeach; ?>
 
       <div class="debug__log-item">
-        <a href="#session-dump" class="debug__key js-toggle">$_SESSION</a>
+        <span data-target="#session-dump" class="debug__key js-toggle">$_SESSION</span>
         <span class="debug__log debug__log--compound" id="session-dump"><?php var_dump($_SESSION); ?></span>
       </div>
 
