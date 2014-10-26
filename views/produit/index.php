@@ -1,9 +1,9 @@
 <div class="main-content blc">
   <div class="ctn">
 
-    <h1>Détails</h1>
+    <h1>Détails d'un produit</h1>
 
-    <p><a href="<?= racine() ?>/">Retour à l'accueil</a></p>
+    <?php $produit = $data['produit'][0]; ?>
 
 <?php /*
                       $produit['produitID']
@@ -23,11 +23,28 @@
                       $produit['salleCategorie']
 */ ?>
 
-    <pre>
-      <?php var_dump($data['produit']); ?>
-    </pre>
+    <h2><?= $produit['salleTitre'] ?>, du <?= niceDate($produit['produitDebut']) . ' au ' . niceDate($produit['produitFin']) ?></h2>
 
-    <h2>Produits similaires</h2>
+    <p class="tcenter"><img src="<?= $produit['sallePhoto'] ?>" alt="<?= $produit['salleTitre'] ?>"></p>
+
+    <ul>
+      <li><strong>ID du produit</strong>: <?= $produit['produitID'] ?></li>
+      <li><strong>Date de début</strong>: <?= niceDate($produit['produitDebut']) ?></li>
+      <li><strong>Date de fin</strong>: <?= niceDate($produit['produitFin']) ?></li>
+      <li><strong>Prix</strong>: <?= $produit['produitPrix'] ?> €</li>
+      <li><strong>État</strong>: <?= $produit['produitEtat'] ? 'Indisponible' : 'Disponible' ?></li>
+      <li><strong>ID de la salle liée</strong>: <?= $produit['salleID'] ?></li>
+      <li><strong>Titre de cette salle</strong>: <?= $produit['salleTitre'] ?></li>
+      <li><strong>Adresse de cette salle</strong>: <?= $produit['salleAdresse'] ?></li>
+      <li><strong>Code postal de cette salle</strong>: <?= $produit['salleCP'] ?></li>
+      <li><strong>Ville de cette salle</strong>: <?= $produit['salleVille'] ?></li>
+      <li><strong>Pays de cette salle</strong>: <?= $produit['sallePays'] ?></li>
+      <li><strong>Descriptions de cette salle</strong>: <div><?= $produit['salleDescription'] ?></div></li>
+      <li><strong>Capacité de cette salle</strong>: <?= $produit['salleCapacite'] ?> personnes</li>
+      <li><strong>Catégorie de cette salle</strong>: <?= $produit['salleCategorie'] ?></li>
+    </ul>
+
+    <h3>Produits similaires</h3>
 
     <?php if ( empty($data['similarProduits']) ): ?>
       <p>Pas de produits similaires à ce produit !</p>
