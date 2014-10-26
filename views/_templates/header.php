@@ -60,7 +60,7 @@
       <a href="<?= racine() ?>/connexion">Connexion</a> |
       <a href="<?= racine() ?>/inscription">Inscription</a> |
 <?php endif; ?>
-      <a href="#">Contact</a>
+      <a href="<?= racine() ?>/contact">Contact</a>
     </div>
     <div class="logo">
       <div class="majeur"><a href="<?= racine() ?>/">Lokisalle</a></div>
@@ -74,12 +74,12 @@
     <ul>
       <li class="menu-item current-menu-item"><i class="fa fa-home"></i>&nbsp; <a href="<?= racine() ?>/">Accueil</a></li>
       <li class="menu-item"><i class="fa fa-book"></i>&nbsp; <a href="<?= racine() ?>/reservation">Réservation</a></li>
-      <li class="menu-item"><i class="fa fa-search"></i>&nbsp; <a href="">Recherche</a></li>
+      <li class="menu-item"><i class="fa fa-search"></i>&nbsp; <a href="<?= racine() ?>/recherche">Recherche</a></li>
       <?php if ( Session::userIsLoggedIn() && Session::get('panier.produits')): ?>
       <li class="menu-item"><i class="fa fa-shopping-cart"></i>&nbsp; <a href="<?= racine() ?>/panier">Panier</a></li>
     <?php endif; ?>
       <li class="menu-item"><i class="fa fa-user"></i>&nbsp; <a href="<?= racine() ?>/connexion">Espace personnel</a></li>
-      <li class="menu-item"><i class="fa fa-lightbulb-o"></i>&nbsp; <a href="#">À propos</a></li>
+      <li class="menu-item"><i class="fa fa-lightbulb-o"></i>&nbsp; <a href="<?= racine() ?>/mentions">À propos</a></li>
     </ul>
 <?php if ( Session::userIsLoggedIn() && Session::userIsAdmin() ): ?>
     <div class="sub-menu">
@@ -89,10 +89,10 @@
         <li class="menu-item"><a href="<?= racine() ?>/gestionproduits">Gestion des produits</a></li>
         <li class="menu-item"><a href="<?= racine() ?>/gestionmembres">Gestion des membres</a></li>
         <li class="menu-item"><a href="<?= racine() ?>/gestioncommandes">Gestion des commandes</a></li>
-        <li class="menu-item"><a href="#">Gestion des avis</a></li>
+        <li class="menu-item"><a href="<?= racine() ?>/gestionavis">Gestion des avis</a></li>
         <li class="menu-item"><a href="<?= racine() ?>/gestionpromotions">Gestion des codes promo</a></li>
-        <li class="menu-item"><a href="#">Statistiques</a></li>
-        <li class="menu-item"><a href="#">Newsletters</a></li>
+        <li class="menu-item"><a href="<?= racine() ?>/gestionstats">Statistiques</a></li>
+        <li class="menu-item"><a href="<?= racine() ?>/gestionnewsletters">Newsletters</a></li>
       </ul>
     </div>
 <?php endif; ?>
