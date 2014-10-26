@@ -35,6 +35,7 @@ class ErrorController extends Controller
 
             $data['url'] = htmlentities($url, ENT_QUOTES, "utf-8");
 
+            header("HTTP/1.0 404 Not Found");
             $this->renderView('error/404', $data);
 
         } else {
