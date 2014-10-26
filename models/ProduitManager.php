@@ -153,7 +153,7 @@ class ProduitManager extends Model
     public function checkPromo()
     {
         if ( $this->produit->getPromoID() ) {
-            $sql = "SELECT id FROM salles WHERE id = " . $this->produit->getPromoID() . ";";
+            $sql = "SELECT id FROM promotions WHERE id = " . $this->produit->getPromoID() . ";";
             if ( !$this->exequery($sql)->num_rows ) {
                 throw new Exception(self::PROMO_NOT_FOUND);
             }
