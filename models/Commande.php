@@ -41,6 +41,7 @@ class Commande extends Model
         $collector = new ProduitCollector($this->db);
         $this->produits = $collector->getProduits( $produits, 'id, etat' );
 
+        /* on s'assure que le produit est disponible, cad que son état = 0 */
         $sold_produits = [];
 
         foreach ($this->produits as $produit) {
@@ -74,11 +75,16 @@ class Commande extends Model
 
         $this->exequery($sql);
 
-        /* insertion dans la table details_commandes */
+        /* - insertion dans la table details_commandes
+         * - maj de l'état du produit (on va au plus simple, une requête en
+         *   court-circuitant la création d'une instance de Produit pour un
+         *   ProduitManager::updateProduit() ... )
+         */
         $this->id = $this->db->insert_id;
 
         foreach ( $this->produits as $produit ) {
             $this->exequery("INSERT INTO details_commandes VALUES ('', " . $this->id . ", " . $produit['id'] . " );");
+            $this->exequery("UPDATE produits SET etat=1 WHERE id=" . $produit['id'] . ";");
         }
     }
 }
