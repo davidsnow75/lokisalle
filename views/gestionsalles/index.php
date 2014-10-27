@@ -35,7 +35,7 @@
           <textarea name="description"><?= Session::flashget('post_data.add_item_salles.description') ?></textarea>
 
           <label>Photo&nbsp;:</label>
-          <input type="text" name="photo_salle_url" value="<?= Session::flashget('post_data.add_item_salles.photo_salle_url') ?>">
+          <input type="text" name="photo" value="<?= Session::flashget('post_data.add_item_salles.photo_salle_url') ?>">
 
           <label>Capacité&nbsp;:</label>
           <input type="number" name="capacite" value="<?= Session::flashget('post_data.add_item_salles.capacite') ?>">
