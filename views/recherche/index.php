@@ -7,11 +7,11 @@
       <fieldset>
         <legend>Recherche d'un produit disponible</legend>
 
-        <p>Tous les champs sont facultatifs et combinables.</p>
+        <p>Tous les champs sont facultatifs et se combinent entre eux.</p>
 
         <label>Au mois de&nbsp;:</label>
         <select name="mois">
-          <?php $mois = [ 'Indifférent', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Novembre', 'Décembre' ]; ?>
+          <?php $mois = [ 'Indifférent', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ]; ?>
           <?php foreach ($mois as $key => $mois): ?>
           <option value="<?= $key ?>"><?= $mois ?></option>
           <?php endforeach; ?>
@@ -37,9 +37,37 @@
 
     <h2>Résultat de votre recherche</h2>
 
+      <?php
+        $recherche = $data['recherche'];
+
+        if ( empty($recherche['mois']) && empty($recherche['annee']) && empty($recherche['keywords']) ) {
+          $output = 'Vous n\'avez spécifié aucun critère, voici donc tous les produits disponibles.';
+
+        } else {
+
+          $output = 'Vous recherchez un produit';
+
+          if ( $recherche['mois'] ) {
+            $output .= ' commençant au mois de <strong>' . $recherche['mois'] . '</strong>';
+          }
+
+          if ( $recherche['annee'] ) {
+            $output .= ' de l\'année <strong>' . $recherche['annee'] . '</strong>';
+          }
+
+          if ( $recherche['keywords'] ) {
+            $output .= ' dont la salle a une description qui comporte le(s) mot(s)-clé(s) suivant(s) : <strong>' . implode('</strong>, <strong>', $recherche['keywords']) . '</strong>';
+          }
+
+          $output .= '.';
+        }
+      ?>
+
+      <p><?= $output ?></p>
+
       <?php if ( empty($data['produits']) ): ?>
 
-        <p>Aucun produit correspondant à vos critères de recherche n'a été trouvé.</p>
+        <p>Aucun produit disponible et correspondant à vos éventuels critères de recherche n'a été trouvé.</p>
 
       <?php else: ?>
 

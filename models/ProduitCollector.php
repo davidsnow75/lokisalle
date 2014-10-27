@@ -73,6 +73,30 @@ class ProduitCollector extends ItemCollector
         return $this->getItemsCustomSQL( $sql );
     }
 
+    public function getValidSingleProduit( $id, $join = '' )
+    {
+        $id = (int) $id;
+
+        if ( $join === 'withPromo' ) {
+            $sql = "SELECT $this->fields, $this->fieldsWidthPromo
+                    FROM produits
+                    LEFT JOIN salles ON salles.id = produits.salles_id
+                    LEFT JOIN promotions ON promotions.id = produits.promotions_id
+                    WHERE produits.id = $id
+                      AND FROM_UNIXTIME( produits.date_arrivee ) > CURDATE()
+                      AND produits.etat = 0;";
+        } else {
+            $sql = "SELECT $this->fields
+                    FROM produits
+                    LEFT JOIN salles ON salles.id = produits.salles_id
+                    WHERE produits.id = $id
+                      AND FROM_UNIXTIME( produits.date_arrivee ) > CURDATE()
+                      AND produits.etat = 0;";
+        }
+
+        return $this->getItemsCustomSQL( $sql );
+    }
+
     public function getAllValidProduits()
     {
         $sql = "SELECT $this->fields
@@ -114,5 +138,61 @@ class ProduitCollector extends ItemCollector
                 LIMIT 0,3;";
 
         return $this->getItemsCustomSQL( $sql );
+    }
+
+    public function getProduitsFromRecherche( $array )
+    {
+        $mois     = empty($array['mois']) ? 0 : intval($array['mois']);
+        $annee    = empty($array['annee']) ? 0 : intval($array['annee']);
+        $keywords = empty($array['keywords']) ? [] : explode('|', $array['keywords']);
+
+        /* on ne garde que les 4 premières valeurs de $keywords, que l'on échappe */
+        foreach ($keywords as $key => $keyword) {
+            if ( $key < 4 ) {
+                $keywords[$key] = $this->db->real_escape_string($keyword);
+            } else {
+                unset($keywords[$key]);
+            }
+        }
+
+        /* tout est propre et bien ordonné, on peut commencer à travailler */
+
+        /* la base de travail */
+        $sql = "SELECT $this->fields
+                FROM produits
+                LEFT JOIN salles ON salles.id = produits.salles_id
+                WHERE FROM_UNIXTIME( produits.date_arrivee ) > CURDATE()
+                    AND produits.etat = 0";
+
+        $recherche = [
+            'mois' => '',
+            'annee' => '',
+            'keywords' => []
+        ];
+
+        if ( $mois ) {
+            $sql .= " AND DATE_FORMAT( FROM_UNIXTIME(produits.date_arrivee), '%c' ) = $mois";
+            $recherche['mois'] = strftime('%B', mktime(null, null, null, $mois));
+        }
+
+        if ( $annee ) {
+            $sql .= " AND DATE_FORMAT( FROM_UNIXTIME(produits.date_arrivee), '%Y' ) = $annee";
+            $recherche['annee'] = $annee;
+        }
+
+        if ( $keywords ) {
+            foreach ( $keywords as $key => $keyword ) {
+                $sql .= " AND salles.description LIKE '%$keyword%'";
+                $recherche['keywords'][] = $keyword;
+            }
+        }
+
+        /* on a fini de rajouter des critères, on clôt la requête */
+        $sql .= ";";
+
+        return [
+            'produits' => $this->getItemsCustomSQL( $sql ),
+            'recherche' => $recherche
+        ];
     }
 }
