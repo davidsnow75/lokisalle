@@ -51,11 +51,13 @@ function showProduit( $produit ) {
 
 <div class="produitSM lgn">
   <div class="col sm3">
-    <img class="img-responsive produitSM_img" src="<?= $produit['sallePhoto'] ?>" alt="<?= $produit['salleTitre'] ?>">
+    <img class="img-responsive produitSM__img" src="<?= $produit['sallePhoto'] ?>" alt="<?= $produit['salleTitre'] ?>">
   </div>
   <div class="col sm9 produitSM__infos">
     <p>Du <strong><?= strftime( '%e %b %Y', $produit['produitDebut']) ?></strong> au <strong><?= strftime( '%e %b %Y', $produit['produitFin']) ?></strong> - <em><?= $produit['salleVille'] ?></em></p>
     <p><strong><?= $produit['produitPrix'] ?>€</strong> pour <strong><?= $produit['salleCapacite'] ?></strong> personnes</p>
+  </div>
+  <div class="col sm12">
     <p class="produitSM__links">
       <a href="<?= racine() ?>/produit/index/<?= $produit['produitID'] ?>">Voir la fiche détaillée</a> |
       <?php if ( Session::userIsLoggedIn() ): ?>
