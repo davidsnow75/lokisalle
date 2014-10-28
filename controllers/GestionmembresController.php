@@ -32,6 +32,11 @@ class GestionmembresController extends AdminController
 
             $membre_cible = $membres_manager->get_items( 'membres', [$clean_id], 'id, statut' );
 
+            /* FIX TEMPORAIRE */
+            if ( empty($membre_cible) ) {
+                $this->quit('/gestionmembres', 'events.gestionmembres.msg', 'Le membre demandé pour suppression n\'existe pas.');
+            }
+
             // un utilisateur ne peut pas se supprimer lui-même et
             // seul l'utilisateur spécial peut supprimer un administrateur
             if (
