@@ -2,6 +2,8 @@
 
 class GestionpromotionsController extends AdminController
 {
+    const INVALID_MODIF = 'Impossible de modifier une promotion inexistante.';
+
     public function index()
     {
         $ids = func_get_args();
@@ -55,6 +57,9 @@ class GestionpromotionsController extends AdminController
 
         /* le formulaire n'a pas été saisi */
         $data['promotions'] = $this->loadModel('PromotionCollector')->getPromotions( $id );
+        if ( empty($data['promotions']) ) {
+            $this->quit('/gestionpromotions', 'events.gestionpromotions.msg', self::INVALID_MODIF);
+        }
         $data['msg'] = Session::flashget('events.gestionpromotions.msg');
         $this->renderView('gestionpromotions/modifier', $data);
     }
