@@ -77,7 +77,13 @@
               <td><?= date('d/m/Y', $produit['produitDebut'] ) ?></td>
               <td><?= date('d/m/Y', $produit['produitFin'] )?></td>
               <td><?= $produit['produitPrix'] ?> €</td>
-              <td><?= $produit['produitEtat'] === '1' ? 'Réservé' : 'Disponible' ?></td>
+              <td>
+                <?php if ( $produit['produitDebut'] > time() ): ?>
+                  <?= $produit['produitEtat'] === '1' ? 'Réservé' : 'Disponible' ?>
+                <?php else: ?>
+                  Obsolète
+                <?php endif; ?>
+              </td>
               <td><a href="<?= racine() ?>/gestionsalles/index/<?= $produit['salleID'] ?>"><?= $produit['salleID'] ?></a></td>
               <?php if ( empty($produit['promoId']) ): ?>
               <td><em>non concerné</em></td>

@@ -44,6 +44,7 @@
       <li><strong>Catégorie de cette salle</strong>: <?= $produit['salleCategorie'] ?></li>
     </ul>
 
+    <?php if (!$produit['produitEtat']): ?>
     <p class="tright">
       <?php if ( Session::userIsLoggedIn() ): ?>
         <a href="<?= racine() ?>/panier/ajouter/<?= $produit['produitID'] ?>">Ajouter au panier</a>
@@ -51,6 +52,7 @@
         <a href="<?= racine() ?>/connexion">Connectez-vous pour l'ajouter au panier</a>
       <?php endif; ?>
     </p>
+    <?php endif; ?>
 
     <h3>Produits similaires</h3>
 
