@@ -2,6 +2,8 @@
 
 class GestionproduitsController extends AdminController
 {
+    const INVALID_MODIF = 'Il est impossible de modifier le produit demandé car celui-ci est ou inexistant, ou déjà réservé, ou encore obsolète.';
+
     public function index()
     {
         $ids = func_get_args();
@@ -68,7 +70,11 @@ class GestionproduitsController extends AdminController
         }
 
         /* le formulaire n'a pas été saisi */
-        $data['produit'] = $this->loadModel('ProduitCollector')->getSingleProduit( $id, 'withPromo' );
+        $data['produit'] = $this->loadModel('ProduitCollector')->getValidSingleProduit( $id, 'withPromo' );
+        if ( empty($data['produit']) ) {
+            $this->quit('/gestionproduits', 'events.gestionproduits.msg', self::INVALID_MODIF);
+        }
+
         $data['promotions'] = $this->loadModel('PromotionCollector')->getPromotions();
         $data['salles'] = $this->loadModel('SallesManagerModel')->get_items('salles');
         $data['msg'] = Session::flashget('events.gestionproduits.msg');
