@@ -27,22 +27,84 @@
 
     <p class="tcenter"><img src="<?= $produit['sallePhoto'] ?>" alt="<?= $produit['salleTitre'] ?>"></p>
 
-    <ul>
-      <li><strong>ID du produit</strong>: <?= $produit['produitID'] ?></li>
-      <li><strong>Date de début</strong>: <?= niceDate($produit['produitDebut']) ?></li>
-      <li><strong>Date de fin</strong>: <?= niceDate($produit['produitFin']) ?></li>
-      <li><strong>Prix</strong>: <?= $produit['produitPrix'] ?> €</li>
-      <li><strong>État</strong>: <?= $produit['produitEtat'] ? 'Indisponible' : 'Disponible' ?></li>
-      <li><strong>ID de la salle liée</strong>: <?= $produit['salleID'] ?></li>
-      <li><strong>Titre de cette salle</strong>: <?= $produit['salleTitre'] ?></li>
-      <li><strong>Adresse de cette salle</strong>: <?= $produit['salleAdresse'] ?></li>
-      <li><strong>Code postal de cette salle</strong>: <?= $produit['salleCP'] ?></li>
-      <li><strong>Ville de cette salle</strong>: <?= $produit['salleVille'] ?></li>
-      <li><strong>Pays de cette salle</strong>: <?= $produit['sallePays'] ?></li>
-      <li><strong>Descriptions de cette salle</strong>: <div><?= $produit['salleDescription'] ?></div></li>
-      <li><strong>Capacité de cette salle</strong>: <?= $produit['salleCapacite'] ?> personnes</li>
-      <li><strong>Catégorie de cette salle</strong>: <?= $produit['salleCategorie'] ?></li>
-    </ul>
+    <div class="lgn">
+
+      <div class="col sm6 paddingX">
+        <h3>Informations</h3>
+        <ul>
+          <li><strong>ID du produit</strong>: <?= $produit['produitID'] ?></li>
+          <li><strong>Date de début</strong>: <?= niceDate($produit['produitDebut']) ?></li>
+          <li><strong>Date de fin</strong>: <?= niceDate($produit['produitFin']) ?></li>
+          <li><strong>Prix</strong>: <?= $produit['produitPrix'] ?> €</li>
+          <li><strong>État</strong>: <?= $produit['produitEtat'] ? 'Indisponible' : 'Disponible' ?></li>
+        </ul>
+        <ul>
+          <li><strong>ID de la salle liée</strong>: <?= $produit['salleID'] ?></li>
+          <li><strong>Titre</strong>: <?= $produit['salleTitre'] ?></li>
+          <li><strong>Adresse</strong>: <?= $produit['salleAdresse'] ?></li>
+          <li><strong>Code postal</strong>: <?= $produit['salleCP'] ?></li>
+          <li><strong>Ville</strong>: <?= $produit['salleVille'] ?></li>
+          <li><strong>Pays</strong>: <?= $produit['sallePays'] ?></li>
+          <li><strong>Description</strong>: <div class="tjustify"><?= $produit['salleDescription'] ?></div></li>
+          <li><strong>Capacité</strong>: <?= $produit['salleCapacite'] ?> personnes</li>
+          <li><strong>Catégorie</strong>: <?= $produit['salleCategorie'] ?></li>
+        </ul>
+      </div><!-- /.col.sm6.paddingX -->
+
+      <div class="col sm6 paddingX guestbook">
+        <h3>Les 3 derniers avis sur la salle</h3>
+
+        <?php if ( empty($data['avis']) ): ?>
+
+          <p>Aucun avis n'a été laissé sur cette salle pour l'instant.</p>
+
+        <?php else: ?>
+
+          <?php foreach ( $data['avis'] as $avis ): ?>
+
+            <div class="avis">
+              <div class="avis__metadata cf">
+                <div class="col xs10"><?= $avis['auteur'] ?>, le <?= niceDate($avis['date']) ?> à <?= niceHour($avis['date']) ?></div>
+                <div class="col xs2 paddingX"><?= $avis['note'] ?>/10</div>
+              </div>
+              <div class="avis__data">
+                <p><em><?= $avis['texte'] ?></em></p>
+              </div>
+            </div>
+
+          <?php endforeach; ?>
+
+        <?php endif; ?>
+
+        <?php if ( Session::userIsLoggedIn() ): ?>
+
+          <form class="form" method="post" action="<?= racine() ?>/produits/commenter/<?= $produit['salleID'] ?>">
+            <fieldset class="cf">
+              <legend>Laisser un avis</legend>
+
+              <label>Avis&nbsp;:</label>
+              <textarea name="avis"></textarea>
+
+              <label>Note sur 10&nbsp;:</label>
+              <select name="note">
+                <?php for ($i = 0; $i < 11; $i++): ?>
+                  <option value="<?= $i ?>"><?= $i ?></option>
+                <?php endfor; ?>
+              </select>
+
+              <input type="submit">
+
+            </fieldset>
+          </form>
+
+        <?php else: ?>
+
+          <p><a href="<?= racine() ?>/connexion">Connectez-vous pour ajouter un avis</a></p>
+
+        <?php endif; ?>
+      </div><!-- /.col.sm6.paddingX -->
+
+    </div>
 
     <?php if (!$produit['produitEtat']): ?>
     <p class="tright">
