@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `lokisalle`.`produits` (
   CONSTRAINT `fk_produits_salles1`
     FOREIGN KEY (`salles_id`)
     REFERENCES `lokisalle`.`salles` (`id`)
-    ON DELETE SET NULL
+    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_produits_promotions1`
     FOREIGN KEY (`promotions_id`)
@@ -97,22 +97,22 @@ CREATE TABLE IF NOT EXISTS `lokisalle`.`avis` (
   `id` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `commentaire` TEXT NULL,
   `note` INT(2) NULL,
-  `date` TIMESTAMP NULL,
+  `date` BIGINT NULL,
   `salles_id` INT UNSIGNED NOT NULL,
-  `membres_id` INT(5) UNSIGNED NOT NULL,
+  `membres_id` INT(5) UNSIGNED NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_avis_salles1_idx` (`salles_id` ASC),
   INDEX `fk_avis_membres1_idx` (`membres_id` ASC),
   CONSTRAINT `fk_avis_salles1`
     FOREIGN KEY (`salles_id`)
     REFERENCES `lokisalle`.`salles` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_avis_membres1`
     FOREIGN KEY (`membres_id`)
     REFERENCES `lokisalle`.`membres` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
