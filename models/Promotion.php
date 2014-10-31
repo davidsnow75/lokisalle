@@ -65,7 +65,7 @@ class Promotion extends Model
     public function setReduction( $reduction )
     {
         $reduction = (int) $reduction;
-        if ( $reduction && strlen( (string) $reduction ) < 6 ) {
+        if ( $reduction > 0 && strlen( (string) $reduction ) < 6 ) {
             $this->reduction = $reduction;
         } else {
             throw new Exception(self::INVALID_REDUCTION);

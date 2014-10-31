@@ -104,7 +104,7 @@ class Produit extends Model
     public function setPrix( $prix )
     {
         $prix = (int) $prix;
-        if ( $prix && strlen( (string) $prix ) < 6 ) {
+        if ( $prix > 0 && strlen( (string) $prix ) < 6 ) {
             $this->prix = $prix;
         } else {
             throw new Exception(self::INVALID_PRIX);

@@ -41,7 +41,7 @@ class GestionmembresController extends AdminController
             // seul l'utilisateur spécial peut supprimer un administrateur
             if (
                 $membre_cible[0]['id'] == Session::get('user.id')
-                || ( $membre_cible[0]['statut'] == '1' && !Session::user_is_godlike() )
+                || ( $membre_cible[0]['statut'] == '1' && !Session::user_is_godlike() )
             ) {
                 $this->quit('/gestionmembres', 'events.gestionmembres.msg', 'forbidden_access');
             }

@@ -55,7 +55,7 @@ class SallesManagerModel extends ItemManagerModel
         elseif ( empty($post_data['capacite']) ):
             return 'capacite_missing';
 
-        elseif ( !is_int($post_data['capacite']) ):
+        elseif ( !is_int($post_data['capacite']) || $post_data['capacite'] < 1 ):
             return 'capacite_doesnt_fit';
 
         elseif ( strlen( (string) $post_data['capacite']) > 4 ):

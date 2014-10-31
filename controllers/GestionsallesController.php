@@ -94,7 +94,7 @@ class GestionsallesController extends AdminController
                 case 'description_length'     : $msg = 'La description doit faire au minimum 3 caractères.'; break;
                 case 'photo_salle_url_length' : $msg = 'L\'url de la photo ne doit pas faire plus de 200 caractères.'; break;
                 case 'capacite_missing'       : $msg = 'La capacité doit être renseignée.'; break;
-                case 'capacite_doesnt_fit'    : $msg = 'La capacité doit être un nombre entier.'; break;
+                case 'capacite_doesnt_fit'    : $msg = 'La capacité doit être un nombre entier non-nul.'; break;
                 case 'capacite_length'        : $msg = 'La capacité ne peut excéder un nombre à trois chiffres.'; break;
                 case 'categorie_missing'      : $msg = 'La catégorie doit être renseignée.'; break;
                 case 'categorie_doesnt_fit'   : $msg = 'La catégorie entrée n\'est pas disponible.'; break;
