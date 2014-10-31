@@ -3,7 +3,7 @@
 
     <h1>Détails d'un produit</h1>
 
-    <?php $produit = $data['produit'][0]; ?>
+    <?php $produit = $data['produit']; ?>
 
 <?php /*
                       $produit['produitID']
@@ -29,7 +29,7 @@
 
     <div class="lgn">
 
-      <div class="col sm6 paddingX">
+      <div class="col sm6 paddingX produit">
         <h3>Informations</h3>
         <ul>
           <li><strong>ID du produit</strong>: <?= $produit['produitID'] ?></li>
@@ -54,6 +54,8 @@
       <div class="col sm6 paddingX guestbook">
         <h3>Les 3 derniers avis sur la salle</h3>
 
+        <?= displayMsg($data) ?>
+
         <?php if ( empty($data['avis']) ): ?>
 
           <p>Aucun avis n'a été laissé sur cette salle pour l'instant.</p>
@@ -64,11 +66,11 @@
 
             <div class="avis">
               <div class="avis__metadata cf">
-                <div class="col xs10"><?= $avis['auteur'] ?>, le <?= niceDate($avis['date']) ?> à <?= niceHour($avis['date']) ?></div>
-                <div class="col xs2 paddingX"><?= $avis['note'] ?>/10</div>
+                <div class="col xs10"><?= $avis['membrePseudo'] ? $avis['membrePseudo'] : 'Anonyme' ?>, le <?= niceDate($avis['avisDate']) ?> à <?= niceHour($avis['avisDate']) ?></div>
+                <div class="col xs2 paddingX"><?= $avis['avisNote'] ?>/10</div>
               </div>
               <div class="avis__data">
-                <p><em><?= $avis['texte'] ?></em></p>
+                <p><em><?= $avis['avisCommentaire'] ?></em></p>
               </div>
             </div>
 
@@ -78,12 +80,12 @@
 
         <?php if ( Session::userIsLoggedIn() ): ?>
 
-          <form class="form" method="post" action="<?= racine() ?>/produits/commenter/<?= $produit['salleID'] ?>">
+          <form class="form" method="post" action="<?= racine() ?>/produit/commenter">
             <fieldset class="cf">
               <legend>Laisser un avis</legend>
 
               <label>Avis&nbsp;:</label>
-              <textarea name="avis"></textarea>
+              <textarea name="commentaire"></textarea>
 
               <label>Note sur 10&nbsp;:</label>
               <select name="note">
@@ -91,6 +93,9 @@
                   <option value="<?= $i ?>"><?= $i ?></option>
                 <?php endfor; ?>
               </select>
+
+              <input type="hidden" name="salles_id" value="<?= $produit['salleID'] ?>">
+              <input type="hidden" name="produit_id" value="<?= $produit['produitID'] ?>">
 
               <input type="submit">
 

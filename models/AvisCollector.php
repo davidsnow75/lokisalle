@@ -1,0 +1,28 @@
+<?php
+
+class AvisCollector extends ItemCollector
+{
+    private $fields = 'avis.id          AS avisId,
+                       avis.commentaire AS avisCommentaire,
+                       avis.note        AS avisNote,
+                       avis.date        AS avisDate,
+                       salles.id        AS salleId,
+                       salles.titre     AS salleTitre,
+                       membres.id       AS membreId,
+                       membres.pseudo   AS membrePseudo';
+
+    public function getThreeLastAvis( $salle_id )
+    {
+        $salle_id = (int) $salle_id;
+
+        $sql = "SELECT $this->fields
+                FROM avis
+                LEFT JOIN salles ON salles.id = avis.salles_id
+                LEFT JOIN membres ON membres.id = avis.membres_id
+                WHERE avis.salles_id = $salle_id
+                ORDER BY avis.date ASC
+                LIMIT 0,3;";
+
+        return $this->getItemsCustomSQL( $sql );
+    }
+}

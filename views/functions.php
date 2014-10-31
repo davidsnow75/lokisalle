@@ -76,3 +76,7 @@ function showProduit( $produit ) {
 function niceDate( $timestamp ) {
   return date('d/m/Y', $timestamp);
 }
+
+function niceHour( $timestamp ) {
+  return date('H:i', $timestamp);
+}
