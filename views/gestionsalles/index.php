@@ -48,6 +48,7 @@
 
           <input type="submit">
         </fieldset>
+        <?= Session::delete('post_data.add_item_salles') ?>
       </form>
     </div>
 
