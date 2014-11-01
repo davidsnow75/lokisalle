@@ -16,11 +16,9 @@ Parmi les contraintes du cahier des charges client, on exigeait notamment :
 ----
 
 Le projet est encore en développement, mais toutes les fonctionnalités majeures sont opérationnelles.
-Il reste à mettre en place :
+Il reste encore à mettre en place :
 
-- la possibilité pour les membres de laisser un avis sur un produit
 - un rapport automatique de l'activité du site e-commerce via des statistiques disponibles dans le back-office
-- un système de newsletter auquel chaque membre pourra choisir de s'inscrire
 - éventuellement un peu de design...
 
 Technique
