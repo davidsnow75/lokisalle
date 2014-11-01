@@ -53,4 +53,16 @@ class CommandeCollector extends ItemCollector
 
         return $this->getItemsCustomSQL( $sql );
     }
+
+    public function getCommandesFromUser( $id )
+    {
+        $id = (int) $id;
+
+        $sql = "SELECT details_commandes.produits_id
+                FROM details_commandes
+                LEFT JOIN commandes ON commandes.id = details_commandes.commandes_id
+                WHERE commandes.membres_id = $id;";
+
+        return $this->getItemsCustomSQL( $sql );
+    }
 }

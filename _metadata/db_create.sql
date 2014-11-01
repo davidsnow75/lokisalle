@@ -149,8 +149,8 @@ CREATE TABLE IF NOT EXISTS `lokisalle`.`newsletters` (
   CONSTRAINT `fk_newsletters_membres1`
     FOREIGN KEY (`membres_id`)
     REFERENCES `lokisalle`.`membres` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -176,6 +176,21 @@ CREATE TABLE IF NOT EXISTS `lokisalle`.`details_commandes` (
     REFERENCES `lokisalle`.`produits` (`id`)
     ON DELETE SET NULL
     ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `lokisalle`.`pseudomails`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `lokisalle`.`pseudomails` ;
+
+CREATE TABLE IF NOT EXISTS `lokisalle`.`pseudomails` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `expediteur` VARCHAR(255) NULL,
+  `sujet` VARCHAR(255) NULL,
+  `message` TEXT NULL,
+  `date` BIGINT NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 

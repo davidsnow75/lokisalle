@@ -30,7 +30,14 @@ class Avis extends Model
                 throw new Exception(self::NOT_FOUND);
             }
 
-            $this->setAvis( $result->fetch_assoc() );
+            $avis = $result->fetch_assoc();
+
+            $this->id = $avis['id'];
+            $this->commentaire = $avis['commentaire'];
+            $this->note = $avis['note'];
+            $this->date = $avis['date'];
+            $this->salles_id = $avis['salles_id'];
+            $this->membres_id = $avis['membres_id'];
         }
     }
 

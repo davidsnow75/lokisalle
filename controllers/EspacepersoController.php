@@ -6,7 +6,17 @@ class EspacepersoController extends MembreController
     {
         // requête des infos du membre
         $fields = 'id, pseudo, nom, email, sexe, ville, cp, adresse, statut';
-        $data['membres'] = $this->loadModel('MembresManagerModel')->get_items( 'membres', [$this->id], $fields );
+
+        $manager = $this->loadModel('MembresManagerModel');
+
+        $data['membres'] = $manager->get_items( 'membres', [$this->id], $fields );
+        $data['isAbonne'] = (bool) $manager->isAbonneNewsletter( Session::get('user.id') );
+
+        if ( $data['isAbonne'] ) {
+            $data['lastNewsletter'] = $this->loadModel('NewsletterManager')->getLastNewsletter();
+        }
+
+        $data['commandes'] = $this->loadModel('CommandeCollector')->getCommandesFromUser( Session::get('user.id') );
 
         // stockage d'un éventuel msg de la part d'un modèle
         $data['msg'] = $this->test_events_msg();
@@ -46,6 +56,29 @@ class EspacepersoController extends MembreController
         }
     }
 
+    public function abonnement()
+    {
+        if ( isset($_POST['abonnement']) ) {
+            if ( $this->loadModel('MembresManagerModel')->abonnerNewsletter(Session::get('user.id')) ) {
+                $aboMsg = 'abo_success';
+            } else {
+                $aboMsg = 'abo_failure';
+            }
+
+        } elseif ( isset($_POST['desabonnement']) ) {
+            if ( $this->loadModel('MembresManagerModel')->desabonnerNewsletter(Session::get('user.id')) ) {
+                $aboMsg = 'desabo_success';
+            } else {
+                $aboMsg = 'desabo_failure';
+            }
+
+        } else {
+            $this->quit('/espaceperso');
+        }
+
+        $this->quit('/espaceperso', 'events.espaceperso.msg', $aboMsg);
+    }
+
     protected function test_events_msg()
     {
         if ( Session::get('events.espaceperso.msg') ) {
@@ -72,7 +105,11 @@ class EspacepersoController extends MembreController
                 case 'pseudo_unavailable' : $msg = 'Le pseudo demandé appartient déjà à un autre utilisateur.'; break;
                 case 'email_unavailable'  : $msg = 'L\'email demandé appartient déjà à un autre utilisateur.'; break;
                 case 'valid_modify_item'  : $msg = 'Les modifications ont bien été enregistrées.'; break;
-                case 'forbidden_access'    : $msg = 'L\'opération demandée est interdite.'; break;
+                case 'forbidden_access'   : $msg = 'L\'opération demandée est interdite.'; break;
+                case 'abo_success'        : $msg = 'Vous êtes désormais abonné(e) à la newsletter !'; break;
+                case 'abo_failure'        : $msg = 'Une erreur s\'est produite lors de votre tentative d\'abonnement à la newsletter.'; break;
+                case 'desabo_success'     : $msg = 'Votre désabonnement a bien été pris en compte.'; break;
+                case 'desabo_failure'     : $msg = 'Une erreur s\'est produite lors de votre tentative de désabonnement à la newsletter.'; break;
                 default                   : $msg = 'Une erreur inconnue s\'est produite.';
             }
         } else {

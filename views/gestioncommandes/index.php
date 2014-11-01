@@ -60,7 +60,7 @@
 
               <?php $produits = []; ?>
               <?php foreach ( $c['produits'] as $p): ?>
-                <?php $produits[] = '<a href="' . racine() . '/gestionproduits/index/' . $p['produitId'] . '">' . $p['produitId'] . '</a>'; ?>
+                <?php $produits[] = empty($p['produitId']) ? '<em>supprimé</em>' : '<a href="' . racine() . '/gestionproduits/index/' . $p['produitId'] . '">' . $p['produitId'] . '</a>'; ?>
               <?php endforeach; ?>
 
               Produit(s) concerné(s)&nbsp;: <?= implode(', ', $produits) ?>

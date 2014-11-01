@@ -91,8 +91,8 @@
         <li class="menu-item"><a href="<?= racine() ?>/gestioncommandes">Gestion des commandes</a></li>
         <li class="menu-item"><a href="<?= racine() ?>/gestionavis">Gestion des avis</a></li>
         <li class="menu-item"><a href="<?= racine() ?>/gestionpromotions">Gestion des codes promo</a></li>
-        <li class="menu-item"><a href="<?= racine() ?>/gestionstats">Statistiques</a></li>
-        <li class="menu-item"><a href="<?= racine() ?>/gestionnewsletters">Newsletters</a></li>
+        <!-- <li class="menu-item"><a href="<?= racine() ?>/gestionstats">Statistiques</a></li> -->
+        <li class="menu-item"><a href="<?= racine() ?>/gestionnewsletter">Newsletters</a></li>
       </ul>
     </div>
 <?php endif; ?>

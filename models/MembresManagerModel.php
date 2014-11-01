@@ -175,4 +175,34 @@ class MembresManagerModel extends ItemManagerModel
 
         return 'valid_setadmin';
     }
+
+    public function isAbonneNewsletter( $id )
+    {
+        $id = (int) $id;
+        $bool = $this->exequery("SELECT membres_id FROM newsletters WHERE membres_id = $id;")->num_rows;
+        Debug::logCustom('bool', $bool);
+        return $bool;
+    }
+
+    public function abonnerNewsletter( $id )
+    {
+        $id = (int) $id;
+
+        if ( $this->isAbonneNewsletter($id) ) {
+            return false;
+        } else {
+            return $this->exequery("INSERT INTO newsletters VALUES ('', $id);");
+        }
+    }
+
+    public function desabonnerNewsletter( $id )
+    {
+        $id = (int) $id;
+
+        if ( !$this->isAbonneNewsletter($id) ) {
+            return false;
+        } else {
+            return $this->exequery("DELETE FROM newsletters WHERE membres_id = $id;");
+        }
+    }
 }

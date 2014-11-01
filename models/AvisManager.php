@@ -6,6 +6,8 @@ class AvisManager extends Model
 
     const INSERT_SUCCESS = 'L\'avis a bien été enregistré.';
     const INSERT_FAILURE = 'L\'avis n\'a pas pu être enregistré.';
+    const DELETE_SUCCESS = 'L\'avis a bien été supprimé.';
+    const DELETE_FAILURE = 'L\'avis n\'a pas pu être supprimé.';
     const ONE_AVIS_PER_MEMBRE = 'Un membre ne peut pas donner son avis plusieurs fois sur une même salle.';
     const SALLE_NOT_FOUND = 'L\'avis renvoie à une salle inexistante.';
 
@@ -33,6 +35,10 @@ class AvisManager extends Model
                                 " . $this->avis->getMembres_id()       . ");";
                 break;
 
+            case 'delete':
+                $sql = "DELETE FROM avis WHERE id = '" . $this->avis->getId() . "';";
+                break;
+
             default: $sql = false;
         }
 
@@ -49,6 +55,17 @@ class AvisManager extends Model
         } else {
             return self::INSERT_SUCCESS;
         }
+    }
+
+    public function deleteAvis()
+    {
+        if ( !$this->AvisToDb('delete') ) {
+            throw new Exception(self::DELETE_FAILURE);
+        }
+
+        unset( $this->avis );
+
+        return self::DELETE_SUCCESS;
     }
 
     /*=======================================================================*/
