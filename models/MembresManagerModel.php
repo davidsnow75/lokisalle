@@ -179,9 +179,7 @@ class MembresManagerModel extends ItemManagerModel
     public function isAbonneNewsletter( $id )
     {
         $id = (int) $id;
-        $bool = $this->exequery("SELECT membres_id FROM newsletters WHERE membres_id = $id;")->num_rows;
-        Debug::logCustom('bool', $bool);
-        return $bool;
+        return $this->exequery("SELECT membres_id FROM newsletters WHERE membres_id = $id;")->num_rows;
     }
 
     public function abonnerNewsletter( $id )
