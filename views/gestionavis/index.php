@@ -1,7 +1,7 @@
 <div class="main-content blc">
   <div class="ctn">
 
-    <h1>Gestion des membres</h1>
+    <h1>Gestion des avis</h1>
 
     <?= displayMsg($data) ?>
 

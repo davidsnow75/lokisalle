@@ -206,7 +206,7 @@ class Session
      */
     public static function user_is_godlike()
     {
-        if ( Session::get('user.pseudo') === 'Erwan' ) {
+        if ( Session::get('user.id') === '1' ) {
             return true;
         }
 
