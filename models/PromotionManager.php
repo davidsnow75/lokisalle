@@ -33,7 +33,7 @@ class PromotionManager extends Model
                 break;
 
             case 'update':
-                $this->checkCodePromoUnique();
+                $this->checkCodePromoUnique('update');
 
                 $sql = "UPDATE promotions
                         SET code_promo = '" . $this->promotion->getCode_promo('sql') . "',
@@ -83,12 +83,17 @@ class PromotionManager extends Model
     }
 
     /* MÉTHODES SPÉCIFIQUES */
-    public function checkCodePromoUnique()
+    public function checkCodePromoUnique( $action = 'insert' )
     {
-       $sql = "SELECT id FROM promotions WHERE code_promo = '" . $this->promotion->getCode_promo('sql') . "';";
-       if ( $this->exequery($sql)->num_rows ) {
-           throw new Exception(self::PROMO_EXISTS);
-       }
+        if ( $action === 'update' ) {
+            $sql = "SELECT id FROM promotions WHERE code_promo = '" . $this->promotion->getCode_promo('sql') . "' AND id != " . $this->promotion->getId() . ";";
+        } else {
+            $sql = "SELECT id FROM promotions WHERE code_promo = '" . $this->promotion->getCode_promo('sql') . "';";
+        }
+
+        if ( $this->exequery($sql)->num_rows ) {
+            throw new Exception(self::PROMO_EXISTS);
+        }
     }
 
     public function checkModifications( $modifs )

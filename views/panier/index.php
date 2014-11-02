@@ -86,7 +86,13 @@
             <tr>
               <td colspan="9">
                 Prix HT: <del><?= $panier['totalHT'] ?> €</del> <strong><?= $panier['totalHTPromo'] ?> €</strong> grâce au(x) code(s) promo entré(s),
-                soit une réduction de <?php printf("%6.2f", ( $panier['promo'] * 100 ) / $panier['totalHT'] ) ?> % !
+                soit une réduction de
+                <?php
+                  $totalreducperc = ( $panier['promo'] * 100 ) / $panier['totalHT'];
+                  $totalreducperc = $totalreducperc > 100 ? 100 : $totalreducperc;
+                  printf("%6.2f", $totalreducperc);
+                ?>
+                % !
               </td>
             </tr>
           <?php endif; ?>

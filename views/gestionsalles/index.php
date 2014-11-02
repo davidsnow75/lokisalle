@@ -34,7 +34,7 @@
           <label>Description&nbsp;:</label>
           <textarea name="description"><?= Session::flashget('post_data.add_item_salles.description') ?></textarea>
 
-          <label>Photo&nbsp;:</label>
+          <label>URL de la photo&nbsp;:</label>
           <input type="text" name="photo" value="<?= Session::flashget('post_data.add_item_salles.photo_salle_url') ?>">
 
           <label>Capacité&nbsp;:</label>

@@ -140,8 +140,8 @@ class Produit extends Model
             || empty( $array['date_depart'] )
             || empty( $array['prix'] )
             || empty( $array['salle_id'] )
-            // || !isset( $array['etat'] )
-            || !isset( $array['promo_id'] )
+            //|| !isset( $array['etat'] )
+            //|| !isset( $array['promo_id'] )
         ) {
             throw new Exception(self::INVALID_INPUT);
         }
