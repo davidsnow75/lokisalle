@@ -49,7 +49,7 @@
         <p>Un de ces produit a été depuis supprimé du catalogue Lokisalle.</p>
         <?php endif; ?>
         <p>
-          Voici la liste des produits commandés existants encore dans le catalogue Lokisalle :
+          Voici la liste des produits commandés existant encore dans le catalogue Lokisalle :
           <?php foreach ($produitsIds as $key => $produitId): ?>
             <?php if ( $key ) { echo ' | '; } ?>
             <a href="<?php racine() ?>/produit/index/<?= $produitId ?>"><?= $produitId ?></a>

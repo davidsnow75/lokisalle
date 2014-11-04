@@ -9,11 +9,24 @@
 
     <?php else: ?>
 
-    <div class="lgn">
+      <?php
+        $total = count($data['produits']);
+        $count = 0;
+      ?>
+
     <?php foreach($data['produits'] as $produit): ?>
-      <div class="col sm6"><?php showProduit($produit); ?></div>
+
+      <?php if ( $count % 2 === 0 ): ?> <div class="lgn"> <?php endif; ?>
+
+        <div class="col sm6"><?php showProduit($produit); ?></div>
+
+      <?php if ( $count % 2 !== 0 ): ?> </div> <?php endif; ?>
+
+      <?php $count++; ?>
+
     <?php endforeach; ?>
-    </div>
+
+      <?php if ( $total % 2 !== 0 ): ?></div><?php endif; ?>
 
     <?php endif; ?>
 
