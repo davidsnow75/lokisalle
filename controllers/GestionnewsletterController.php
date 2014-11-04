@@ -16,7 +16,7 @@ class GestionnewsletterController extends AdminController
             || empty($_POST['sujet'])
             || empty($_POST['message'])
         ) {
-            $this->quit('gestionnewsletter', 'events.gestionnewsletter.msg', 'L\'expéditeur, le sujet et le message sont obligatoires.');
+            $this->quit('/gestionnewsletter', 'events.gestionnewsletter.msg', 'L\'expéditeur, le sujet et le message sont obligatoires.');
         }
 
         $insertMsg = $this->loadModel('NewsletterManager')->insert( $_POST );

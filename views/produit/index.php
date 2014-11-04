@@ -126,7 +126,7 @@
     <?php if ( empty($data['similarProduits']) ): ?>
       <p>Pas de produits similaires à ce produit !</p>
     <?php else: ?>
-      <p>Les produits suivants commence durant le même mois et se trouve dans la même ville que le produit dont vous avez demandé le détail.</p>
+      <p>Les produits suivants commencent durant le même mois et se trouvent dans la même ville que le produit dont vous avez demandé le détail.</p>
       <div class="lgn">
       <?php foreach($data['similarProduits'] as $produit): ?>
         <div class="col sm6"><?php showProduit($produit); ?></div>

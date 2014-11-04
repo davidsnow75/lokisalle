@@ -94,7 +94,7 @@ class EspacepersoController extends MembreController
                 case 'email_missing'      : $msg = 'L\'adresse e-mail est obligatoire.'; break;
                 case 'email_length'       : $msg = 'L\'adresse e-mail ne doit pas dépasser 30 caractères.'; break;
                 case 'email_doesnt_fit'   : $msg = 'L\'adresse e-mail ne respecte pas le motif légal.'; break;
-                case 'sexe_missing'       : $msg = 'Préciser le sexe est obligatoire.'; break;
+                case 'sexe_missing'       : $msg = 'Le sexe est obligatoire.'; break;
                 case 'sexe_doesnt_fit'    : $msg = 'Le sexe est inconnu.'; break;
                 case 'city_missing'       : $msg = 'La ville doit être renseignée.'; break;
                 case 'city_length'        : $msg = 'La ville ne doit pas dépasser 20 caractères.'; break;

@@ -40,11 +40,16 @@
           }
 
           $produitsIds = array_values($produitsIds);
+          $nbRestant = $nbProduits - $nbValides;
         ?>
-        <p>Vous avez commandé <?= $nbProduits ?> produits.</p>
-        <p><?= $nbProduits - $nbValides ?> de ces produits ont été depuis supprimés.</p>
+        <p>Vous avez commandé <?= $nbProduits ?> <?= $nbProduits > 1 ? 'produits' :  'produit' ?>.</p>
+        <?php if ( $nbRestant > 1 ): ?>
+        <p><?= $nbRestant ?> de ces produits ont été depuis supprimés du catalogue Lokisalle.</p>
+        <?php elseif ( $nbRestant === 1 ): ?>
+        <p>Un de ces produit a été depuis supprimé du catalogue Lokisalle.</p>
+        <?php endif; ?>
         <p>
-          Voici la liste de ceux qui restent :
+          Voici la liste des produits commandés existants encore dans le catalogue Lokisalle :
           <?php foreach ($produitsIds as $key => $produitId): ?>
             <?php if ( $key ) { echo ' | '; } ?>
             <a href="<?php racine() ?>/produit/index/<?= $produitId ?>"><?= $produitId ?></a>
