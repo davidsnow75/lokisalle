@@ -1,6 +1,6 @@
 <?php
 
-class Stats extends Model
+class Stats extends ItemCollector
 {
     public function getBestSalle()
     {
@@ -10,7 +10,13 @@ class Stats extends Model
                 LEFT JOIN avis ON avis.salles_id = salles.id
                 WHERE avis.note = (SELECT MAX(note) FROM avis);";
 
-        return $this->getItemsCustomSQL($sql);
+        $result = $this->getItemsCustomSQL($sql);
+
+        if ( empty($result) ) {
+            return [];
+        } else {
+            return $result;
+        }
     }
 
     public function getBestRent()
@@ -24,7 +30,13 @@ class Stats extends Model
                 ORDER BY rentCount DESC
                 LIMIT 1;";
 
-        return $this->getItemsCustomSQL($sql);
+        $result = $this->getItemsCustomSQL($sql);
+
+        if ( empty($result) ) {
+            return [];
+        } else {
+            return $result;
+        }
     }
 
     public function getBestClient()
@@ -37,13 +49,25 @@ class Stats extends Model
                 ORDER BY rentCount DESC
                 LIMIT 1;";
 
-        return $this->getItemsCustomSQL($sql);
+        $result = $this->getItemsCustomSQL($sql);
+
+        if ( empty($result) ) {
+            return [];
+        } else {
+            return $result;
+        }
     }
 
     public function getChiffreAffaire()
     {
         $sql = "SELECT SUM(montant) AS chiffreAffaire FROM commandes;";
 
-        return $this->getItemsCustomSQL($sql);
+        $result = $this->getItemsCustomSQL($sql);
+
+        if ( empty($result) ) {
+            return [];
+        } else {
+            return $result[0];
+        }
     }
 }
