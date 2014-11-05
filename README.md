@@ -15,11 +15,9 @@ Parmi les contraintes du cahier des charges client, on exigeait notamment :
 État du projet
 ----
 
-Le projet est encore en développement, mais toutes les fonctionnalités majeures sont opérationnelles.
-Il reste encore à mettre en place :
+Toutes les fonctionnalités majeures sont opérationnelles.
+Dans l'idéal, on améliorerait le design, et on continuerait à traquer les éventuelles bugs restant !
 
-- un rapport automatique de l'activité du site e-commerce via des statistiques disponibles dans le back-office
-- éventuellement un peu de design...
 
 Technique
 -----------
