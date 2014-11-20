@@ -16,7 +16,7 @@ Parmi les contraintes du cahier des charges client, on exigeait notamment :
 ----
 
 Toutes les fonctionnalités majeures sont opérationnelles.
-Dans l'idéal, on améliorerait le design, et on continuerait à traquer les éventuelles bugs restant !
+Dans l'idéal, on améliorerait le design, et on continuerait à traquer les éventuels bugs restants !
 
 
 Technique
